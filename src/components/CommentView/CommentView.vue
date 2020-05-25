@@ -60,12 +60,13 @@ export default {
   props: ["i", "comment", "rootComment"],
   components: { CommentBox },
   created() {
-    if (this.comment.avatar != null) {
+    if (this.comment.avatar != null && this.comment.avatar != "") {
       this.avatarURL = this.comment.avatar;
     } else {
       this.avatarURL =
         apiConfig.avatarURL + "/" + this.comment.user_id + "/avatar.png";
     }
+    console.log(this.avatarURL)
   },
   data() {
     return {
