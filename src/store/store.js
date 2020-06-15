@@ -171,6 +171,11 @@ export const store = new Vuex.Store({
             object: {},
             search: ""
         },
+        guestProfileViewState: {
+            loading: false,
+            list: [],
+            object: {},
+        }
     },
     mutations,
     actions,

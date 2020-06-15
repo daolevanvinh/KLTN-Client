@@ -45,8 +45,8 @@
             class="my-tab"
             @click="goTab('msg-tab')"
           >
-            <v-icon style="position: absolute;left: 1rem">mdi-chat</v-icon>
-            <span>Tin nhắn</span>
+            <v-icon style="position: absolute;left: 1rem">mdi-swap-horizontal-bold</v-icon>
+            <span>Lịch sử</span>
           </v-tab>
         </div>
         <v-tabs-items :value="mypageTab" class="list-item">
@@ -75,7 +75,6 @@ export default {
     this.$store.commit("ShowHeaderUser");
     this.$store.commit("ShowFooterUser");
 
-
     if (localStorage.token) {
       this.$store.dispatch("userInfo").then(response => {
         if (response.data.errorToken == true) {
@@ -83,13 +82,13 @@ export default {
           this.$router.push({ name: "not-found-page" });
         } else {
           localStorage.token = response.data.token;
+
+          this.checkPayment();
         }
       });
     } else {
       this.$router.push({ name: "not-found-page" });
     }
-
-    this.checkPayment();
   },
   data() {
     return {
@@ -100,7 +99,7 @@ export default {
           code: "09",
           msg: "Giao dịch thất bại, tài khoản chưa liên kết internet banking"
         },
-        { code: "11", msg: "Giao dịch thất bại, hết hạn giao dịch" },
+        { code: "11", msg: "Giao dịch thất bại" },
         { code: "08", msg: "Giao dịch thất bại, ngân hàng bảo trì" }
       ]
     };
@@ -111,22 +110,20 @@ export default {
     },
     checkPayment() {
       let flag = false;
-      this.status.forEach(stt => {
-        if (this.$route.query.status == stt.code) {
-          icon = "";
-          stt.code == "00" ? (icon = "success") : (icon = "error");
-          this.$swal({
-            icon: icon,
-            title: stt.msg
-          });
-          flag = true;
-          this.$store.commit('changeTab', 'course-tab')
-        }
-      });
-      if (flag == false && this.$route.query.status != null) {
-        this.$swal({
-          icon: "error",
-          title: "Đã xảy ra lỗi!"
+      let vm = this;
+      
+      if (this.$route.query.state != "") {
+        this.status.forEach(stt => {
+          if (vm.$route.query.state == stt.code) {
+            let icon = "";
+            stt.code == "00" ? (icon = "success") : (icon = "error");
+            this.$swal({
+              icon: icon,
+              title: stt.msg
+            });
+            flag = true;
+            this.$store.commit("changeTab", "course-tab");
+          }
         });
       }
     }
@@ -153,6 +150,8 @@ a {
   background: whitesmoke !important;
 }
 .account-page {
+  position: relative;
+  margin-bottom: 2rem;
   .my-tabs {
     padding: 1rem;
     .tab-container {

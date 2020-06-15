@@ -11,7 +11,7 @@
           <b-img
             rounded="circle"
             style="width: 3rem; height: 3rem"
-            src="https://cdn2.vectorstock.com/i/1000x1000/63/61/education-logo-vector-11136361.jpg"
+            :src="img"
           ></b-img>&nbsp;
           <span
             style="position: absolute;margin-top: 0.5rem;margin-left: 0.5rem;color: white;"
@@ -38,9 +38,15 @@
 </template>
 <script>
 import customList from "../customList/customList"
+import GoodLearningImg from "../../assets/goodlearning.jpg"
 export default {
     props: ['list'],
-    components: {customList}
+    components: {customList},
+    data() {
+      return {
+        img: GoodLearningImg
+      }
+    }
 };
 </script>
 <style lang="scss" scoped>

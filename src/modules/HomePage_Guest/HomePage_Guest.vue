@@ -138,7 +138,7 @@ export default {
   //background-image: url("https://drive.google.com/uc?id=1jxlL18Xj74SFoN76OqQ4mfTEv2HIOpNk&authuser=0");
   background-image: url("../../assets/udemy.jpg");
   width: 100%;
-  height: 30rem;
+  height: 20rem;
   padding-top: 8rem;
   padding-left: 5rem;
   .my-form {

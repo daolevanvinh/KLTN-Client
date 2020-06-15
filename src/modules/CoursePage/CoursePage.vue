@@ -39,7 +39,7 @@
                 style="height: 3rem;border: 1px solid;padding-top: 0.7rem"
                 class="btn-outline-default btn"
                 :to="{name: 'cart-page'}"
-              >Go To Cart</router-link>
+              >Đến giỏ hàng</router-link>
             </v-app>
           </div>
         </div>
@@ -314,6 +314,8 @@ export default {
   created() {
     this.loadCourseDetail();
     this.$store.commit("updateHistoryCourseList");
+    this.$store.commit("ShowHeaderUser")
+    this.$store.commit("ShowFooterUser")
   },
   methods: {
     openLoginModal() {

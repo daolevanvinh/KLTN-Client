@@ -925,7 +925,7 @@ export default {
             comment.token = localStorage.token
             let apiURL = apiConfig.userStudentCourseLessonComment
             commit('user_student_lesson_comment_request')
-            axios.post(apiURL, {},{ params: comment })
+            axios.post(apiURL, {}, { params: comment })
                 .then(function (response) {
                     commit('user_student_lesson_comment_success', response.data)
                     resolve(response)
@@ -963,6 +963,40 @@ export default {
                 })
                 .catch(function (error) {
                     commit('guest_search_error')
+                    reject(error)
+                })
+        })
+    },
+    userEditProfile({ commit }, profile) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userEditProfile
+            commit('user_request')
+            let data = {
+                token: localStorage.token,
+                profile: profile
+            }
+            axios.patch(apiURL, {}, { params: data })
+                .then(function (response) {
+                    commit('user_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_error')
+                    reject(error)
+                })
+        })
+    },
+    guestGetProfileView({ commit }, app_id) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.guestProfileView
+            commit('guest_profile_view_request')
+            axios.get(apiURL, { params: { app_id: app_id } })
+                .then(function (response) {
+                    commit('guest_profile_view_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('guest_profile_view_error')
                     reject(error)
                 })
         })

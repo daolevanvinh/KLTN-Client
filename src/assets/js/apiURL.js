@@ -33,6 +33,7 @@ var apiURL = {
     guestChatBot: apiAddress + "/guest/bot",
     guestDetailCourse: apiAddress + "/guest/course",
     guestSearch: apiAddress + "/guest/search",
+    guestProfileView: apiAddress + "/guest/profileview",
     // hung
     userInsertComment: apiAddress + "/user/course/insertcomment",
     guestGetListComment: apiAddress + "/guest/course/getlistcomment",

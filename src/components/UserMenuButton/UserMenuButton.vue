@@ -28,7 +28,7 @@
         <i class="fas fa-bell"></i> Thông báo
       </a>
       <a href="#" class="dropdown-item" @click="goTab('msg-tab')">
-        <i class="fas fa-comment"></i> Tin nhắn
+        <i class="fas fa-comment"></i> Lịch sử
       </a>
       <a class="dropdown-item" @click="logOut" type="button">
         <i class="fas fa-long-arrow-alt-right"></i> Đăng xuất

@@ -67,11 +67,12 @@
               <div class="row">
                 <div class="col align-end offset-4">
                   <div class="col-12">
-                    <button
+                    <router-link
                       type="button"
                       id="btnKeepShopping"
+                      :to="{name: 'search-page'}"
                       class="btn btn-danger btn-lg"
-                    >Keep shopping</button>
+                    >Tiếp tục mua sắm</router-link>
                   </div>
                 </div>
               </div>
@@ -152,6 +153,8 @@ export default {
     };
   },
   created() {
+    this.$store.commit("ShowHeaderUser")
+    this.$store.commit("ShowFooterUser")
     this.$store.dispatch("userGetCart").then(() => {
       this.calculateTotalPrice();
     });

@@ -22,7 +22,8 @@
             :page="currentPage"
           >
             <template v-slot:item.control="data">
-              <a href="#" @click="showDetail(data.item)">Xem video</a>
+              <a href="#" style="margin-right: 1.5rem" @click="showDetail(data.item)">Xem video</a>
+              <a href="#" @click="deleteLesson(data.item)">Xóa</a>
             </template>
             <template v-slot:no-results>
               <img
@@ -40,6 +41,10 @@
 
               <h4 style="margin-top: 0.5rem">Danh sách rỗng!</h4>
             </template>
+            <template v-slot:item.description="data">
+              {{formatShort(data.item.description)}}
+            </template>
+            <template v-slot:item.duration="data">{{formatHours(data.item.duration)}}</template>
           </v-data-table>
           <v-pagination
             circle
@@ -53,7 +58,7 @@
             <hr />
             <div class="row" style="margin: 0">
               <div class="col-6" style="padding: 0;padding-left: 2rem">
-                <div class="player-container">  
+                <div class="player-container">
                   <b-embed
                     :src="videoURL + '/'+loadSelectedLesson.course_id +'/' +loadSelectedLesson.lesson_id+'.mp4'"
                     type="iframe"
@@ -203,10 +208,11 @@ export default {
       ],
       lessonList: [],
       headers: [
-        { value: "title", text: "Tên bài học" },
-        { value: "description", text: "Mô tả" },
-        { value: "updated_at", text: "Ngày cập nhật" },
-        { value: "control", text: "" }
+        { value: "title", text: "Tên bài học", width: "20%" },
+        { value: "description", text: "Mô tả", width: "25%" },
+        { value: "duration", text: "Thời lượng", width: "15%" },
+        { value: "updated_at", text: "Ngày cập nhật", width: "20%" },
+        { value: "control", text: "", width: "20%" }
       ],
       course: {
         lessons: []
@@ -248,7 +254,7 @@ export default {
       if (FileReader && files && files.length) {
         vm.updateLesson.videoInput = files[0];
       }
-      console.log(vm.updateLesson.videoInput);
+      //console.log(vm.updateLesson.videoInput);
     },
     refresh() {
       this.newLesson = {
@@ -256,11 +262,15 @@ export default {
         description: ""
       };
       //document.getElementById("videoInput").value = "";
-      console.log(this.$refs.videoInput);
+      //console.log(this.$refs.videoInput);
     },
     closeVideoModal() {
       this.dialogLessonDetail = false;
       //this.$refs.video.pause();
+      if (this.edit == true) {
+        document.getElementById("fix-button").click();
+        this.edit = false;
+      }
       this.selectedLesson = {};
     },
     addLesson() {
@@ -329,7 +339,7 @@ export default {
           });
         this.refresh();
       } else {
-        console.log(this.updateLesson);
+        //console.log(this.updateLesson);
         this.$swal({
           icon: "error",
           title: "Thông Báo",
@@ -356,6 +366,7 @@ export default {
         title: lesson.title,
         description: lesson.description
       };
+
       this.videoOptions.sources = [
         {
           src:
@@ -368,7 +379,29 @@ export default {
           type: "video/mp4"
         }
       ];
+      //console.log(this.videoOptions)
       this.dialogLessonDetail = true;
+    },
+    formatHours(duration) {
+      let hours = Math.floor(duration / 3600);
+      let minutes = Math.floor((duration - hours * 3600) / 60);
+      let seconds = duration - hours * 3600 - minutes * 60;
+
+      if (hours < 10) {
+        hours = "0" + hours;
+      }
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+      return hours + ":" + minutes + ":" + seconds;
+    },
+    formatShort(string) {
+      if(string.length > 30) 
+        return string.slice(0, 30) + "..."
+        else return string
     }
   },
   computed: {

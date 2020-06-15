@@ -24,7 +24,7 @@
             >Đổi mật khẩu ?</button>
           </div>
         </div>
-        <div class="col-4 text-left" >
+        <div class="col-4 text-left">
           <div>
             <label>
               Họ tên:
@@ -133,7 +133,7 @@ export default {
   props: ["account", "accountLoading"],
   beforeUpdate() {
     if (this.editAccount.social_id != null && this.editAccount.avatar != null) {
-      this.avatarURL = this.editAccount.avatar
+      this.avatarURL = this.editAccount.avatar;
     } else {
       this.avatarURL =
         apiConfig.apiURL +
@@ -200,6 +200,10 @@ export default {
                 title: "Thông báo",
                 text: response.data.msg
               });
+              if (response.data.RequestSuccess === true) {
+                alert(1)
+                this.edit = false;
+              }
             });
         }
       });

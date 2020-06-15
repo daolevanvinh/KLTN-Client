@@ -69,8 +69,8 @@
         </div>
         <v-icon style="color:red" v-if="heartHover">mdi-heart</v-icon>
       </div>
-      <v-dialog v-model="userCourseLikeLoading" width="300">
-        <v-card width="300" style="padding: 2rem">Đang xử lý...</v-card>
+      <v-dialog light persistent v-model="userCourseLikeLoading" width="200">
+        <v-card width="200" style="padding: 2rem">Đang xử lý...</v-card>
       </v-dialog>
     </div>
     

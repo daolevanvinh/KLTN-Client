@@ -2,7 +2,7 @@
   <div style="position: relative;">
     <Header v-if="!hideHeader" :show="showHeader"></Header>
     <router-view></router-view>
-    <AutoAnswer v-if="!guestHideAutoAnswer"></AutoAnswer>
+    <AutoAnswer v-if="!guestHideAutoAnswer && false"></AutoAnswer>
     <Footer v-if="!hideFooter"></Footer>
   </div>
 </template>
@@ -32,20 +32,6 @@ export default {
     this.checkLogin();
   },
   methods: {
-    checkCookie() {
-      let cookies = document.cookie.split(";");
-      for (let i = 0; i < cookies.length; i++) {
-        if (cookies[i].includes("token")) {
-          let token = cookies[i].split("=")[1];
-          console.log("here", token);
-          localStorage.token = token;
-
-          console.log(i);
-          break;
-        }
-      }
-      this.checkLogin();
-    },
     checkLogin() {
       let vm = this;
       if (this.$route.query.token) {

@@ -12,6 +12,7 @@ import InstructorAnnoucementPage from "./InstructorAnnoucementPage/InstructorAnn
 import ForgotPasswordPage from "./ForgotPasswordPage/ForgotPasswordPage"
 import SearchPage from "./SearchPage/SearchPage.vue"
 import Cart from "./Cart/Cart.vue";
+import ProfileViewPage from "./ProfileViewPage/ProfileViewPage.vue"
 export default [
     // Guest
     {
@@ -40,11 +41,17 @@ export default [
         name: 'search-page',
         component: SearchPage
     },
+    {
+        path: 'profile/:app_id',
+        name: 'profile-view-page',
+        component: ProfileViewPage
+    },
     // user
     {
         path: '/mypage',
         name: 'my-page',
-        component: MyPage
+        component: MyPage,
+        props: true
     },
     {
         path: '/cart',

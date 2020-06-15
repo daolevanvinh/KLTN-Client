@@ -54,6 +54,8 @@ export default {
     this.$store.commit("HideFooterUser");
     this.user.user_id = this.$route.query.user_id;
     this.user.code = this.$route.query.code;
+    
+    this.$store.commit("ShowHeaderUser")
   },
   data() {
     return {

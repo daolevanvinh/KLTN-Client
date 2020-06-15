@@ -1,6 +1,13 @@
 <template>
   <div>
-    <router-link :to="{name: 'course-detail-page', params: {id: Item.course_id}}">
+    <!-- <router-link :to="{name: 'course-detail-page', params: {id: Item.course_id}}"> -->
+    <a
+      @click="changeItem()"
+      @mouseup="clearLink()"
+      @contextmenu="addLink"
+      :ref="Item.course_id"
+      href="#"
+    >
       <div class="item-container">
         <div class="row">
           <div class="col-4">
@@ -18,7 +25,8 @@
           </div>
         </div>
       </div>
-    </router-link>
+    </a>
+    <!-- </router-link> -->
   </div>
 </template>
 <script>
@@ -29,6 +37,22 @@ export default {
     return {
       baseImageURL: apiConfig.imageURL
     };
+  },
+  methods: {
+    changeItem() {
+      if(this.$route.name != 'course-detail-page') {
+        this.$router.push({name: 'course-detail-page', params: {id: this.Item.course_id}})
+      } else {
+        alert(apiConfig.baseURL + "/course/" + this.Item.course_id)
+        location.href = apiConfig.baseURL + "/course/" + this.Item.course_id
+      }
+    },
+    clearLink() {
+      this.$refs[this.Item.course_id].href = "#";
+    },
+    addLink(e) {
+      this.$refs[this.Item.course_id].href = this.Item.course_id;
+    }
   }
 };
 </script>

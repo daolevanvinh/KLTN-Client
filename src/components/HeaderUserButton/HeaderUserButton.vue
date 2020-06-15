@@ -37,7 +37,7 @@
         </div>
         <div class="item-container">
           <a class="my-card-item" @click="goTab('msg-tab')" type="button">
-            <i class="fas fa-comment"></i> Tin nhắn
+            <i class="fas fa-comment"></i> Lịch sử
           </a>
         </div>
         <div class="item-container">

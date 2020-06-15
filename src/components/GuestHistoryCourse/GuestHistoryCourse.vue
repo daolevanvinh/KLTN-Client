@@ -1,7 +1,7 @@
 <template>
   <div class="my-conatiner">
     <h3>Lịch sử đã xem</h3>
-    <v-app style="padding-top: 1rem;height: 23rem;margin-bottom: 1rem;">
+    <v-app v-if="historyCourseList.length > 0" style="padding-top: 1rem;height: 23rem;margin-bottom: 1rem;">
       <div id="historyCollection" class="carousel slide" data-ride="carousel" style="width: 100%;">
         <div class="carousel-inner">
           <div
@@ -25,6 +25,10 @@
         </v-btn>
       </div>
     </v-app>
+    <div v-else style="margin-bottom: 10rem">
+      <h1 class="text-center">Danh sách rỗng</h1>
+      <hr>
+    </div>
     <button v-b-modal.login-modal ref="openTemp" id="openTemp"></button>
   </div>
 </template>

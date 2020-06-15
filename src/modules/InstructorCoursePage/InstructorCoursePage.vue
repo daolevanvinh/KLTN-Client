@@ -128,14 +128,12 @@ export default {
         for (let i = 0; i < this.courseList.length; i++) {
           if (
             this.flagSort == 2 &&
-            this.courseList[i].tierPrice_id != 0 &&
-            this.courseList[i].public == true
+            this.courseList[i].tierPrice_id != 0
           )
             tempCourseList.push(this.courseList[i]);
           if (
             this.flagSort == 3 &&
-            this.courseList[i].tierPrice_id == 0 &&
-            this.courseList[i].public == true
+            this.courseList[i].tierPrice_id == 0
           )
             tempCourseList.push(this.courseList[i]);
           if (this.flagSort == 4 && this.courseList[i].public == true)

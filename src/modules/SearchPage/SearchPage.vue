@@ -22,7 +22,7 @@
         <v-btn
           style="margin-left: 0.9rem"
           height="3.5rem"
-          @click="searchFunction()"
+          @click="searchFunction(1)"
           outlined
           id="search-button-for-vuex"
         >Tìm kiếm</v-btn>
@@ -143,12 +143,14 @@
         </v-navigation-drawer>
       </div>
       <div :class="miniContent ? 'col-11' : 'col-9'" style="padding-left: 0">
+        <div v-if="guestCategoryLoading || guestSearchLoading" class="text-center">
+          <v-progress-circular indeterminate size="80"></v-progress-circular>
+        </div>
         <div>
-          <div v-for="(course, i) in searchList" :key="i">
-            <div class="reccommend-item">
-              <CourseSearchItem :course="course"></CourseSearchItem>
-            </div>
+          <div class="search-item" v-for="(course, i) in searchList" :key="i">
+            <CourseSearchItem :course="course" @openLoginModal="openLoginModal"></CourseSearchItem>
           </div>
+          <button v-b-modal.login-modal id="openLoginModal"></button>
         </div>
       </div>
     </div>
@@ -182,6 +184,8 @@ export default {
     };
   },
   created() {
+    this.$store.commit("ShowHeaderUser")
+    this.$store.commit("ShowFooterUser")
     this.$store.dispatch("guestGetSearch").then(() => {
       this.searchList = this.guestSearchList.slice(
         0,
@@ -189,18 +193,26 @@ export default {
       );
       this.resultCount = this.searchList.length;
     });
+    if (this.$route.query.search !== "") {
+      this.search = this.$route.query.search;
+      this.searchFunction();
+    }
   },
   methods: {
+    openLoginModal() {
+      document.getElementById("openLoginModal").click();
+    },
     changeCategory() {
       this.topicListSeleted = this.categorySeleted.topics_enable;
     },
-    searchFunction() {
+    searchFunction(flag) {
       this.loading = true;
       this.searchList = [];
-      this.$store.commit("guest_set_search", this.search);
+      if (!flag && flag != 1)
+        this.$store.commit("guest_set_search", this.search);
       for (let i = 0; i < this.guestSearchList.length; i++) {
         let name = this.guestSearchList[i].name.toUpperCase();
-        let tempSearch = this.search.toUpperCase();
+        let tempSearch = this.guestSearch.toUpperCase();
         if (name.includes(tempSearch)) {
           for (let j = 0; j < this.guestSearchList[i].topic.length; j++) {
             let flag_category =
@@ -279,7 +291,7 @@ export default {
   border-bottom: 1px solid silver;
 }
 
-.reccommend-item {
+.search-item {
   padding: 0 1rem;
   position: relative;
   border-bottom: 1px solid silver;

@@ -335,7 +335,12 @@ export default {
         state.guestCourseDetail.loading = false
     },
     updateHistoryCourseList(state) {
+        if(localStorage.historyCourseList)
         state.historyCourseState.list = JSON.parse(localStorage.historyCourseList)
+        else {
+            state.historyCourseState.list = []
+            localStorage.historyCourseList = JSON.stringify([])
+        }
     },
     user_student_course_request(state) {
         state.userStudentCourseState.loading = true
@@ -405,5 +410,20 @@ export default {
     },
     guest_set_search(state, search) {
         state.guestSearchState.search = search
+    },
+    guest_profile_view_request(state) {
+        state.guestProfileViewState.loading = true
+    },
+    guest_profile_view_success(state, data) {
+        state.guestProfileViewState.loading = false
+        if (data.list) {
+            state.guestProfileViewState.list = data.list
+        }
+        if (data.object) {
+            state.guestProfileViewState.object = data.object
+        }
+    },
+    guest_profile_view_error(state) {
+        state.guestProfileViewState.loading = false
     }
 }
