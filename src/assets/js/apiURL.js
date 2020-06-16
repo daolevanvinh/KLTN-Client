@@ -34,6 +34,7 @@ var apiURL = {
     guestDetailCourse: apiAddress + "/guest/course",
     guestSearch: apiAddress + "/guest/search",
     guestProfileView: apiAddress + "/guest/profileview",
+    guestSearchFromHeader: apiAddress + "/guest/search/header",
     // hung
     userInsertComment: apiAddress + "/user/course/insertcomment",
     guestGetListComment: apiAddress + "/guest/course/getlistcomment",

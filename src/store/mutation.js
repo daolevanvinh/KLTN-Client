@@ -425,5 +425,20 @@ export default {
     },
     guest_profile_view_error(state) {
         state.guestProfileViewState.loading = false
+    },
+    guest_header_seach_request(state) {
+        state.guestInfoSearchFromHeader.loading = true
+    },
+    guest_header_search_success(state, data) {
+        state.guestInfoSearchFromHeader.loading = false
+        if (data.list) {
+            state.guestInfoSearchFromHeader.list = data.list
+        }
+        if (data.object) {
+            state.guestInfoSearchFromHeader.object = data.object
+        }
+    },
+    guest_header_search_error(state) {
+        state.guestInfoSearchFromHeader.loading = false
     }
 }

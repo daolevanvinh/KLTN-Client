@@ -43,8 +43,9 @@ export default {
       if(this.$route.name != 'course-detail-page') {
         this.$router.push({name: 'course-detail-page', params: {id: this.Item.course_id}})
       } else {
-        alert(apiConfig.baseURL + "/course/" + this.Item.course_id)
-        location.href = apiConfig.baseURL + "/course/" + this.Item.course_id
+        //alert(apiConfig.baseURL + "/course/" + this.Item.course_id)
+        this.$router.replace({params: {id: this.Item.course_id}})
+        //location.href = apiConfig.baseURL + "/course/" + this.Item.course_id
       }
     },
     clearLink() {

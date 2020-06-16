@@ -1000,5 +1000,20 @@ export default {
                     reject(error)
                 })
         })
+    },
+    guestGetInfoSearchFromHeader({ commit }, search) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.guestSearchFromHeader
+            commit('guest_header_seach_request')
+            axios.get(apiURL, { params: { search: search } })
+                .then(function (response) {
+                    commit('guest_header_search_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('guest_header_search_error')
+                    reject(error)
+                })
+        })
     }
 }

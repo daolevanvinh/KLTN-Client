@@ -2,15 +2,27 @@
   <div>
     <v-app>
       <div class="profile-container">
+        <h3 v-if="!guestProfileViewLoading">Tổng quan về tôi</h3>
+        <div v-if="guestProfileViewLoading">
+          <v-skeleton-loader type="heading" tile boilerplate></v-skeleton-loader>
+        </div>
         <div class="row">
           <div class="col-md-9 col-sm-12">
-            <div class="ql-editor" :class="{'short-profile' : shortProfile}">
+            <div
+              v-if="!guestProfileViewLoading"
+              class="ql-editor"
+              :class="{'short-profile' : shortProfile}"
+            >
               <div v-html="guestProfileViewObject.profile"></div>
+            </div>
+            <div v-if="guestProfileViewLoading">
+              <v-skeleton-loader type="paragraph" boilerplate tile></v-skeleton-loader>
+              <v-skeleton-loader type="paragraph" boilerplate tile></v-skeleton-loader>
             </div>
             <div style="margin: 1rem 0;" class="text-left">
               <a href="#" v-if="shortProfile" @click="shortProfile = false">Xem thêm</a>
             </div>
-            <div class="row">
+            <div class="row" v-if="!loading && !guestProfileViewLoading">
               <div
                 id="itemContainer"
                 class="col-md-6 col-sm-12 item-container"
@@ -18,8 +30,7 @@
                 :key="index"
               >
                 <router-link
-                    :id="'scroll'+index"
-                  v-if="!loading"
+                  :id="'scroll'+index"
                   :to="{name: 'course-detail-page', params: { id: course.course_id }}"
                 >
                   <img
@@ -58,9 +69,11 @@
                     </b>
                   </p>
                 </router-link>
-                <div v-else>
-                  <v-skeleton-loader type="card"></v-skeleton-loader>
-                </div>
+              </div>
+            </div>
+            <div class="row" v-if="loading || guestProfileViewLoading">
+              <div class="col-md-6 col-sm-12" v-for="i in 8" :key="i">
+                <v-skeleton-loader type="card"></v-skeleton-loader>
               </div>
             </div>
             <div class="text-center">
@@ -74,19 +87,24 @@
             </div>
           </div>
           <div class="col-md-3 col-sm-12">
-            <img style="width: 100%; height: 10rem" :src="ImageURL" />
-            <div style="margin-top: 1rem">
-              <b>
-                <v-icon size="22">mdi-star</v-icon>
-                &nbsp;{{instructorAVGStar}}
-              </b>&nbsp; Instructor rating
-            </div>
+            <div v-if="!guestProfileViewLoading">
+              <img style="width: 100%; height: 10rem" :src="ImageURL" />
+              <div style="margin-top: 1rem">
+                <b>
+                  <v-icon size="22">mdi-star</v-icon>
+                  &nbsp;{{instructorAVGStar}}
+                </b>&nbsp; Instructor rating
+              </div>
 
-            <div>
-              <b>
-                <v-icon size="22">mdi-chat</v-icon>
-                &nbsp;{{instructorReview}}
-              </b>&nbsp; Reviews
+              <div>
+                <b>
+                  <v-icon size="22">mdi-chat</v-icon>
+                  &nbsp;{{instructorReview}}
+                </b>&nbsp; Reviews
+              </div>
+            </div>
+            <div v-if="guestProfileViewLoading">
+              <v-skeleton-loader type="card"></v-skeleton-loader>
             </div>
           </div>
         </div>
@@ -115,27 +133,35 @@ export default {
     };
   },
   created() {
-    this.$store
-      .dispatch("guestGetProfileView", this.$route.params.app_id)
-      .then(response => {
-        if (response.data.RequestSuccess === true) {
-          if (this.guestProfileViewObject.social_id == 0) {
-            this.ImageURL =
-              apiConfig.avatarURL +
-              "/" +
-              this.guestProfileViewObject.user_id +
-              "/avatar.png";
-          } else {
-            this.ImageURL = this.guestProfileViewObject.avatar;
-          }
-        } else {
-          this.$router.push({ name: "not-found-page" });
-        }
-        this.handleForInstructor();
-        this.paginationFunction();
-      });
+    this.loadData();
+  },
+  watch: {
+    "$route.params.app_id": function() {
+      this.loadData();
+    }
   },
   methods: {
+    loadData() {
+      this.$store
+        .dispatch("guestGetProfileView", this.$route.params.app_id)
+        .then(response => {
+          if (response.data.RequestSuccess === true) {
+            if (this.guestProfileViewObject.social_id == 0) {
+              this.ImageURL =
+                apiConfig.avatarURL +
+                "/" +
+                this.guestProfileViewObject.user_id +
+                "/avatar.png";
+            } else {
+              this.ImageURL = this.guestProfileViewObject.avatar;
+            }
+          } else {
+            this.$router.push({ name: "not-found-page" });
+          }
+          this.handleForInstructor();
+          this.paginationFunction();
+        });
+    },
     handleForInstructor() {
       let instructor = this.guestProfileViewObject;
       if (instructor != null) {
@@ -157,7 +183,9 @@ export default {
             }
           });
           this.instructorReview = sumReview;
-          this.instructorAVGStar = Math.floor(sumStar / sumReview);
+          sumReview == 0
+            ? (this.instructorAVGStar = 0)
+            : (this.instructorAVGStar = Math.floor(sumStar / sumReview));
         }
       }
     },
@@ -192,7 +220,7 @@ export default {
         }
       }, 100);
       setTimeout(() => {
-          vm.loading = false;
+        vm.loading = false;
       }, 500);
     }
   },

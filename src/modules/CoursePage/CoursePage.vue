@@ -116,7 +116,7 @@
               </div>
               <div class="col-9" style="padding-left: 0">
                 <h3>
-                  <a href="#">{{guestCourseDetailObject.instructor.name}}</a>
+                  <router-link :to="{name: 'profile-view-page', params: {app_id: guestCourseDetailObject.instructor.app_id}}">{{guestCourseDetailObject.instructor.name}}</router-link>
                 </h3>
                 <div
                   class="my-align"
@@ -310,6 +310,11 @@ export default {
       instructorAVGStar: 0,
       instructorReview: 0
     };
+  },
+  watch: {
+    '$route.params.id': function() {
+      this.loadCourseDetail();
+    }
   },
   created() {
     this.loadCourseDetail();

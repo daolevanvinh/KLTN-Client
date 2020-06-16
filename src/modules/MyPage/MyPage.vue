@@ -5,7 +5,7 @@
         <div class="tab-container">
           <v-tab
             :class="'info-tab' == mypageTab ? 'my-active-class' : '' "
-            @click="goTab('info-tab')"
+            @click="goTab('info-tab');"
             class="my-tab"
             style="color: rgba(0,0,0,.54)"
           >
@@ -74,21 +74,7 @@ export default {
   created() {
     this.$store.commit("ShowHeaderUser");
     this.$store.commit("ShowFooterUser");
-
-    if (localStorage.token) {
-      this.$store.dispatch("userInfo").then(response => {
-        if (response.data.errorToken == true) {
-          commonService.checkErrorToken(this, response.data.msg);
-          this.$router.push({ name: "not-found-page" });
-        } else {
-          localStorage.token = response.data.token;
-
-          this.checkPayment();
-        }
-      });
-    } else {
-      this.$router.push({ name: "not-found-page" });
-    }
+    this.getUserInfo()
   },
   data() {
     return {
@@ -105,13 +91,32 @@ export default {
     };
   },
   methods: {
+    getUserInfo() {
+      if (localStorage.token) {
+        this.$store.dispatch("userInfo").then(response => {
+          if (response.data.errorToken == true) {
+            commonService.checkErrorToken(this, response.data.msg);
+            this.$router.push({ name: "not-found-page" });
+          } else {
+            localStorage.token = response.data.token;
+
+            this.checkPayment();
+          }
+        });
+      } else {
+        this.$router.push({ name: "not-found-page" });
+      }
+    },
     goTab(flag) {
       this.$store.commit("changeTab", flag);
+      if(Object.keys(obj).length === 0 && obj.constructor === Object) {
+        this.getUserInfo()
+      }
     },
     checkPayment() {
       let flag = false;
       let vm = this;
-      
+
       if (this.$route.query.state != "") {
         this.status.forEach(stt => {
           if (vm.$route.query.state == stt.code) {

@@ -175,6 +175,11 @@ export const store = new Vuex.Store({
             loading: false,
             list: [],
             object: {},
+        },
+        guestInfoSearchFromHeader: {
+            loading: false,
+            list: [],
+            object: {}
         }
     },
     mutations,

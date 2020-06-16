@@ -21,10 +21,44 @@
 
           <b-collapse id="nav-collapse" is-nav>
             <!-- Right aligned nav items -->
-            <b-navbar-nav class="ml-auto">
+            <b-navbar-nav id="navbarNav" class="ml-auto" style="margin-top: 0.5rem">
               <DropdownCategory></DropdownCategory>
-              <input v-model="search" @keyup.enter="searchFunction()" class="form-control input-search" placeholder="Search..." type="text" />
-              <button @click="searchFunction()" class="btn btn-info btn-search">
+              <v-autocomplete
+                class="autoComplete"
+                height="1rem"
+                :search-input.sync="search"
+                :loading="tempLoading || guestInfoSearchFromHeaderLoading"
+                :items="searchList"
+                hide-no-data
+                hide-details
+                flat
+                label="Tìm kiếm"
+                dense
+                outlined
+                @keyup.enter="searchFunction()"
+              >
+                <template v-slot:progress>
+                  <v-progress-linear absolute color="blue lighten-3" height="3" indeterminate></v-progress-linear>
+                </template>
+                <template v-slot:item="data">
+                  <div @click="goTo(data.item)">
+                    <b>
+                      <v-icon v-if="data.item.type==0">mdi-account</v-icon>
+                      <v-icon v-else>mdi-book</v-icon>
+                      {{data.item.text}}
+                    </b>
+                  </div>
+                </template>
+              </v-autocomplete>
+              <input
+                v-if="false"
+                v-model="search"
+                class="form-control input-search"
+                @keyup.enter="searchFunction()"
+                placeholder="Search..."
+                type="text"
+              />
+              <button v-if="false" @click="searchFunction()" class="btn btn-info btn-search">
                 <i class="fa fa-search"></i>
               </button>
               <a
@@ -110,7 +144,10 @@ export default {
       isStudent: true,
       baseURL: apiConfig.baseURL,
       baseImage: apiConfig.imageURL,
-      search: ""
+      search: "",
+      tempSearch: "",
+      tempLoading: false,
+      searchList: []
     };
   },
   props: ["show"],
@@ -119,16 +156,82 @@ export default {
       if (newVal != null) {
         this.isStudent = newVal;
       }
+    },
+    search(newVal) {
+      if (newVal != null) this.searchKeyword(newVal);
     }
   },
   methods: {
-    searchFunction() {
-        if(this.$route.name != 'search-page') {
-          this.$router.push({name: 'search-page', query: { search: this.search }})
+    goTo(item) {
+      this.search = "";
+      this.tempLoading = false;
+      //console.log(item);
+      let name = "";
+      if (item.type == 0) {
+        name = "profile-view-page";
+      } else {
+        name = "course-detail-page";
+      }
+
+      if (this.$route.name == name) {
+        if (item.type == 0 && this.$route.params.app_id != item.value) {
+          this.$router.replace({ params: { app_id: item.value } });
         } else {
-          this.$store.commit('guest_set_search', this.search)
-          document.getElementById('search-button-for-vuex').click()
+          if (item.type != 0 && this.$route.params.id != item.value)
+            this.$router.replace({ params: { id: item.value } });
         }
+      } else {
+        if (item.type == 0)
+          this.$router.push({ name: name, params: { app_id: item.value } });
+        else {
+          this.$router.push({ name: name, params: { id: item.value } });
+        }
+      }
+    },
+    searchFunction() {
+      if (this.$route.name != "search-page") {
+        this.$router.push({
+          name: "search-page",
+          query: { search: this.search }
+        });
+      } else {
+        this.$router.replace({ query: { search: "" } });
+        setTimeout(() => {
+          this.$router.replace({ query: { search: this.search } });
+        }, 100);
+        this.$store.commit("guest_set_search", this.search);
+        document.getElementById("search-button-for-vuex").click();
+      }
+    },
+    searchKeyword(search) {
+      this.tempSearch = search;
+      this.tempLoading = true;
+      setInterval(() => {
+        if (this.tempSearch == search && search != "") {
+          ////console.log("searching for", search);
+          this.tempSearch = null;
+          this.$store
+            .dispatch("guestGetInfoSearchFromHeader", search)
+            .then(response => {
+              this.tempLoading = false;
+              this.handleData();
+            });
+        }
+      }, 2000);
+    },
+    handleData() {
+      this.searchList = [];
+      for (let item of this.guestInfoSearchFromHeaderList) {
+        this.searchList.push({
+          text: item.text,
+          value: item.value,
+          type: item.type
+        });
+      }
+      ////console.log(this.guestInfoSearchFromHeaderList);
+    },
+    ahihi(data) {
+      //console.log(data);
     }
   },
   created() {
@@ -147,7 +250,9 @@ export default {
       userUserInfo: "userUserInfo",
       userUserInfoLoading: "userUserInfoLoading",
       userCourseLikeList: "userCourseLikeList",
-      userCourseLikeLoading: "userCourseLikeLoading"
+      userCourseLikeLoading: "userCourseLikeLoading",
+      guestInfoSearchFromHeaderList: "guestInfoSearchFromHeaderList",
+      guestInfoSearchFromHeaderLoading: "guestInfoSearchFromHeaderLoading"
     }),
     loadStateLogin() {
       return this.isLogin;
@@ -189,6 +294,7 @@ a {
   color: black;
   height: 5.5rem;
   font-family: "Quicksand";
+  border-bottom: 3px solid #e2dbcb;
 }
 .btn-search {
   height: 2.5rem;
@@ -224,4 +330,10 @@ a {
 //   top: 0;
 //   z-index: 5;
 // }
+.autoComplete {
+  font-size: 16px !important;
+  margin-right: 5rem !important;
+  width: 20rem !important;
+  border: none !important;
+}
 </style>

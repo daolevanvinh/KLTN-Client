@@ -4,14 +4,13 @@
     <div class="row" style="margin-top: 2rem">
       <div class="col-9">
         <v-select
-          style="margin-bottom: 0"
           :items="courseList"
           label="Các khóa học của bạn"
           outlined
           v-model="courseSelected"
           @change="getLessons()"
         ></v-select>
-        <v-card class="mb-12" style="margin-top: -1.3rem;" color="white" height="22rem">
+        <v-card class="mb-12" color="white" height="22rem">
           <v-data-table
             hide-default-footer
             :headers="headers"
@@ -41,9 +40,7 @@
 
               <h4 style="margin-top: 0.5rem">Danh sách rỗng!</h4>
             </template>
-            <template v-slot:item.description="data">
-              {{formatShort(data.item.description)}}
-            </template>
+            <template v-slot:item.description="data">{{formatShort(data.item.description)}}</template>
             <template v-slot:item.duration="data">{{formatHours(data.item.duration)}}</template>
           </v-data-table>
           <v-pagination
@@ -78,33 +75,34 @@
                     Lượt bình luận: {{loadSelectedLesson.commentCount}}
                     <v-icon>mdi-chat</v-icon>
                   </div>
+                  <div class="col-4">
+                    <v-btn
+                      @click="edit = true"
+                      color="yellow darken-1"
+                      v-if="!edit"
+                      v-b-toggle.collapse-update-lesson
+                    >Chỉnh sửa</v-btn>
+                    <v-btn
+                      v-if="edit"
+                      @click="edit = false"
+                      id="fix-button"
+                      color="yellow darken-1"
+                      v-b-toggle.collapse-update-lesson
+                    >Hủy bỏ</v-btn>
+                  </div>
                 </div>
-                <v-btn
-                  @click="edit = true"
-                  color="yellow darken-1"
-                  v-if="!edit"
-                  v-b-toggle.collapse-update-lesson
-                >Chỉnh sửa</v-btn>
-                <v-btn
-                  v-if="edit"
-                  @click="edit = false"
-                  id="fix-button"
-                  color="yellow darken-1"
-                  v-b-toggle.collapse-update-lesson
-                >Hủy bỏ</v-btn>
 
                 <b-collapse id="collapse-update-lesson" class="mt-2" style="width: 90%;">
                   <v-text-field
                     v-model="updateLesson.title"
-                    style="margin-top: 1.5rem;"
                     outlined
                     dense
                     @keydown="disableSaveUpdateButton = false"
                     label="Tiêu đề bài học"
                   ></v-text-field>
                   <v-textarea
+                  style="margin-top :1rem"
                     v-model="updateLesson.description"
-                    style="margin-top: -1rem;"
                     outlined
                     @keydown="disableSaveUpdateButton = false"
                     label="Mô tả bài học"
@@ -115,7 +113,6 @@
                     ref="videoUpdateInput"
                     accept="video/*"
                     @change="setVideoUpdate($event); disableSaveUpdateButton = false"
-                    style="margin-top: -1.2rem;"
                     chips
                     show-size
                     label="Video bài học"
@@ -147,15 +144,14 @@
         <b-collapse id="collapse-new-lesson" class="mt-2">
           <v-text-field
             v-model="newLesson.title"
-            style="margin-top: 0.5rem;"
             outlined
             dense
             label="Tiêu đề bài học"
           ></v-text-field>
           <v-textarea
             v-model="newLesson.description"
-            style="margin-top: -1rem;"
             outlined
+            style="margin-top: 0.5rem"
             label="Mô tả bài học"
             height="10rem"
           ></v-textarea>
@@ -164,7 +160,6 @@
             ref="videoInput"
             accept="video/*"
             @change="setVideo"
-            style="margin-top: -1.2rem;"
             chips
             show-size
             label="Video bài học"
@@ -399,9 +394,8 @@ export default {
       return hours + ":" + minutes + ":" + seconds;
     },
     formatShort(string) {
-      if(string.length > 30) 
-        return string.slice(0, 30) + "..."
-        else return string
+      if (string.length > 30) return string.slice(0, 30) + "...";
+      else return string;
     }
   },
   computed: {

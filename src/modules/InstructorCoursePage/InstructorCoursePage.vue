@@ -36,7 +36,7 @@
           </v-dialog>
         </div>
       </div>
-      <div v-if="!userCourseLoading" ref="my_courseList">
+      <div style="margin-top: 1rem" v-if="!userCourseLoading" ref="my_courseList">
         <div v-for="(course,index) in loadCourseList" :key="index">
           <InsCourseItem :course="course" :loading="loadLoading"></InsCourseItem>
         </div>

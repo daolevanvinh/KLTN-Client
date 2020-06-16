@@ -183,20 +183,33 @@ export default {
       ]
     };
   },
-  created() {
-    this.$store.commit("ShowHeaderUser")
-    this.$store.commit("ShowFooterUser")
-    this.$store.dispatch("guestGetSearch").then(() => {
-      this.searchList = this.guestSearchList.slice(
-        0,
-        this.guestSearchList.length
-      );
-      this.resultCount = this.searchList.length;
-    });
-    if (this.$route.query.search !== "") {
-      this.search = this.$route.query.search;
+  watch: {
+    "$route.query.search": function(newVal) {
+      this.$store.commit("guest_set_search", newVal);
+      this.search = newVal;
       this.searchFunction();
+    },
+    search: function(newVal) {
+      this.$store.commit("guest_set_search", newVal);
+      // this.searchFunction();
     }
+  },
+  created() {
+    this.$store.commit("ShowHeaderUser");
+    this.$store.commit("ShowFooterUser");
+    this.$store.dispatch("guestGetSearch").then(() => {
+      if (this.$route.query.search && this.$route.query.search != "") {
+        this.$store.commit("guest_set_search", this.$route.query.search);
+        this.search = this.$route.query.search;
+        this.searchFunction();
+      } else {
+        this.searchList = this.guestSearchList.slice(
+          0,
+          this.guestSearchList.length
+        );
+        this.resultCount = this.searchList.length;
+      }
+    });
   },
   methods: {
     openLoginModal() {
@@ -208,11 +221,12 @@ export default {
     searchFunction(flag) {
       this.loading = true;
       this.searchList = [];
-      if (!flag && flag != 1)
-        this.$store.commit("guest_set_search", this.search);
+      // if (!flag && flag != 1)
+      //   this.$store.commit("guest_set_search", this.search);
+      let tempSearch = this.guestSearch.toUpperCase();
       for (let i = 0; i < this.guestSearchList.length; i++) {
         let name = this.guestSearchList[i].name.toUpperCase();
-        let tempSearch = this.guestSearch.toUpperCase();
+
         if (name.includes(tempSearch)) {
           for (let j = 0; j < this.guestSearchList[i].topic.length; j++) {
             let flag_category =
@@ -253,7 +267,7 @@ export default {
       }
       this.loading = false;
       this.resultCount = this.searchList.length;
-      this.lastSearch = this.guestSearch;
+      this.lastSearch = this.search;
       this.search = "";
       this.$store.commit("guest_set_search", "");
     }

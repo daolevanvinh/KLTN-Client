@@ -62,7 +62,9 @@ export default {
     guestSearchLoading: state => state.guestSearchState.loading,
     guestProfileViewObject: state => state.guestProfileViewState.object,
     guestProfileViewList: state => state.guestProfileViewState.list,
-    guestProfileViewLoading: state => state.guestSearchState.loading,
+    guestProfileViewLoading: state => state.guestProfileViewState.loading,
+    guestInfoSearchFromHeaderList: state => state.guestInfoSearchFromHeader.list,
+    guestInfoSearchFromHeaderLoading: state => state.guestInfoSearchFromHeader.loading,
 
 
 

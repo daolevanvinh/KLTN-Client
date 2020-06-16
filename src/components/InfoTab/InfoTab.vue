@@ -131,20 +131,21 @@
 import apiConfig from "../../API/api.json";
 export default {
   props: ["account", "accountLoading"],
-  beforeUpdate() {
-    if (this.editAccount.social_id != null && this.editAccount.avatar != null) {
-      this.avatarURL = this.editAccount.avatar;
-    } else {
-      this.avatarURL =
-        apiConfig.apiURL +
-        "/uploads/users/" +
-        this.editAccount.user_id +
-        "/avatar.png";
-    }
-  },
   watch: {
     account(newVal) {
       this.editAccount = newVal;
+      if (this.editAccount.social_id != 0) {
+        this.avatarURL = this.editAccount.avatar;
+      } else {
+        this.avatarURL =
+          apiConfig.apiURL +
+          "/uploads/users/" +
+          this.editAccount.user_id +
+          "/avatar.png";
+      }
+    },
+    accountLoading(newVal) {
+      this.accountLoading = newVal;
     }
   },
   data() {
@@ -201,7 +202,7 @@ export default {
                 text: response.data.msg
               });
               if (response.data.RequestSuccess === true) {
-                alert(1)
+                alert(1);
                 this.edit = false;
               }
             });

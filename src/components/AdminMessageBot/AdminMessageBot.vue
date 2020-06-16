@@ -126,7 +126,7 @@
               >Lưu tin nhắn</v-btn>
             </div>
           </div>
-          <div class="row" style="width: 98%;margin: 0 1%;margin-top: -2rem">
+          <div class="row" style="width: 98%;margin: 0 1%;margin-top: -1.1rem">
             <div class="col-8">
               <div class="row" style="margin-top: -0.7rem">
                 <div class="col-9">
@@ -183,20 +183,20 @@
               <div class="collapse" id="addQuestion">
                 <v-textarea
                   v-model="newQuestion.question"
-                  style="margin: 0.5rem 0"
+                  style="margin: 1rem 0"
                   label="Nhập câu hỏi"
                   outlined
                 ></v-textarea>
                 <v-textarea
                   v-model="newQuestion.answer"
-                  style="margin-top: -1.5rem"
+                  style="margin-top: 1rem 0"
                   label="Nhập câu trả lời"
                   outlined
                 ></v-textarea>
                 <v-btn
                   :loading="adminQuestionBotLoading"
                   @click="insertQuestion"
-                  style="width: 100%;margin-top: -1.5rem"
+                  style="width: 100%;margin-top: 0.5rem"
                   color="primary darken-1"
                 >Lưu câu hỏi</v-btn>
               </div>
