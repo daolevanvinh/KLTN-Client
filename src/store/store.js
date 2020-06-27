@@ -105,7 +105,8 @@ export const store = new Vuex.Store({
         userCourseLike: {
             loading: false,
             list: [],
-            object: {}
+            object: {},
+            loadingForAction: false // recomment_item
         },
         headerStateUser: {
             hide: false
@@ -169,7 +170,8 @@ export const store = new Vuex.Store({
             loading: false,
             list: [],
             object: {},
-            search: ""
+            search: "",
+            currentLoading: false
         },
         guestProfileViewState: {
             loading: false,
@@ -180,7 +182,33 @@ export const store = new Vuex.Store({
             loading: false,
             list: [],
             object: {}
-        }
+        },
+        userHistoryTransaction: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        userAnnouceState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        stuAnnouceState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        stuAnnouceByCourseState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        userChannelListState: {
+            loading: false,
+            list: [],
+            object: {},
+            courseList: []
+        },
     },
     mutations,
     actions,

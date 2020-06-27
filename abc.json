@@ -1,36 +1,20 @@
-{
-    "list": [
-        {
-            "text": "vinh",
-            "value": "link_vinh"
-        },
-        {
-            "text": "vinh",
-            "value": "link_vinh"
-        },
-        {
-            "text": "vinh",
-            "value": "link_vinh"
-        },
-        {
-            "text": "vinh",
-            "value": "link_vinh"
-        },
-        {
-            "text": "vinh",
-            "value": "link_vinh"
-        },
-        {
-            "text": "vinh",
-            "value": "link_vinh"
-        },
-        {
-            "text": "vinh",
-            "value": "link_vinh"
-        },
-        {
-            "text": "vinh",
-            "value": "link_vinh"
-        }
-    ]
-}
+[
+    {
+        "course_id": 70,
+        "name": "Vuejs n\u00e2ng cao",
+        "priceTier": 1000000,
+        "course_updated": "2020-05-12 20:19:39"
+    },
+    {
+        "course_id": 70,
+        "name": "Vuejs n\u00e2ng cao",
+        "priceTier": 1000000,
+        "course_updated": "2020-05-12 20:19:39"
+    },
+    {
+        "course_id": 70,
+        "name": "Vuejs n\u00e2ng cao",
+        "priceTier": 1000000,
+        "course_updated": "2020-05-12 20:19:39"
+    }
+]

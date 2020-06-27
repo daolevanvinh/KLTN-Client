@@ -22,12 +22,14 @@
         <v-btn
           style="margin-left: 0.9rem"
           height="3.5rem"
-          @click="searchFunction(1)"
+          @click="searchFunction()"
           outlined
           id="search-button-for-vuex"
         >Tìm kiếm</v-btn>
       </div>
-      <div></div>
+      <div>
+        <v-btn style="margin-left: 0.9rem" height="3.5rem" @click="resetOption()" outlined>Đặt lại</v-btn>
+      </div>
       <div>
         <i>
           <b>{{resultCount}} results</b>
@@ -87,7 +89,7 @@
                     <v-radio
                       v-for="(topic, i) in topicListSeleted"
                       :label="topic.name"
-                      :value="topic"
+                      :value="topic.topic_id"
                       :key="i"
                     ></v-radio>
                   </v-app>
@@ -143,10 +145,13 @@
         </v-navigation-drawer>
       </div>
       <div :class="miniContent ? 'col-11' : 'col-9'" style="padding-left: 0">
-        <div v-if="guestCategoryLoading || guestSearchLoading" class="text-center">
+        <div
+          v-if="guestSearchCurrentLoading || guestCategoryLoading || guestSearchLoading"
+          class="text-center"
+        >
           <v-progress-circular indeterminate size="80"></v-progress-circular>
         </div>
-        <div>
+        <div v-else>
           <div class="search-item" v-for="(course, i) in searchList" :key="i">
             <CourseSearchItem :course="course" @openLoginModal="openLoginModal"></CourseSearchItem>
           </div>
@@ -173,7 +178,6 @@ export default {
       topicListSeleted: [],
       miniContent: false,
       sortSelected: 1,
-      loading: false,
       Free: -1,
       sorts: [
         { value: 1, text: "Sao tăng dần" },
@@ -189,6 +193,19 @@ export default {
       this.search = newVal;
       this.searchFunction();
     },
+    "$route.query.topic_id": function(newVal) {
+      this.initSearch(newVal);
+    },
+    "$route.query.category_id": function(newVal) {
+      this.categorySeleted = {};
+      this.categorySeleted.category_id = newVal;
+      this.$store.commit("guest_set_search", "");
+      this.findTopicListSelected();
+      setTimeout(() => {
+        this.searchFunction();
+      }, 200);
+    },
+
     search: function(newVal) {
       this.$store.commit("guest_set_search", newVal);
       // this.searchFunction();
@@ -198,61 +215,107 @@ export default {
     this.$store.commit("ShowHeaderUser");
     this.$store.commit("ShowFooterUser");
     this.$store.dispatch("guestGetSearch").then(() => {
+      let flag = this.$route.query.topic_id && this.$route.query.category_id;
       if (this.$route.query.search && this.$route.query.search != "") {
         this.$store.commit("guest_set_search", this.$route.query.search);
         this.search = this.$route.query.search;
-        this.searchFunction();
+        if (flag) {
+          alert(1);
+          this.initSearch(parseInt(this.$route.query.topic_id));
+        } else {
+          this.searchFunction();
+        }
       } else {
-        this.searchList = this.guestSearchList.slice(
-          0,
-          this.guestSearchList.length
-        );
-        this.resultCount = this.searchList.length;
+        if (flag) this.initSearch(parseInt(this.$route.query.topic_id));
+        else {
+          this.searchList = this.guestSearchList.slice(
+            0,
+            this.guestSearchList.length
+          );
+          this.resultCount = this.searchList.length;
+        }
       }
     });
   },
   methods: {
+    initSearch(newVal) {
+      this.topicSelected = newVal;
+      this.categorySeleted = {};
+      this.categorySeleted.category_id = parseInt(
+        this.$route.query.category_id
+      );
+      this.$store.commit("guest_set_search", "");
+      this.findTopicListSelected();
+      this.$store.commit("guest_search_currentLoading", true);
+      setTimeout(() => {
+        this.searchFunction();
+      }, 500);
+    },
+    resetOption() {
+      this.categorySeleted = -1;
+      this.topicSelected = -1;
+      this.search = "";
+      this.$store.commit("guest_set_search", "");
+    },
     openLoginModal() {
       document.getElementById("openLoginModal").click();
     },
+    findTopicListSelected() {
+      for (let item of this.guestCategoryList) {
+        if (item.category_id == this.categorySeleted.category_id) {
+          this.categorySeleted = item;
+          this.changeCategory();
+          break;
+        }
+      }
+    },
     changeCategory() {
       this.topicListSeleted = this.categorySeleted.topics_enable;
+      let temp = -1;
+      for (let item of this.topicListSeleted) {
+        if (item.topic_id == this.topicSelected) {
+          temp = this.topicSelected;
+          break;
+        }
+      }
+      this.topicSelected = temp;
     },
     searchFunction(flag) {
-      this.loading = true;
+      this.$store.commit("guest_search_currentLoading", true);
       this.searchList = [];
       // if (!flag && flag != 1)
       //   this.$store.commit("guest_set_search", this.search);
       let tempSearch = this.guestSearch.toUpperCase();
       for (let i = 0; i < this.guestSearchList.length; i++) {
         let name = this.guestSearchList[i].name.toUpperCase();
-
         if (name.includes(tempSearch)) {
           for (let j = 0; j < this.guestSearchList[i].topic.length; j++) {
             let flag_category =
               (this.categorySeleted != null &&
                 this.categorySeleted != -1 &&
-                this.guestSearchList[i].topic[j].category_id ===
+                this.guestSearchList[i].topic[j].category_id ==
                   this.categorySeleted.category_id) ||
               this.categorySeleted == null ||
               this.categorySeleted == -1;
             let flag_topic =
               (this.topicSelected != null &&
                 this.topicSelected != -1 &&
-                this.guestSearchList[i].topic[j].topic_id ==
-                  this.topicSelected.topic_id) ||
+                this.guestSearchList[i].topic[j].topic_id ===
+                  this.topicSelected) ||
               this.topicSelected == null ||
               this.topicSelected == -1;
             let flag_star =
               (this.star != null &&
                 this.star != -1 &&
-                this.star == Math.floor(this.guestSearchList[i].star)) ||
+                this.star <= Math.floor(this.guestSearchList[i].star)) ||
               this.star == null ||
               this.star == -1;
             // let flag_free =
             //   (this.Free == true && this.guestSearchList[i].priceTier === 0) ||
             //   (this.Free == false && this.guestSearchList[i].priceTier !== 0) ||
             //   this.Free == null || this.Free == -1
+            console.log(flag_category, flag_topic, flag_star);
+            console.log(this.topicSelected, this.guestCategoryList[i]);
             if (
               flag_category === true &&
               flag_topic === true &&
@@ -265,7 +328,9 @@ export default {
           }
         }
       }
-      this.loading = false;
+      setTimeout(() => {
+        this.$store.commit("guest_search_currentLoading", false);
+      }, 500);
       this.resultCount = this.searchList.length;
       this.lastSearch = this.search;
       this.search = "";
@@ -278,7 +343,8 @@ export default {
       guestCategoryLoading: "guestCategoryLoading",
       guestSearchList: "guestSearchList",
       guestSearch: "guestSearch",
-      guestSearchLoading: "guestSearchLoading"
+      guestSearchLoading: "guestSearchLoading",
+      guestSearchCurrentLoading: "guestSearchCurrentLoading"
     })
   }
 };

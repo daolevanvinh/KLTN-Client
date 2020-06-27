@@ -20,7 +20,7 @@
         :style="resize"
       >
         <div class="row" style="background-color: transparent;min-height: 30rem;">
-          <div class="col-4" style="background: white;min-height: 30rem;padding:0">
+          <div class="col-6" style="background: white;min-height: 30rem;padding:0">
             <div class="cate-item" v-if="guestCategoryLoading">
               <span v-for="index in 9" :key="index" class="cate-item-grid text-center">
                 <span style="width: 1.5rem;height: 1.5rem;background: silver;margin-left:0.5rem"></span>
@@ -33,8 +33,12 @@
                 @mouseover="hoverCol1(cate)"
                 v-for="(cate,index) in guestCategoryList"
                 :key="index"
+                @click="goToSearchCategory(cate)"
               >
-                <span class="cate-item-grid text-center">
+                <span
+                  :class="{'loading' : guestSearchCurrentLoading}"
+                  class="cate-item-grid text-center"
+                >
                   <i :class="cate.icon_class" class="fa-lg" v-if="!cate.icon_class.includes('mdi')"></i>
                   <v-icon style="margin:0;padding:0;color:black;" v-else>{{cate.icon_class}}</v-icon>
                   <b class="text-left">{{cate.name}}</b>
@@ -43,7 +47,7 @@
             </div>
           </div>
           <div
-            class="col-4 shadow"
+            class="col-6 shadow"
             :style="loadDisplayCol2"
             @mouseout="outCol2"
             style="display: none;background: #FAFDFE;padding: 0"
@@ -51,12 +55,16 @@
           >
             <div
               class="cate-item"
-              style="padding-left: 0.5rem"
+              style="padding-left: 0.5rem;"
               v-for="(topic,index) in topicList"
               :key="index"
               @mouseover="hoverCol2(topic)"
+              @click="goToSearchTopic(topic)"
             >
-              <span class="cate-item-grid text-center">
+              <span
+                :class="{'loading' : guestSearchCurrentLoading}"
+                class="cate-item-grid text-center"
+              >
                 <i :class="topic.icon_class" class="fa-lg" v-if="!topic.icon_class.includes('mdi')"></i>
                 <v-icon style="margin:0;padding:0;color:black;" v-else>{{topic.icon_class}}</v-icon>
                 <b class="text-left">{{topic.name}}</b>
@@ -73,8 +81,7 @@ import { mapGetters } from "vuex";
 export default {
   created() {
     let vm = this;
-    this.$store.dispatch("guestGetCategory").then(() => {
-    });
+    this.$store.dispatch("guestGetCategory").then(() => {});
   },
   data() {
     return {
@@ -85,6 +92,49 @@ export default {
     };
   },
   methods: {
+    goToSearchTopic(topic) {
+      if (this.guestSearchCurrentLoading == false) {
+        if (
+          this.$route.name == "search-page" &&
+          this.$route.query.topic_id != topic.topic_id
+        ) {
+          this.$router.replace({
+            query: { category_id: topic.category_id, topic_id: topic.topic_id }
+          });
+        } else {
+          if (this.$route.name != "search-page") {
+            this.$router.push({
+              name: "search-page",
+              query: {
+                category_id: topic.category_id,
+                topic_id: topic.topic_id
+              }
+            });
+          }
+        }
+      }
+    },
+    goToSearchCategory(category) {
+      if (this.guestSearchCurrentLoading == false) {
+        if (
+          this.$route.name == "search-page" &&
+          ((this.$route.query.category_id == category.category_id &&
+            this.$route.query.topic_id) ||
+            this.$route.query.category_id != category.category_id)
+        ) {
+          this.$router.replace({
+            query: { category_id: category.category_id }
+          });
+        } else {
+          if (this.$route.name != "search-page") {
+            this.$router.push({
+              name: "search-page",
+              query: { category: category.category_id }
+            });
+          }
+        }
+      }
+    },
     hoverCol1(cate) {
       this.topicList = cate.topics_enable;
       this.displayCol2 = true;
@@ -115,7 +165,8 @@ export default {
   computed: {
     ...mapGetters({
       guestCategoryList: "guestCategoryList",
-      guestCategoryLoading: "guestCategoryLoading"
+      guestCategoryLoading: "guestCategoryLoading",
+      guestSearchCurrentLoading: "guestSearchCurrentLoading"
     }),
     loadDisplayCol2() {
       if (this.displayCol2 == true || this.displayCol3)
@@ -165,7 +216,7 @@ export default {
 .dropdown {
   .dropdown-menu {
     min-height: 30rem;
-    width: 60rem;
+    width: 35rem;
     transition: all 0.5s;
     overflow: hidden;
     transform-origin: top center;
@@ -196,5 +247,9 @@ button:focus {
   outline: 0px !important;
   -webkit-appearance: none;
   box-shadow: none !important;
+}
+
+.loading {
+  cursor: progress;
 }
 </style>

@@ -1,0 +1,37 @@
+{
+	"authHost": "http://goodlearning.com",
+	"authEndpoint": "/broadcasting/auth",
+	"clients": [
+		{
+			"appId": "ac6eebf5ece13a9c",
+			"key": "40367adbde9aadf7358db2fa3b64bad6"
+		}
+	],
+	"database": "redis",
+	"databaseConfig": {
+		"redis": {},
+		"sqlite": {
+			"databasePath": "/database/laravel-echo-server.sqlite"
+		}
+	},
+	"devMode": true,
+	"host": null,
+	"port": "6001",
+	"protocol": "http",
+	"socketio": {},
+	"secureOptions": 67108864,
+	"sslCertPath": "",
+	"sslKeyPath": "",
+	"sslCertChainPath": "",
+	"sslPassphrase": "",
+	"subscribers": {
+		"http": true,
+		"redis": true
+	},
+	"apiOriginAllow": {
+		"allowCors": false,
+		"allowOrigin": "*",
+		"allowMethods": "OPTIONS, GET, POST",
+		"allowHeaders": "Origin, Content-Type, X-Auth-Token, X-Requested-With, Accept, Authorization, X-CSRF-TOKEN, X-Socket-Id"
+	}
+}

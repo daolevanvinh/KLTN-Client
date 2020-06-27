@@ -27,6 +27,12 @@ var apiURL = {
     userStudentCourse: apiAddress + "/user/student/courses",
     userStudentCourseLesson: apiAddress + "/user/student/lesson",
     userStudentCourseLessonComment: apiAddress + "/user/student/lesson/comment",
+    userHistoryTransaction: apiAddress + "/user/history/transaction",
+    Annouce: apiAddress + '/user/annouce',
+    StuAnnouce: apiAddress + "/stu/annouce",
+    StuAnnouceByCourse: apiAddress + '/stu/annouce/course',
+    userChannel: apiAddress + '/user/channel',
+    userChannelCourseList: apiAddress + "/user/channel/course",
     //guest
     guestGetCategory: apiAddress + "/guest/category",
     guestGetCategoryWithTopCourse: apiAddress + "/guest/category/topCourse",

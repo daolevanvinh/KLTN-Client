@@ -13,6 +13,7 @@ import ForgotPasswordPage from "./ForgotPasswordPage/ForgotPasswordPage"
 import SearchPage from "./SearchPage/SearchPage.vue"
 import Cart from "./Cart/Cart.vue";
 import ProfileViewPage from "./ProfileViewPage/ProfileViewPage.vue"
+import InstructorNewAnnouce from "./InstructorNewAnnouce/InstructorNewAnnouce.vue"
 export default [
     // Guest
     {
@@ -67,6 +68,14 @@ export default [
             instructor: true
         },
         children: [
+            {
+                path: 'newAnnouce',
+                name: 'ins-new-annouce-page',
+                component: InstructorNewAnnouce,
+                meta: {
+                    instructor: true
+                }
+            },
             {
                 path: 'course',
                 name: 'ins-course-page',

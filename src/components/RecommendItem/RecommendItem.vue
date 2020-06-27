@@ -69,11 +69,10 @@
         </div>
         <v-icon style="color:red" v-if="heartHover">mdi-heart</v-icon>
       </div>
-      <v-dialog light persistent v-model="userCourseLikeLoading" width="200">
+      <v-dialog light persistent v-model="userCourseLikeLoadingForAction" width="200">
         <v-card width="200" style="padding: 2rem">Đang xử lý...</v-card>
       </v-dialog>
     </div>
-    
   </div>
 </template>
 <script>
@@ -100,12 +99,13 @@ export default {
   methods: {
     likeOrUnlike() {
       if (localStorage.token) {
-        this.$store.dispatch(
-          "userLikeOrUnLikeCourseLike",
-          this.course.course_id
-        ).then(() => {
-          this.heartHover = false
-        });
+        this.$store.commit("user_like_or_unlike_loading", true);
+        this.$store
+          .dispatch("userLikeOrUnLikeCourseLike", this.course.course_id)
+          .then(() => {
+            this.$store.commit("user_like_or_unlike_loading", false);
+            this.heartHover = false;
+          });
       } else {
         this.$emit("openLoginModal");
       }
@@ -132,7 +132,8 @@ export default {
     ...mapGetters({
       userCourseLikeList: "userCourseLikeList",
       userCourseLikeLoading: "userCourseLikeLoading",
-      guestSearchLoading: "guestSearchLoading"
+      guestSearchLoading: "guestSearchLoading",
+      userCourseLikeLoadingForAction: "userCourseLikeLoadingForAction"
     }),
     checkLike() {
       for (let i = 0; i < this.userCourseLikeList.length; i++) {

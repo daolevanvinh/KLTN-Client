@@ -54,7 +54,7 @@
           <ProfileTab :account="userUserInfo"></ProfileTab>
           <CourseTab :account="userUserInfo"></CourseTab>
           <AnnouceAdminTab :account="userUserInfo" :accountLoading="userUserInfoLoading"></AnnouceAdminTab>
-          <MessageTab :account="userUserInfo" :accountLoading="userUserInfoLoading"></MessageTab>
+          <HistoryTab :account="userUserInfo" :accountLoading="userUserInfoLoading"></HistoryTab>
         </v-tabs-items>
       </v-tabs>
     </v-app>
@@ -64,13 +64,13 @@
 import InfoTab from "../../components/InfoTab/InfoTab";
 import AnnouceAdminTab from "../../components/AnnouceAdminTab/AnnouceAdminTab";
 import CourseTab from "../../components/CourseTab/CourseTab";
-import MessageTab from "../../components/MessageTab/MessageTab";
+import HistoryTab from "../../components/HistoryTab/HistoryTab";
 import ProfileTab from "../../components/ProfileTab/ProfileTab";
 import { mapGetters } from "vuex";
 import { CommonService } from "../../service/common.service.js";
 var commonService = new CommonService();
 export default {
-  components: { ProfileTab, InfoTab, AnnouceAdminTab, MessageTab, CourseTab },
+  components: { ProfileTab, InfoTab, AnnouceAdminTab, HistoryTab, CourseTab },
   created() {
     this.$store.commit("ShowHeaderUser");
     this.$store.commit("ShowFooterUser");
@@ -86,6 +86,7 @@ export default {
           msg: "Giao dịch thất bại, tài khoản chưa liên kết internet banking"
         },
         { code: "11", msg: "Giao dịch thất bại" },
+        { code: "10", msg: "Không tìm thấy sản phẩm giao dịch thất bại"},
         { code: "08", msg: "Giao dịch thất bại, ngân hàng bảo trì" }
       ]
     };
@@ -109,7 +110,7 @@ export default {
     },
     goTab(flag) {
       this.$store.commit("changeTab", flag);
-      if(Object.keys(obj).length === 0 && obj.constructor === Object) {
+      if(Object.keys(this.userUserInfo).length === 0 && this.userUserInfo.constructor === Object) {
         this.getUserInfo()
       }
     },

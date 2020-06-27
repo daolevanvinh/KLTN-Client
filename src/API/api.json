@@ -1,5 +1,5 @@
 {
-    "apiURL": "http://goodlearning.com/",
+    "apiURL": "http://goodlearning.com",
     "socialURLRedirect": "https://localhost/KLTN-Server/public/redirect",
     "apiURLs": "https://localhost/KLTN-Server/public",
     "baseURL": "http://localhost:8081",

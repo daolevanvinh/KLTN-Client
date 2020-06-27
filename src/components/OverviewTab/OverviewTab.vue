@@ -87,7 +87,7 @@
                   <img :src="avatarURL" />
                 </div>
                 <div class="col-9" style="padding-top: 0">
-                  <router-link to="google">
+                  <router-link :to="{name: 'profile-view-page', params: {app_id: userStudentCourseLessonList.instructor.app_id}}">
                     <div>{{userStudentCourseLessonList.instructor.name}}</div>
                     <div>
                       <StarRating

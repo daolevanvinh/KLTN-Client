@@ -114,7 +114,7 @@ export default {
     search(tempCourseList) {
       let temp = [];
       for (let i = 0; i < tempCourseList.length; i++) {
-        if (tempCourseList[i].name.toLowerCase().includes(this.searchText)) {
+        if (tempCourseList[i].name.toLowerCase().includes(this.searchText.toLowerCase())) {
           temp.push(tempCourseList[i]);
         }
       }

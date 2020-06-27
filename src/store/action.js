@@ -1015,5 +1015,131 @@ export default {
                     reject(error)
                 })
         })
+    },
+    userHistoryTransaction({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userHistoryTransaction
+            commit('user_history_transaction_request')
+            let data = {
+                token: localStorage.token
+            }
+            axios.get(apiURL, { params: data })
+                .then(function (response) {
+                    commit('user_history_transaction_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_history_transaction_error')
+                    reject(error)
+                })
+        })
+    },
+    userSendAnnouce({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.Annouce
+            commit('user_annouce_request')
+            data.token = localStorage.token
+            console.log(data)
+            axios.post(apiURL, {}, { params: data })
+                .then(function (response) {
+                    commit('user_annouce_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_annouce_error')
+                    reject(error)
+                })
+        })
+    },
+    userGetAnnouce({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.Annouce
+            commit('user_annouce_request')
+            let data = {
+                token: localStorage.token
+            }
+            axios.get(apiURL, { params: data })
+                .then(function (response) {
+                    commit('user_annouce_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_annouce_error')
+                    reject(error)
+                })
+        })
+    },
+    studentGetAnnouce({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.StuAnnouce
+            commit('stu_annouce_request')
+            let data = {
+                token: localStorage.token
+            }
+            axios.get(apiURL, { params: data })
+                .then(function (response) {
+                    commit('stu_annouce_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('stu_annouce_error')
+                    reject(error)
+                })
+        })
+    },
+    studentGetAnnouceByCourse({ commit }, course_id) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.StuAnnouceByCourse
+            commit('stu_annouce_by_course_request')
+            let data = {
+                token: localStorage.token,
+                course_id: course_id
+            }
+            axios.get(apiURL, { params: data })
+                .then(function (response) {
+                    commit('stu_annouce_by_course_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('stu_annouce_by_course_error')
+                    reject(error)
+                })
+        })
+    },
+    userGetChannelList({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userChannel
+            commit('channel_request')
+            let data = {
+                token: localStorage.token
+            }
+            axios.get(apiURL, { params: data })
+                .then(function (response) {
+                    commit('channel_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('channel_error')
+                    reject(error)
+                })
+        })
+    },
+    userGetChannelCourseList({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userChannelCourseList
+            commit('channel_request')
+            let data = {
+                token: localStorage.token
+            }
+            axios.get(apiURL, { params: data })
+                .then(function (response) {
+                    commit('channel_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('channel_error')
+                    reject(error)
+                })
+        })
     }
 }

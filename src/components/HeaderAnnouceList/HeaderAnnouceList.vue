@@ -1,12 +1,12 @@
 <template>
   <div style="margin: 0 0.5rem">
-    <v-menu open-on-hover offset-y>
+    <v-menu open-on-hover offset-y :close-on-click="false" :close-on-content-click="false">
       <template v-slot:activator="{ on }">
         <button class="hover-button" v-on="on">
           <v-badge
-            v-if="userCourseLikeList!=null && userCourseLikeList.length > 0"
+            v-if="stuAnnouceList!=null && stuAnnouceList.length > 0"
             color="pink"
-            :content="userCourseLikeList.length"
+            :content="stuAnnouceList.length"
             :close-on-click="false"
             :close-on-content-click="false"
           >
@@ -16,17 +16,25 @@
         </button>
       </template>
       <v-card class="my-card" width="300">
-        <div v-for="(course,index) in userCourseLikeList" :key="index">
-          <ItemOfList :Item="course.course"></ItemOfList>
+        <div v-for="(annouce,index) in stuAnnouceList" :key="index">
+          <div @click="goTab(annouce)" v-if="index < 4" class="annouce-item">
+            <div class="course-name">
+              <strong>Khóa học: {{formatString(annouce.name)}}</strong>
+            </div>
+            <div class="my-annouce">
+              <div v-html="annouce.text"></div>
+            </div>
+          </div>
         </div>
         <div style="margin-top: 1rem;width:100%">
           <button
             style="width:100%;"
             class="btn btn-info"
-            v-if="userCourseLikeList != null && userCourseLikeList.length > 3"
+            @click="moreAnnouce()"
+            v-if="stuAnnouceList != null && stuAnnouceList.length > 3"
           >Xem thêm</button>
           <h5
-            v-if="(userCourseLikeList == null || userCourseLikeList.length==0)"
+            v-if="(stuAnnouceList == null || stuAnnouceList.length==0)"
             class="text-center"
           >Danh sách rỗng!</h5>
         </div>
@@ -36,16 +44,43 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import ItemOfList from "../ItemOfList/ItemOfList";
 export default {
-  components: { ItemOfList },
   computed: {
     ...mapGetters({
       userUserInfo: "userUserInfo",
       userUserInfoLoading: "userUserInfoLoading",
       userCourseLikeList: "userCourseLikeList",
-      userCourseLikeLoading: "userCourseLikeLoading"
+      userCourseLikeLoading: "userCourseLikeLoading",
+      stuAnnouceList: "stuAnnouceList",
+      stuAnnouceLoading: "stuAnnouceLoading"
     })
+  },
+  created() {
+    this.$store.dispatch("studentGetAnnouce");
+  },
+  methods: {
+    formatString(string) {
+      if (string.length > 30) return string.slice(0, 30) + "...";
+      else return string;
+    },
+    goTab(annouce) {
+      if (this.$route.name == "lesson-page") {
+        this.$router.replace({ query: { annouce: annouce.annouce_id } });
+        
+      } else {
+        this.$router.push({
+          name: "lesson-page",
+          params: { id: annouce.course_id },
+          query: { annouce: annouce.annouce_id }
+        });
+      }
+    },
+    moreAnnouce() {
+      this.$store.commit("changeTab", "annouce-tab");
+      if (this.$route.name != "my-page") {
+        this.$router.push({ name: "my-page" });
+      }
+    }
   }
 };
 </script>
@@ -65,5 +100,26 @@ export default {
   &:focus {
     outline: none;
   }
+}
+.annouce-item {
+  cursor: pointer;
+  padding: 0.7rem 0.5rem;
+  border: 1px solid rgb(219, 214, 214);
+  opacity: 0.8;
+  &:hover {
+    background-color: #e9f9f3;
+    opacity: 1;
+    font-weight: bolder;
+  }
+}
+
+.my-annouce {
+  max-height: 2rem !important;
+  overflow: hidden;
+}
+
+.course-name {
+  max-width: 100%;
+  text-overflow: ellipsi;
 }
 </style>

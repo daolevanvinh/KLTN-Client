@@ -11,7 +11,7 @@
           ></b-embed>
         </div>
         <div class="lesson-container">
-          <v-tabs class="tab-bars" active-class="tab-active">
+          <v-tabs v-model="tab" class="tab-bars" active-class="tab-active">
             <v-tab @click="overview = true; comment = false; announce = false">Tổng quan</v-tab>
             <v-tab @click="overview = false; comment = true; announce = false">Nhận xét</v-tab>
             <v-tab @click="overview = false; comment = false; announce = true">Thông báo</v-tab>
@@ -57,6 +57,7 @@ export default {
   created() {
     this.$store.commit("ShowHeaderUser");
     this.$store.commit("ShowFooterUser");
+    
     this.$store
       .dispatch("userGetStudentLesson", this.$route.params.id)
       .then(response => {
@@ -67,7 +68,10 @@ export default {
             "user_set_current_video_link",
             this.userStudentCourseLessonList.lessons[0]
           );
-            this.$store.dispatch('userGetCommentStudentLesson', this.userStudentCourseLessonList.lessons[0].lesson_id)
+          this.$store.dispatch(
+            "userGetCommentStudentLesson",
+            this.userStudentCourseLessonList.lessons[0].lesson_id
+          );
           if (this.userStudentCourseLessonList.instructor.social_id != 0) {
             this.avatarURL = this.userStudentCourseLessonList.instructor.avatar;
           } else {
@@ -78,6 +82,14 @@ export default {
         }
       });
   },
+  mounted() {
+    if (this.$route.query.annouce) {
+      this.announce = true;
+      this.comment = false;
+      this.overview = false;
+      this.tab = 2;
+    }
+  },
   data() {
     return {
       overview: true,
@@ -85,7 +97,8 @@ export default {
       announce: false,
       fakeLength: 5,
       avatarURL: "",
-      videoURL: apiConfig.videoURL
+      videoURL: apiConfig.videoURL,
+      tab: 0
     };
   },
   computed: {

@@ -1,63 +1,33 @@
 <template>
   <div>
     <v-tab-item value="annouce-tab">
-      <div class="row">
-        <div class="col-9">
-          <div class="text-box-container"></div>
-          <div class="input-box"></div>
-        </div>
-        <div class="col-3 list-container">
-          <div class="item" v-for="(item,index) in items" :key="index">
-            <div class="row">
-              <div class="col-4 text-center">
-                <img :src="item.avatar" />
-              </div>
-              <div class="col-8">
-                <span>Đào Lê Văn Vinh</span>
-                <p>...</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <v-data-table
+        :items-per-page="5"
+        :headers="header"
+        :items="stuAnnouceList"
+        :loading="stuAnnouceLoading"
+      >
+        <template v-slot:item.text="data">
+          <div class="my-annouce"><div v-html="(data.item.text)"></div></div>
+        </template>
+        <template v-slot:item.name="data">{{formatString(data.item.name)}}</template>
+        <template v-slot:item.action="data">
+          <router-link
+            :to="{name: 'lesson-page', params: {id: data.item.course_id}, query: {annouce: data.item.annouce_id}}"
+          >Chi tiết</router-link>
+        </template>
+      </v-data-table>
     </v-tab-item>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
+import laravelEchoServer from "../../../laravel-echo-server.json";
+import axios from "axios";
 export default {
   data() {
     return {
       items: [
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-          title: "Brunch this weekend?",
-          subtitle:
-            "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-        },
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-          title: "Brunch this weekend?",
-          subtitle:
-            "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-        },
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-          title: "Brunch this weekend?",
-          subtitle:
-            "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-        },
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-          title: "Brunch this weekend?",
-          subtitle:
-            "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-        },
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-          title: "Brunch this weekend?",
-          subtitle:
-            "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-        },
         {
           avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
           title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
@@ -82,8 +52,53 @@ export default {
           subtitle:
             "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos."
         }
+      ],
+      text: "",
+      echoCredentials: {
+        appId: laravelEchoServer.clients[0].appId, //  appId in laravel-echo-server.json
+        key: laravelEchoServer.clients[0].key // key in laravel-echo-server.json
+      },
+      id: 0,
+      header: [
+        { value: "name", text: "Khóa học", width: "15%" },
+        { value: "text", text: "Nội dung", width: "45%" },
+        { value: "updated_at", text: "Thời gian", width: "20%" },
+        { value: "action", text: "", width: "20%" }
       ]
     };
+  },
+  created() {
+    // this.$store.dispatch("userGetAnnouce");
+  },
+  methods: {
+    sendAnnouce() {
+      this.$store
+        .dispatch("userSendAnnouce", { text: this.text, course_id: this.id })
+        .then(() => {
+          this.text = "";
+        });
+    },
+    getUsersOnline() {
+      axios
+        .get(
+          `${window.location.protocol}//${window.location.hostname}:6001/apps/${this.echoCredentials.appId}/channels/laravel_database_chatroom?auth_key=${this.echoCredentials.key}`
+        )
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(e => console.log(e));
+    },
+    formatString(string) {
+      if (string.length > 30) return string.slice(0, 30) + "...";
+      else return string;
+    }
+  },
+  computed: {
+    ...mapGetters({
+      stuAnnouceList: "stuAnnouceList",
+      stuAnnouceLoading: "stuAnnouceLoading",
+      userUserInfo: "userUserInfo"
+    })
   }
 };
 </script>
@@ -108,14 +123,15 @@ a {
     .text-box-container {
       background-color: whitesmoke;
       width: 98%;
-      height: 80%;
+      height: 75%;
+      max-height: 75%;
       border: 1px solid #ece8e8;
     }
     .input-box {
       border: 1px solid #ece8e8;
       border-top: none;
       width: 98%;
-      height: 20%;
+      height: 25%;
     }
   }
   .list-container {
@@ -173,5 +189,26 @@ a {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+.peopleMsg {
+  padding-left: 1rem;
+  width: 65%;
+  background-color: skyblue;
+  margin: 0.5rem 0;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
+
+.myMSG {
+  padding-right: 1rem;
+  margin: 0.5rem 0;
+  text-align: right;
+}
+
+
+.my-annouce {
+  max-height: 1rem !important;
+  overflow: hidden;
 }
 </style>

@@ -15,8 +15,8 @@ export default {
     adminMessageBotLoading: state => state.adminMessageBotState.loading,
     // user
     mypageTab: state => state.mypageTabState.hash,
-    userUserInfo: state=>state.userState.user,
-    userUserInfoLoading: state=>state.userState.loading,
+    userUserInfo: state => state.userState.user,
+    userUserInfoLoading: state => state.userState.loading,
     userGetCategoryLoading: state => state.userCategoryState.loading,
     userGetCategories: state => state.userCategoryState.list,
     userGetCategoryObject: state => state.userCategoryState.object,
@@ -27,6 +27,7 @@ export default {
     userLessonObject: state => state.userLessonState.object,
     userCourseLikeList: state => state.userCourseLike.list,
     userCourseLikeLoading: state => state.userCourseLike.loading,
+    userCourseLikeLoadingForAction: state => state.userCourseLike.loadingForAction,
     userCoursePriceTierList: state => state.userPriceTierState.list,
     userCoursePriceTierLoading: state => state.userPriceTierState.loading,
     userPublicCourseList: state => state.userPublicCourseState.list,
@@ -60,12 +61,23 @@ export default {
     guestSearchList: state => state.guestSearchState.list,
     guestSearch: state => state.guestSearchState.search,
     guestSearchLoading: state => state.guestSearchState.loading,
+    guestSearchCurrentLoading: state => state.guestSearchState.currentLoading,
     guestProfileViewObject: state => state.guestProfileViewState.object,
     guestProfileViewList: state => state.guestProfileViewState.list,
     guestProfileViewLoading: state => state.guestProfileViewState.loading,
     guestInfoSearchFromHeaderList: state => state.guestInfoSearchFromHeader.list,
     guestInfoSearchFromHeaderLoading: state => state.guestInfoSearchFromHeader.loading,
-
+    userHistoryTransactionList: state => state.userHistoryTransaction.list,
+    userHistoryTransactionLoading: state => state.userHistoryTransaction.loading,
+    userAnnouceList: state => state.userAnnouceState.list,
+    userAnnouceLoading: state => state.userAnnouceState.loading,
+    stuAnnouceList: state => state.stuAnnouceState.list,
+    stuAnnouceLoading: state => state.stuAnnouceState.loading,
+    stuAnnouceByCourseList: state => state.stuAnnouceByCourseState.list,
+    stuAnnouceByCourseLoading: state => state.stuAnnouceByCourseState.loading,
+    userChannelList: state => state.userChannelListState.list,
+    userChannelLoading: state => state.userChannelListState.loading,
+    userChannelCourseList: state => state.userChannelListState.courseList,
 
 
 
@@ -91,7 +103,7 @@ export default {
     userGetInfoInstructorLoading: state => state.infoInstructorState.loading,
     userLoadCart: state => state.userATCState.carts,
     userLoadCartTotal: state => state.userATCState.total,
-    
+
     // guest
     guestGetDetailCourseAmountReview: state => state.guestDetailCourseState.amountReview,
     guestGetDetailCourse: state => state.guestDetailCourseState.detailCourse,

@@ -17,7 +17,6 @@
       <div class="row">
         <!--Body-->
         <div class="container1">
-
           <div class="row" id="body" v-if="userCourseListCartLoading">
             <v-responsive class="mx-left mb-12" max-width="700">
               <v-skeleton-loader
@@ -85,7 +84,7 @@
       class="my-container"
       v-if="!userCourseListCartLoading && userCourseListCartList.length > 0"
     >
-    <div style="font-size: 18px">{{userCourseListCartList.length}}&nbsp;Khóa học trong giỏ hàng</div>
+      <div style="font-size: 18px">{{userCourseListCartList.length}}&nbsp;Khóa học trong giỏ hàng</div>
       <div class="row">
         <div class="col-9">
           <div class="course-item" v-for="(course,index) in userCourseListCartList" :key="index">
@@ -111,7 +110,6 @@
                 >{{course.price_tier.priceTier.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}}</b>
               </div>
             </div>
-
             <a @click="deleteCart(course.course_id)" class="my-link" href="#">Xóa</a>
           </div>
         </div>
@@ -135,10 +133,10 @@
   </div>
 </template>
 <script>
-import Recommend from "../../components/RecommendItem/RecommendItem"
+import Recommend from "../../components/RecommendItem/RecommendItem";
 import { mapGetters } from "vuex";
 import Swal from "../../../node_modules/sweetalert2/dist/sweetalert2.all";
-import apiConfig from "../../API/api.json"
+import apiConfig from "../../API/api.json";
 export default {
   data() {
     return {
@@ -153,8 +151,8 @@ export default {
     };
   },
   created() {
-    this.$store.commit("ShowHeaderUser")
-    this.$store.commit("ShowFooterUser")
+    this.$store.commit("ShowHeaderUser");
+    this.$store.commit("ShowFooterUser");
     this.$store.dispatch("userGetCart").then(() => {
       this.calculateTotalPrice();
     });
@@ -195,7 +193,7 @@ a {
 
 .my-link {
   position: absolute;
-  top: 1.5rem;
+  top: 0.85rem;
   right: 10rem;
   width: 3rem;
   height: 1.5rem;
@@ -207,8 +205,15 @@ a {
   }
 }
 .course-item {
+  position: relative;
   .row {
     border: 1px solid silver;
+    :first-child {
+      border-bottom: none;
+    }
+    :last-child {
+      border-bottom:  none;
+    }
     .col-2 {
       img {
         width: 100%;

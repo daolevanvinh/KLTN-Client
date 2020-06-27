@@ -2,8 +2,15 @@
   <div class="my-container">
     <LeftMenu :list="list"></LeftMenu>
     <v-app style="background: rgb(244, 243, 239)">
-      <div class="instructor-control" style="position: relative;background: #f4f3ef;width: 100%">
-        <AnnouceButton style="position: absolute; right: 3rem;top: 0;z-index: 2"></AnnouceButton>
+      <div class="instructor-control">
+        <span style="position: absolute; right: 8rem;top: 0.5rem;z-index: 2">
+          Your Coin:
+          <span
+            style="color:red"
+            v-if="userUserInfo != null && userUserInfo.ewallet!=null"
+          >{{userUserInfo.ewallet.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}}</span>
+        </span>
+        <AnnouceButton style="position: absolute; right: 4rem;top: 0;z-index: 2"></AnnouceButton>
         <UserButton
           class="btn-user"
           style="position: absolute; right: 0.5rem;top: 0;z-index: 2"
@@ -55,11 +62,11 @@ export default {
           icon: "far fa-comment-alt fa-lg",
 
           items: [
-            {
-              title: "Tin nhắn",
-              icon: "fas fa-circle fa-sm",
-              routeName: "ins-message-page"
-            },
+            // {
+            //   title: "Tin nhắn",
+            //   icon: "fas fa-circle fa-sm",
+            //   routeName: "ins-message-page"
+            // },
             {
               title: "Thông báo",
               icon: "fas fa-circle fa-sm",
@@ -110,7 +117,11 @@ export default {
   right: 0;
   margin: 0;
   margin-right: 1rem;
+  margin-top: 1rem;
   height: auto;
+  position: relative;
+  background: #f4f3ef;
+  width: 100%;
 }
 .left-menu {
   position: fixed;

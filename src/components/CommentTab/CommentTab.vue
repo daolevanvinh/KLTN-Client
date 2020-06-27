@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="comment-container">
+    <div class="comment-container" >
       <CommentBox  :replay="false"></CommentBox>
       <ul class="list-history-comment">
         <li

@@ -440,5 +440,90 @@ export default {
     },
     guest_header_search_error(state) {
         state.guestInfoSearchFromHeader.loading = false
+    },
+    guest_search_currentLoading(state, loading) {
+        state.guestSearchState.currentLoading = loading
+    },
+    user_like_or_unlike_loading(state, loading) {
+        state.userCourseLike.loadingForAction = loading
+    },
+    user_history_transaction_request(state) {
+        state.userHistoryTransaction.loading = true
+    },
+    user_history_transaction_success(state, data) {
+        state.userHistoryTransaction.loading = false
+        if (data.list) {
+            state.userHistoryTransaction.list = data.list
+        }
+        if (data.object) {
+            state.userHistoryTransaction.object = data.object
+        }
+    },
+    user_history_transaction_error(state) {
+        state.userHistoryTransaction.loading = false
+    },
+    user_annouce_request(state) {
+        state.userAnnouceState.loading = true
+    },
+    user_annouce_success(state, data) {
+        state.userAnnouceState.loading = false
+        if (data.list) {
+            state.userAnnouceState.list = data.list
+        }
+        if (data.object) {
+            state.userAnnouceState.object = data.object
+        }
+        
+    },
+    user_annouce_error(state) {
+        state.userAnnouceState.loading = false
+    },
+    stu_annouce_request(state) {
+        state.stuAnnouceState.loading = true
+    },
+    stu_annouce_success(state, data) {
+        state.stuAnnouceState.loading = false
+        if (data.list) {
+            state.stuAnnouceState.list = data.list
+        }
+        if (data.object) {
+            state.stuAnnouceState.object = data.object
+        }
+    },
+    stu_annouce_error(state) {
+        state.stuAnnouceState.loading = false
+    },
+    stu_annouce_by_course_request(state) {
+        state.stuAnnouceByCourseState.loading = true
+    },
+    stu_annouce_by_course_success(state, data) {
+        state.stuAnnouceByCourseState.loading = false
+        if (data.list) {
+            state.stuAnnouceByCourseState.list = data.list
+        }
+        if (data.object) {
+            state.stuAnnouceByCourseState.object = data.object
+        }
+    },
+    stu_annouce_by_course_error(state) {
+        state.stuAnnouceByCourseState.loading = false
+    },
+    channel_request(state) {
+        state.userChannelListState.loading = true
+    },
+    channel_success(state, data) {
+        state.userChannelListState.loading = false
+        if (data.list) {
+            state.userChannelListState.list = data.list
+        }
+        if (data.object) {
+            state.userChannelListState.object = data.object
+        }
+        if(data.courseList) {
+            state.userChannelListState.courseList = data.courseList
+        }
+    },
+    channel_error(state) {
+        state.userChannelListState.loading = false
     }
 }

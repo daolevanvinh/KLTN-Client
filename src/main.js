@@ -56,7 +56,7 @@ Vue.use(VueSweetalert2)
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(Slick)
-Vue.use(VueContext )
+Vue.use(VueContext)
 import '../node_modules/slick-carousel/slick/slick.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -64,8 +64,17 @@ import '../node_modules/vue-context/dist/css/vue-context.css';
 Vue.prototype.$http = Axios
 
 
-
-
+import Echo from "laravel-echo"
+window.io = require('socket.io-client');
+window.Echo = new Echo({
+  broadcaster: 'socket.io',
+  host: window.location.hostname + ':6001',
+  auth: {
+    headers: {
+      Authorization: "Bearer " + localStorage.token,
+    }
+  }
+});
 
 Vue.config.productionTip = false
 

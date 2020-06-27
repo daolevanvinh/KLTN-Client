@@ -10,10 +10,12 @@
         <div class="text-center">
           <div class="email">
             <b-img
+              id="avavtarHeaderUserButton"
               rounded="circle"
               :src="avatarURL"
-              style="width: 3rem;height: 3rem;margin-bottom: 0.5rem;"
+              style="width: 4rem;height: 4rem;margin-bottom: 0.5rem;"
             />
+            
             <br />
             <span>{{account.name}}</span>
             <br />
@@ -63,12 +65,13 @@ export default {
   },
   data() {
     return {
-      avatarURL: ""
+      avatarURL: "",
+      errorImage: false
     };
   },
   created() {
     if (this.account.social_id != null && this.account.avatar) {
-      this.avatarURL = this.account.avatar
+      this.avatarURL = this.account.avatar;
     } else {
       this.avatarURL =
         apiConfig.apiURL +
@@ -160,5 +163,8 @@ export default {
 
 i.fas {
   margin-right: 1rem;
+}
+#avavtarHeaderUserButton {
+  background-color: transparent;
 }
 </style>

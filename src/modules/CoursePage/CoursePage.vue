@@ -116,12 +116,18 @@
               </div>
               <div class="col-9" style="padding-left: 0">
                 <h3>
-                  <router-link :to="{name: 'profile-view-page', params: {app_id: guestCourseDetailObject.instructor.app_id}}">{{guestCourseDetailObject.instructor.name}}</router-link>
+                  <router-link
+                    :to="{name: 'profile-view-page', params: {app_id: guestCourseDetailObject.instructor.app_id}}"
+                  >{{guestCourseDetailObject.instructor.name}}</router-link>
                 </h3>
-                <div
-                  class="my-align"
-                  :class="{'miniContent' : !authorMore}"
-                >{{guestCourseDetailObject.instructor.profile}}</div>
+                <div class="ql-editor">
+                  <div
+                    style="margin-left: -1rem;"
+                    class="my-align"
+                    :class="{'miniContent' : !authorMore}"
+                    v-html="guestCourseDetailObject.instructor.profile"
+                  ></div>
+                </div>
                 <div class="text-center" style="margin-top: 1rem;">
                   <a
                     style="color: black;cursor:pointer"
@@ -312,15 +318,15 @@ export default {
     };
   },
   watch: {
-    '$route.params.id': function() {
+    "$route.params.id": function() {
       this.loadCourseDetail();
     }
   },
   created() {
     this.loadCourseDetail();
     this.$store.commit("updateHistoryCourseList");
-    this.$store.commit("ShowHeaderUser")
-    this.$store.commit("ShowFooterUser")
+    this.$store.commit("ShowHeaderUser");
+    this.$store.commit("ShowFooterUser");
   },
   methods: {
     openLoginModal() {
@@ -344,12 +350,12 @@ export default {
             this.ImageURL = this.guestCourseDetailObject.instructor.avatar;
           }
           this.courseURL =
-              apiConfig.imageURL +
-              "/" +
-              this.guestCourseDetailObject.course_id +
-              "/" +
-              this.guestCourseDetailObject.course_id +
-              ".png";
+            apiConfig.imageURL +
+            "/" +
+            this.guestCourseDetailObject.course_id +
+            "/" +
+            this.guestCourseDetailObject.course_id +
+            ".png";
           this.countValueStar = [];
           this.descriptionMore = false;
           this.authorMore = false;

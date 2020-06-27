@@ -1,25 +1,56 @@
 <template>
   <div>
-    <button @click="empty = !empty">Change</button>
     <div v-if="empty" class="text-center my-empty-container">
       <img src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png" />
       <h3>Hiện không có thông báo nào!</h3>
     </div>
-    <div v-if="!empty" class="announce-container">
-      Hello students!
-      I hope this message doesn't bother you, I wanted to give a brief update on what's going on.
-      1. WE ARE REACHING 100.000! Currently our little PowerPoint / After Effects / Video & Animation community consists of 99,363 students. I wish to shake hands with each one of you :) I'm glad we can discuss, exchange knowledge and learn from each other
-      2. I took part in a Microsoft Scheduled Call and was informed about a few relatively new features - Inking and 3D usage within PowerPoint. A lot of those things do not work consistently across all versions or aren't available to versions other than Office 365, but when the time comes I will introduce you all closer to those features to the best of my knowledge.
-      3. My studio for 2019. After a dozen hours of adjusting, cable management and setting up I have my studio set & ready for the entire year (or more?) Here is a little showcase. I personally am a very pedantic person thus the clean and minimalistic approach. Take a look:
+    <div v-else style="margin-top: 1rem">
+      <div v-if="!stuAnnouceByCourseLoading">
+        <div v-for="(annouce,index) in stuAnnouceByCourseList" :key="index">
+          <div v-if="index < limit" class="annouce-item" :id="annouce.annouce_id">
+            <div class="annouce-date">
+              <i>{{annouce.updated_at}}</i>
+            </div>
+            <div class="ql-editor">
+              <div v-html="annouce.text"></div>
+            </div>
+          </div>
+        </div>
+
+        <v-app>
+          <div v-if="limit!=stuAnnouceByCourseList.length" class="text-center">
+            <v-btn
+              style="width: 8rem"
+              @click="limit = stuAnnouceByCourseList.length"
+              color="primary"
+            >Xem thêm</v-btn>
+          </div>
+        </v-app>
+      </div>
+      <div v-if="stuAnnouceByCourseLoading" class="text-center">
+        <v-progress-circular indeterminate size="60" style="margin-top: 1rem"></v-progress-circular>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      empty: false
+      empty: false,
+      limit: 4
     };
+  },
+  created() {
+    this.$store
+      .dispatch("studentGetAnnouceByCourse", this.$route.params.id)
+  },
+  computed: {
+    ...mapGetters({
+      stuAnnouceByCourseList: "stuAnnouceByCourseList",
+      stuAnnouceByCourseLoading: "stuAnnouceByCourseLoading"
+    })
   }
 };
 </script>
@@ -29,5 +60,27 @@ export default {
 }
 .announce-container {
   padding: 1rem 0 1rem 1rem;
+}
+.annouce-item {
+  padding: 1rem;
+  padding-top: 2.5rem;
+  position: relative;
+  border-bottom: 1px solid silver;
+  .annouce-date {
+    position: absolute;
+    top: 0rem;
+    right: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  &:last-child {
+    margin-bottom: 1rem;
+  }
+}
+.ql-editor {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 1rem;
+  max-height: auto;
 }
 </style>
