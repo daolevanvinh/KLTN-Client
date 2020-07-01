@@ -1,175 +1,218 @@
 <template>
   <div>
-    <h1>Danh sách bài học</h1>
-    <div class="row" style="margin-top: 2rem">
-      <div class="col-9">
-        <v-select
-          :items="courseList"
-          label="Các khóa học của bạn"
-          outlined
-          v-model="courseSelected"
-          @change="getLessons()"
-        ></v-select>
-        <v-card class="mb-12" color="white" height="22rem">
-          <v-data-table
-            hide-default-footer
-            :headers="headers"
-            :items="userLessonList"
-            height="25rem"
-            :loading="userLessonLoading"
-            :items-per-page="perPage"
-            :page="currentPage"
-          >
-            <template v-slot:item.control="data">
-              <a href="#" style="margin-right: 1.5rem" @click="showDetail(data.item)">Xem video</a>
-              <a href="#" @click="deleteLesson(data.item)">Xóa</a>
-            </template>
-            <template v-slot:no-results>
-              <img
-                style="margin-top:1rem"
-                src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png"
-              />
+    <h1>Your Lesson List</h1>
+    <div style="margin-right: 1rem">
+      <v-select
+        :items="courseList"
+        label="Select your course"
+        v-model="courseSelected"
+        @change="getLessons()"
+      ></v-select>
+      <div class="row">
+        <div class="col-6">
+          <v-text-field v-model="search" label="Search..."></v-text-field>
+        </div>
+        <div class="col-2 offset-4" style="padding-top: 1.5rem;text-align: right;padding-right:0">
+          <v-btn
+            color="primary"
+            :disabled="courseSelected=='' || courseSelected == null"
+            @click="actionDialog = true"
+          >Add new Lesson</v-btn>
+        </div>
+      </div>
+      <v-card class="mb-12" color="white" height="22rem">
+        <v-data-table
+          hide-default-footer
+          :headers="headers"
+          :items="userLessonList"
+          height="25rem"
+          :loading="userLessonLoading"
+          :items-per-page="perPage"
+          :page="currentPage"
+          :search="search"
+        >
+          <template v-slot:item.control="data">
+            <a href="#" style="margin-right: 1.5rem" @click="showDetail(data.item)">Watch Video</a>
+            <a href="#" @click="deleteLesson(data.item)">Delete</a>
+          </template>
+          <template v-slot:no-results>
+            <img
+              style="margin-top:1rem"
+              src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png"
+            />
 
-              <h4 style="margin-top: 0.5rem">Danh sách rỗng!</h4>
-            </template>
-            <template v-slot:no-data>
-              <img
-                style="margin-top:1rem"
-                src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png"
-              />
+            <h4 style="margin-top: 0.5rem">Empty List!</h4>
+          </template>
+          <template v-slot:no-data>
+            <img
+              style="margin-top:1rem"
+              src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png"
+            />
 
-              <h4 style="margin-top: 0.5rem">Danh sách rỗng!</h4>
-            </template>
-            <template v-slot:item.description="data">{{formatShort(data.item.description)}}</template>
-            <template v-slot:item.duration="data">{{formatHours(data.item.duration)}}</template>
-          </v-data-table>
-          <v-pagination
-            circle
-            v-model="currentPage"
-            :length="(Math.ceil(userLessonList.length / perPage))"
-          ></v-pagination>
-        </v-card>
-        <v-dialog persistent ref="dialog" v-model="dialogLessonDetail" max-width="1300">
-          <v-card>
-            <v-card-title class="headline">{{loadSelectedLesson.title}}</v-card-title>
-            <hr />
-            <div class="row" style="margin: 0">
-              <div class="col-6" style="padding: 0;padding-left: 2rem">
-                <div class="player-container">
-                  <b-embed
-                    :src="videoURL + '/'+loadSelectedLesson.course_id +'/' +loadSelectedLesson.lesson_id+'.mp4'"
-                    type="iframe"
-                    aspect="16by9"
-                    allowfullscreen
-                  ></b-embed>
-                  <!-- <VideoPlayer ref="video" :lesson="loadSelectedLesson" :options="videoOptions"></VideoPlayer> -->
-                </div>
-              </div>
-              <div class="col-6" style="padding: 0;padding-left: 2rem">
-                <div class="row" style="width: 90%;">
-                  <div class="col-4">
-                    Lượt xem: {{loadSelectedLesson.views}}
-                    <v-icon>mdi-eye</v-icon>
-                  </div>
-                  <div class="col-4">
-                    Lượt bình luận: {{loadSelectedLesson.commentCount}}
-                    <v-icon>mdi-chat</v-icon>
-                  </div>
-                  <div class="col-4">
-                    <v-btn
-                      @click="edit = true"
-                      color="yellow darken-1"
-                      v-if="!edit"
-                      v-b-toggle.collapse-update-lesson
-                    >Chỉnh sửa</v-btn>
-                    <v-btn
-                      v-if="edit"
-                      @click="edit = false"
-                      id="fix-button"
-                      color="yellow darken-1"
-                      v-b-toggle.collapse-update-lesson
-                    >Hủy bỏ</v-btn>
-                  </div>
-                </div>
-
-                <b-collapse id="collapse-update-lesson" class="mt-2" style="width: 90%;">
-                  <v-text-field
-                    v-model="updateLesson.title"
-                    outlined
-                    dense
-                    @keydown="disableSaveUpdateButton = false"
-                    label="Tiêu đề bài học"
-                  ></v-text-field>
-                  <v-textarea
-                  style="margin-top :1rem"
-                    v-model="updateLesson.description"
-                    outlined
-                    @keydown="disableSaveUpdateButton = false"
-                    label="Mô tả bài học"
-                    height="10rem"
-                  ></v-textarea>
-                  <v-file-input
-                    id="videoUpdateInput"
-                    ref="videoUpdateInput"
-                    accept="video/*"
-                    @change="setVideoUpdate($event); disableSaveUpdateButton = false"
-                    chips
-                    show-size
-                    label="Video bài học"
-                  ></v-file-input>
-                </b-collapse>
+            <h4 style="margin-top: 0.5rem">Empty List!</h4>
+          </template>
+          <template v-slot:item.description="data">{{formatShort(data.item.description)}}</template>
+          <template v-slot:item.duration="data">{{formatHours(data.item.duration)}}</template>
+        </v-data-table>
+        <v-pagination
+          circle
+          v-model="currentPage"
+          :length="(Math.ceil(userLessonList.length / perPage))"
+        ></v-pagination>
+      </v-card>
+      <v-dialog persistent ref="dialog" v-model="dialogLessonDetail" max-width="1300">
+        <v-card>
+          <v-card-title class="headline">{{loadSelectedLesson.title}}</v-card-title>
+          <hr />
+          <div class="row" style="margin: 0">
+            <div class="col-6" style="padding: 0;padding-left: 2rem">
+              <div class="player-container">
+                <b-embed
+                  :src="videoURL + '/'+loadSelectedLesson.course_id +'/' +loadSelectedLesson.lesson_id+'.mp4'"
+                  type="iframe"
+                  aspect="16by9"
+                  allowfullscreen
+                ></b-embed>
+                <!-- <VideoPlayer ref="video" :lesson="loadSelectedLesson" :options="videoOptions"></VideoPlayer> -->
               </div>
             </div>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                :disabled="disableSaveUpdateButton"
-                text
-                @click="fixLesson()"
-              >Lưu</v-btn>
-              <v-btn color="blue darken-1" text @click="closeVideoModal">Hủy</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
-      <div class="col-3">
-        <b-button
-          v-b-toggle.collapse-new-lesson
-          variant="danger"
-          style="width: 100%;height: 3.5rem"
-        >
-          <v-icon style="color:white">mdi-video-outline</v-icon>&nbsp; Tạo bài học mới
-        </b-button>
-        <b-collapse id="collapse-new-lesson" class="mt-2">
-          <v-text-field
-            v-model="newLesson.title"
-            outlined
-            dense
-            label="Tiêu đề bài học"
-          ></v-text-field>
-          <v-textarea
-            v-model="newLesson.description"
-            outlined
-            style="margin-top: 0.5rem"
-            label="Mô tả bài học"
-            height="10rem"
-          ></v-textarea>
-          <v-file-input
-            id="videoInput"
-            ref="videoInput"
-            accept="video/*"
-            @change="setVideo"
-            chips
-            show-size
-            label="Video bài học"
-          ></v-file-input>
-          <div style="float:right">
-            <button @click="addLesson" style="margin-right: 1rem" class="btn btn-primary">Thêm mới</button>
-            <button @click="refresh()" style="margin: 0" class="btn btn-primary">Làm mới</button>
+            <div class="col-6" style="padding: 0;padding-left: 2rem">
+              <div class="row" style="width: 90%;">
+                <div class="col-4">
+                  Lượt xem: {{loadSelectedLesson.views}}
+                  <v-icon>mdi-eye</v-icon>
+                </div>
+                <div class="col-4">
+                  Lượt bình luận: {{loadSelectedLesson.commentCount}}
+                  <v-icon>mdi-chat</v-icon>
+                </div>
+                <div class="col-4">
+                  <v-btn
+                    @click="edit = true"
+                    color="yellow darken-1"
+                    v-if="!edit"
+                    v-b-toggle.collapse-update-lesson
+                  >Chỉnh sửa</v-btn>
+                  <v-btn
+                    v-if="edit"
+                    @click="edit = false"
+                    id="fix-button"
+                    color="yellow darken-1"
+                    v-b-toggle.collapse-update-lesson
+                  >Hủy bỏ</v-btn>
+                </div>
+              </div>
+
+              <b-collapse id="collapse-update-lesson" class="mt-2" style="width: 90%;">
+                <v-text-field
+                  v-model="updateLesson.title"
+                  outlined
+                  dense
+                  @keydown="disableSaveUpdateButton = false"
+                  label="Tiêu đề bài học"
+                ></v-text-field>
+                <v-textarea
+                  style="margin-top :1rem"
+                  v-model="updateLesson.description"
+                  outlined
+                  @keydown="disableSaveUpdateButton = false"
+                  label="Mô tả bài học"
+                  height="10rem"
+                ></v-textarea>
+                <v-file-input
+                  id="videoUpdateInput"
+                  ref="videoUpdateInput"
+                  accept="video/*"
+                  @change="setVideoUpdate($event); disableSaveUpdateButton = false"
+                  chips
+                  show-size
+                  label="Video bài học"
+                ></v-file-input>
+              </b-collapse>
+            </div>
           </div>
-        </b-collapse>
-      </div>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="blue darken-1"
+              :disabled="disableSaveUpdateButton"
+              text
+              @click="fixLesson()"
+            >Lưu</v-btn>
+            <v-btn color="blue darken-1" text @click="closeVideoModal">Hủy</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
+    <div>
+      <v-dialog v-model="actionDialog">
+        <v-card width="1300" style="padding: 1rem">
+          <div class="row">
+            <div class="col-6">
+              <v-select
+                outlined
+                v-model="chapterIdSelected"
+                :items="chapterList"
+                dense
+                label="Select your chapter"
+              ></v-select>
+              <v-text-field
+                outlined
+                style="margin-top: 0.5rem"
+                v-model="newLesson.title"
+                dense
+                label="Title"
+              ></v-text-field>
+              <v-textarea
+                v-model="newLesson.description"
+                style="margin-top: 0.5rem;max-height: 10rem"
+                label="Description"
+                outlined
+              ></v-textarea>
+            </div>
+            <div class="col-6">
+              <div style="text-align: right">
+                <h3>Your Resourse</h3>
+                <v-btn style="margin-right:0" color="primary" @click="addResourse()">More resouse?</v-btn>
+              </div>
+              <v-file-input
+                id="videoInput"
+                ref="videoInput"
+                accept="video/*"
+                @change="setVideo"
+                chips
+                show-size
+                label="Video is require (Main video)"
+              ></v-file-input>
+
+              <div class="my-control-container">
+                <div v-for="(item, index) in resourseList" :key="index">
+                  <div class="row">
+                    <div class="col-10">
+                      <v-file-input
+                        :id="'rs'+index"
+                        :ref="'rs'+index"
+                        chips
+                        show-size
+                        label="File is not optional"
+                        @change="setResourse('rs'+index, item.id, $event)"
+                      ></v-file-input>
+                    </div>
+                    <div class="col-2" style="padding-top: 1rem">
+                      <v-icon @click="removeResourse(item)">mdi-close-outline</v-icon>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: right">
+            <v-btn @click="addLesson" style="margin-right: 1rem" color="primary">Save</v-btn>
+            <v-btn @click="refresh()" style="margin-right: 1rem" color="yellow">Refresh</v-btn>
+            <v-btn @click="refresh();actionDialog = false" color="red">Cancel</v-btn>
+          </div>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -203,10 +246,10 @@ export default {
       ],
       lessonList: [],
       headers: [
-        { value: "title", text: "Tên bài học", width: "20%" },
-        { value: "description", text: "Mô tả", width: "25%" },
-        { value: "duration", text: "Thời lượng", width: "15%" },
-        { value: "updated_at", text: "Ngày cập nhật", width: "20%" },
+        { value: "title", text: "Title", width: "20%" },
+        { value: "description", text: "Description", width: "25%" },
+        { value: "duration", text: "Duration", width: "15%" },
+        { value: "updated_at", text: "Last update", width: "20%" },
         { value: "control", text: "", width: "20%" }
       ],
       course: {
@@ -230,7 +273,13 @@ export default {
       },
       disableSaveUpdateButton: true,
       updateLesson: {},
-      edit: false
+      edit: false,
+      actionDialog: false,
+      search: "",
+      resourseList: [],
+      chapterList: [{ text: "Intro", value: 1 }],
+      indexForResourseList: 0,
+      chapterIdSelected: ""
     };
   },
   methods: {
@@ -240,6 +289,18 @@ export default {
       let vm = this;
       if (FileReader && files && files.length) {
         vm.newLesson.videoInput = files[0];
+      }
+    },
+    setResourse(dom_id, rs_id, e) {
+      let tgt = e.target || window.event.srcElement;
+      let files = tgt.files;
+      let vm = this;
+      if (FileReader && files && files.length) {
+        for (let item of this.resourseList) {
+          if (item.id == rs_id) {
+            item.file = files[0];
+          }
+        }
       }
     },
     setVideoUpdate(e) {
@@ -274,9 +335,13 @@ export default {
         this.newLesson.description != "" &&
         this.newLesson.videoInput != null &&
         this.newLesson.videoInput != "" &&
-        this.newLesson.videoInput != {}
+        this.newLesson.videoInput != {} &&
+        this.chapterIdSelected != "" &&
+        this.chapterIdSelected != null
       ) {
         this.newLesson.course_id = this.courseSelected;
+        this.newLesson.chapter_id = this.chapterIdSelected;
+        this.newLesson.resourseList = this.resourseList;
         this.$swal.showLoading();
         let vm = this;
         this.$store
@@ -289,16 +354,14 @@ export default {
               : (icon = "error");
             this.$swal({
               icon: icon,
-              title: "Thông Báo",
-              text: response.data.msg
+              title: response.data.msg
             });
           });
         this.refresh();
       } else {
         this.$swal({
           icon: "error",
-          title: "Thông Báo",
-          text: "Nhập thiếu thông tin"
+          title: "There are missing something"
         });
       }
     },
@@ -323,8 +386,7 @@ export default {
               : (icon = "error");
             this.$swal({
               icon: icon,
-              title: "Thông Báo",
-              text: response.data.msg
+              title: response.data.msg
             }).then(() => {
               if (response.data.RequestSuccess === true) {
                 vm.dialogLessonDetail = false;
@@ -337,8 +399,7 @@ export default {
         //console.log(this.updateLesson);
         this.$swal({
           icon: "error",
-          title: "Thông Báo",
-          text: "Nhập thiếu thông tin"
+          title: "There are missing something"
         });
       }
     },
@@ -396,6 +457,17 @@ export default {
     formatShort(string) {
       if (string.length > 30) return string.slice(0, 30) + "...";
       else return string;
+    },
+    deleteLesson(lesson) {
+      console.log(lesson);
+    },
+    addResourse() {
+      this.resourseList.push({ id: this.indexForResourseList, file: null });
+      this.indexForResourseList++;
+    },
+    removeResourse(resourse) {
+      let index = this.resourseList.indexOf(resourse);
+      this.resourseList.splice(index, 1);
     }
   },
   computed: {
@@ -438,5 +510,11 @@ input {
   margin: 0;
   margin-top: -0.4rem;
   width: 80%;
+}
+
+.my-control-container {
+  max-height: 20rem !important;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

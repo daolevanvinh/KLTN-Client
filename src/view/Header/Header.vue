@@ -206,7 +206,7 @@ export default {
     searchKeyword(search) {
       this.tempSearch = search;
       this.tempLoading = true;
-      setInterval(() => {
+      setTimeout(() => {
         if (this.tempSearch == search && search != "") {
           ////console.log("searching for", search);
           this.tempSearch = null;

@@ -359,6 +359,11 @@ export default {
             formData.append('description', lesson.description)
             formData.append('video', lesson.videoInput)
             formData.append('token', localStorage.token)
+            formData.append('chapter_id', lesson.chapter_id)
+            for (let i = 0; i < lesson.resourseList.length; i++) {
+                formData.append('resourse' + i, lesson.resourseList[i].file)
+            }
+            formData.append('totalResourse', lesson.resourseList.length)
             let apiURL = apiConfig.userLesson
             axios.post(apiURL, formData, config)
                 .then(function (response) {

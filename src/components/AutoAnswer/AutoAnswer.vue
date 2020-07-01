@@ -95,7 +95,7 @@
               <v-btn
                 :disabled="userName === ''"
                 color="primary"
-                style="width: 91%;margin: 1rem;margin-top: -2rem;"
+                style="width: 91%;margin: 1rem;"
                 @click="startChatBot()"
               >Bắt đầu</v-btn>
             </div>
