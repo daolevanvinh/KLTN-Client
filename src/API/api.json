@@ -7,5 +7,6 @@
     "baseURLOnline": "https://goodlearningclient.herokuapp.com",
     "imageURL" : "https://localhost/KLTN-Server/public/uploads/images",
     "videoURL" : "https://localhost/KLTN-Server/public/uploads/videos",
+    "resourseURL": "https://localhost/KLTN-Server/public/uploads/resourses",
     "avatarURL" : "https://localhost/KLTN-Server/public/uploads/users"
 }

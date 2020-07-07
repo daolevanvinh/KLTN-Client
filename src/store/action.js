@@ -384,11 +384,19 @@ export default {
                 token: localStorage.token
             }
             let formData = new FormData()
+            formData.append('chapter_id', lesson.chapter_id)
             formData.append('course_id', lesson.course_id)
             formData.append('lesson_id', lesson.lesson_id)
             formData.append('title', lesson.title)
             formData.append('description', lesson.description)
             formData.append('video', lesson.videoInput)
+            for (let i = 0; i < lesson.resourseList.length; i++) {
+                formData.append('resourse' + i, lesson.resourseList[i].file)
+                formData.append('resourseName' + i, lesson.resourseList[i].name)
+                formData.append('resourseNew' + i, lesson.resourseList[i].new)
+                formData.append('resourseDelete' + i, lesson.resourseList[i].delete)
+            }
+            formData.append('totalResourse', lesson.resourseList.length)
             formData.append('token', localStorage.token)
             let apiURL = apiConfig.userEditLesson
             axios.post(apiURL, formData, config)
@@ -1144,6 +1152,73 @@ export default {
                 .catch(function (error) {
                     commit('channel_error')
                     reject(error)
+                })
+        })
+    },
+    userAddChapter({ commit }, course) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userChapter
+            course.token = localStorage.token
+            commit('user_course_request')
+            axios.post(apiURL, {}, { params: course })
+                .then(function (response) {
+                    commit('user_course_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_course_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    userUpdateChapter({ commit }, course) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userChapter
+            course.token = localStorage.token
+            commit('user_course_request')
+            axios.patch(apiURL, {}, { params: course })
+                .then(function (response) {
+                    commit('user_course_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_course_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    userDeleteChapter({ commit }, course) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userChapter
+            course.token = localStorage.token
+            commit('user_course_request')
+            axios.delete(apiURL, { params: course })
+                .then(function (response) {
+                    commit('user_course_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_course_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    userDeleteInsLesson({ commit }, lesson) {
+        const apiURL = apiConfig.userLesson
+        commit('user_lesson_request')
+        lesson.token = localStorage.token
+        return new Promise((resolve, reject) => {
+            axios.delete(apiURL, { params: lesson })
+                .then(function (response) {
+                    commit('user_lesson_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('user_lesson_error')
+                    reject(err)
                 })
         })
     }

@@ -32,26 +32,18 @@
           :search="search"
         >
           <template v-slot:item.control="data">
-            <a href="#" style="margin-right: 1.5rem" @click="showDetail(data.item)">Watch Video</a>
+            <a href="#" style="margin-right: 1.5rem" @click="showDetail(data.item)">Detail</a>
             <a href="#" @click="deleteLesson(data.item)">Delete</a>
           </template>
           <template v-slot:no-results>
-            <img
-              style="margin-top:1rem"
-              src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png"
-            />
-
-            <h4 style="margin-top: 0.5rem">Empty List!</h4>
+            <Empty></Empty>
           </template>
           <template v-slot:no-data>
-            <img
-              style="margin-top:1rem"
-              src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png"
-            />
-
-            <h4 style="margin-top: 0.5rem">Empty List!</h4>
+            <Empty></Empty>
           </template>
-          <template v-slot:item.description="data">{{formatShort(data.item.description)}}</template>
+          <template
+            v-slot:item.chapter.chapter_text="data"
+          >{{formatShort(data.item.chapter.chapter_text)}}</template>
           <template v-slot:item.duration="data">{{formatHours(data.item.duration)}}</template>
         </v-data-table>
         <v-pagination
@@ -60,158 +52,386 @@
           :length="(Math.ceil(userLessonList.length / perPage))"
         ></v-pagination>
       </v-card>
-      <v-dialog persistent ref="dialog" v-model="dialogLessonDetail" max-width="1300">
-        <v-card>
-          <v-card-title class="headline">{{loadSelectedLesson.title}}</v-card-title>
-          <hr />
-          <div class="row" style="margin: 0">
-            <div class="col-6" style="padding: 0;padding-left: 2rem">
-              <div class="player-container">
-                <b-embed
-                  :src="videoURL + '/'+loadSelectedLesson.course_id +'/' +loadSelectedLesson.lesson_id+'.mp4'"
-                  type="iframe"
-                  aspect="16by9"
-                  allowfullscreen
-                ></b-embed>
-                <!-- <VideoPlayer ref="video" :lesson="loadSelectedLesson" :options="videoOptions"></VideoPlayer> -->
-              </div>
-            </div>
-            <div class="col-6" style="padding: 0;padding-left: 2rem">
-              <div class="row" style="width: 90%;">
-                <div class="col-4">
-                  Lượt xem: {{loadSelectedLesson.views}}
-                  <v-icon>mdi-eye</v-icon>
-                </div>
-                <div class="col-4">
-                  Lượt bình luận: {{loadSelectedLesson.commentCount}}
-                  <v-icon>mdi-chat</v-icon>
-                </div>
-                <div class="col-4">
-                  <v-btn
-                    @click="edit = true"
-                    color="yellow darken-1"
-                    v-if="!edit"
-                    v-b-toggle.collapse-update-lesson
-                  >Chỉnh sửa</v-btn>
-                  <v-btn
-                    v-if="edit"
-                    @click="edit = false"
-                    id="fix-button"
-                    color="yellow darken-1"
-                    v-b-toggle.collapse-update-lesson
-                  >Hủy bỏ</v-btn>
-                </div>
-              </div>
-
-              <b-collapse id="collapse-update-lesson" class="mt-2" style="width: 90%;">
-                <v-text-field
-                  v-model="updateLesson.title"
-                  outlined
-                  dense
-                  @keydown="disableSaveUpdateButton = false"
-                  label="Tiêu đề bài học"
-                ></v-text-field>
-                <v-textarea
-                  style="margin-top :1rem"
-                  v-model="updateLesson.description"
-                  outlined
-                  @keydown="disableSaveUpdateButton = false"
-                  label="Mô tả bài học"
-                  height="10rem"
-                ></v-textarea>
-                <v-file-input
-                  id="videoUpdateInput"
-                  ref="videoUpdateInput"
-                  accept="video/*"
-                  @change="setVideoUpdate($event); disableSaveUpdateButton = false"
-                  chips
-                  show-size
-                  label="Video bài học"
-                ></v-file-input>
-              </b-collapse>
-            </div>
-          </div>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="blue darken-1"
-              :disabled="disableSaveUpdateButton"
-              text
-              @click="fixLesson()"
-            >Lưu</v-btn>
-            <v-btn color="blue darken-1" text @click="closeVideoModal">Hủy</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </div>
     <div>
-      <v-dialog v-model="actionDialog">
-        <v-card width="1300" style="padding: 1rem">
-          <div class="row">
-            <div class="col-6">
-              <v-select
-                outlined
-                v-model="chapterIdSelected"
-                :items="chapterList"
-                dense
-                label="Select your chapter"
-              ></v-select>
-              <v-text-field
-                outlined
-                style="margin-top: 0.5rem"
-                v-model="newLesson.title"
-                dense
-                label="Title"
-              ></v-text-field>
-              <v-textarea
-                v-model="newLesson.description"
-                style="margin-top: 0.5rem;max-height: 10rem"
-                label="Description"
-                outlined
-              ></v-textarea>
-            </div>
-            <div class="col-6">
-              <div style="text-align: right">
-                <h3>Your Resourse</h3>
-                <v-btn style="margin-right:0" color="primary" @click="addResourse()">More resouse?</v-btn>
-              </div>
-              <v-file-input
-                id="videoInput"
-                ref="videoInput"
-                accept="video/*"
-                @change="setVideo"
-                chips
-                show-size
-                label="Video is require (Main video)"
-              ></v-file-input>
-
-              <div class="my-control-container">
-                <div v-for="(item, index) in resourseList" :key="index">
-                  <div class="row">
-                    <div class="col-10">
-                      <v-file-input
-                        :id="'rs'+index"
-                        :ref="'rs'+index"
-                        chips
-                        show-size
-                        label="File is not optional"
-                        @change="setResourse('rs'+index, item.id, $event)"
-                      ></v-file-input>
-                    </div>
-                    <div class="col-2" style="padding-top: 1rem">
-                      <v-icon @click="removeResourse(item)">mdi-close-outline</v-icon>
-                    </div>
+      <v-dialog
+        v-if="updateLesson != null && selectedLesson!=null"
+        persistent
+        ref="dialog"
+        v-model="dialogLessonDetail"
+        max-width="1000"
+      >
+        <v-card>
+          <h3 style="border-bottom: 1px solid silver;padding: 1rem">{{loadSelectedLesson.title}}</h3>
+          <v-tabs v-model="dialogTabUpdate">
+            <v-tab :href="`#infoTab`">Preview</v-tab>
+            <v-tab :href="`#editTab`">Lesson</v-tab>
+            <v-tab :href="`#chapterSettingUpdateTab`">Chapter Setting</v-tab>
+          </v-tabs>
+          <v-tabs-items style="padding: 1rem" v-model="dialogTabUpdate">
+            <v-tab-item value="infoTab">
+              <div class="row" style="margin: 0;margin-left: 0.5rem">
+                <div class="col-6" style="padding: 0;">
+                  <div class="player-container">
+                    <b-embed
+                      :src="videoURL + '/'+loadSelectedLesson.course_id +'/' +loadSelectedLesson.lesson_id+'.mp4'"
+                      type="iframe"
+                      aspect="16by9"
+                      allowfullscreen
+                    ></b-embed>
+                    <!-- <VideoPlayer ref="video" :lesson="loadSelectedLesson" :options="videoOptions"></VideoPlayer> -->
+                  </div>
+                </div>
+                <div class="col-6" style="padding: 0;padding-left: 2rem">
+                  <div v-if="updateLesson != null && updateLesson.chapter != null">
+                    <ul>
+                      <li>
+                        Chapter:
+                        <b>{{updateLesson.chapter.chapter_text}}</b>
+                      </li>
+                      <li>
+                        Title:
+                        <b>{{updateLesson.title}}</b>
+                      </li>
+                      <li>List Resourse:</li>
+                    </ul>
+                    <v-data-table
+                      style="margin-top: -1rem"
+                      dense
+                      fixed-header
+                      :headers="[{value:'name', text:'FileName', width: '80%'}, {value: 'action', text: ''}]"
+                      :items="updateLesson.json_info_resourse"
+                      height="13rem"
+                    >
+                      <template v-slot:item.action="data">
+                        <a
+                          target="_blank"
+                          :href="resourseURL+'/'+courseSelected
+                          +'/'
+                          +updateLesson.lesson_id
+                          +'/'
+                          +data.item.name"
+                          :download="'Content-Disposition: attachment; filename='+data.item.name"
+                        >Download</a>
+                      </template>
+                    </v-data-table>
                   </div>
                 </div>
               </div>
+            </v-tab-item>
+            <v-tab-item value="editTab">
+              <div class="row" v-if="updateLesson!=null">
+                <div class="col-6">
+                  <div class="my-row-chapter">
+                    <v-select
+                      v-if="updateLesson.chapter!=null"
+                      outlined
+                      @change="disableSaveUpdateButton = false"
+                      v-model="updateLesson.chapter.chapter_id"
+                      :items="chapterList"
+                      dense
+                      label="Select your chapter"
+                    ></v-select>
+                    <div
+                      style="text-align: center;padding-top: 0.5rem"
+                      @click="dialogTabUpdate = `chapterSettingUpdateTab`"
+                    >
+                      <v-icon class="cog-icon">mdi-cog</v-icon>
+                    </div>
+                  </div>
+                  <v-text-field
+                    outlined
+                    style="margin-top: 0.5rem"
+                    v-model="updateLesson.title"
+                    dense
+                    @keyup="disableSaveUpdateButton = false"
+                    label="Title"
+                  ></v-text-field>
+                  <v-textarea
+                    v-model="updateLesson.description"
+                    style="margin-top: 0.5rem;max-height: 10rem"
+                    label="Description"
+                    outlined
+                    @keyup="disableSaveUpdateButton = false"
+                  ></v-textarea>
+                  <v-file-input
+                    id="videoInput"
+                    ref="videoInput"
+                    accept="video/*"
+                    @change="setVideoUpdate"
+                    chips
+                    show-size
+                    label="Video is require (Main video)"
+                  ></v-file-input>
+                </div>
+                <div class="col-6">
+                  <div style="text-align: right">
+                    <!-- <h3>Your Resourse</h3> -->
+                    <v-btn
+                      style="margin-right:0"
+                      color="primary"
+                      @click="updateResourse()"
+                    >More resouses ?</v-btn>
+                    <input
+                      style="display: none"
+                      type="file"
+                      multiple
+                      @change="setUpdateResourse"
+                      id="updateResourseFile"
+                    />
+                  </div>
+
+                  <div class="my-control-container">
+                    <v-data-table
+                      class="elevation-1"
+                      style="margin-top: 0.5rem"
+                      dense
+                      height="13rem"
+                      fixed-header
+                      :search="searchTempForRSUpdate"
+                      :headers="[{value:'file.name', text:'FileName', width: '80%'}, {value: 'action', text: ''}]"
+                      :items="resourseUpdateList"
+                      :custom-filter="myUpdateResourseFilter"
+                    >
+                      <template v-slot:no-results>
+                        <h3 class="text-center">Empty List</h3>
+                      </template>
+                      <template v-slot:item.action="data">
+                        <a href="#" @click="removeUpdateResourse(data.item)">Delete</a>
+                      </template>
+                      <template v-slot:item.file.name="data">
+                        <div>{{data.item.file.name}}</div>
+                      </template>
+                    </v-data-table>
+                  </div>
+                </div>
+              </div>
+            </v-tab-item>
+            <v-tab-item value="chapterSettingUpdateTab">
+              <div class="row" style="margin:0;padding:0;margin-top: -1rem">
+                <div class="col-6" style="margin:0;padding:0;padding-top: 12px">
+                  <v-text-field v-model="newChapter" outlined dense label="New Chapter"></v-text-field>
+                </div>
+                <div class="col-2">
+                  <v-btn
+                    style="height: 2.5rem"
+                    :disabled="newChapter === ''"
+                    @click="addChapter()"
+                    color="primary"
+                  >Add</v-btn>
+                </div>
+              </div>
+              <v-data-table
+                v-if="courseSelected != null"
+                :headers="chapterHeader"
+                :items="chapterList"
+                height="14rem"
+                fixed-header
+                dense
+              >
+                <template v-slot:no-results>
+                  <Empty></Empty>
+                </template>
+                <template v-slot:no-data>
+                  <Empty></Empty>
+                </template>
+                <template v-slot:item.action="data">
+                  <v-icon
+                    @click="updateChapter(data.item, 0)"
+                    style="cursor: pointer;margin-right: 0.5rem"
+                    title="Up"
+                  >mdi-arrow-up</v-icon>
+                  <v-icon
+                    @click="updateChapter(data.item, 1)"
+                    style="cursor: pointer;margin-right: 0.5rem"
+                    title="Down"
+                  >mdi-arrow-down</v-icon>
+                  <v-icon
+                    @click="updateChapter(data.item)"
+                    style="cursor: pointer;margin-right: 0.5rem"
+                    title="Edit"
+                  >mdi-pencil-box-multiple-outline</v-icon>
+                  <v-icon
+                    style="cursor: pointer;"
+                    @click="deleteChaper(data.item)"
+                    title="Delete"
+                  >mdi-delete-forever-outline</v-icon>
+                </template>
+              </v-data-table>
+            </v-tab-item>
+          </v-tabs-items>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              v-if="dialogTabUpdate=='editTab'"
+              :disabled="disableSaveUpdateButton"
+              color="red"
+              text
+              @click="fixLesson()"
+            >Save Update</v-btn>
+            <v-btn color="primary" @click="closeVideoModal">Cancel</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-if="newLesson != null" v-model="actionDialog" width="1000">
+        <v-card width="1000" style="padding: 1rem">
+          <v-tabs v-model="dialogTab">
+            <v-tab :href="`#lessonTab`">Lesson</v-tab>
+            <v-tab :href="`#chapterSetting`">Chapter Setting</v-tab>
+            <v-tabs-items v-model="dialogTab">
+              <v-tab-item value="lessonTab">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="my-row-chapter">
+                      <v-select
+                        outlined
+                        v-model="chapterIdSelected"
+                        :items="chapterList"
+                        dense
+                        label="Select your chapter"
+                      ></v-select>
+                      <div
+                        style="text-align: center;padding-top: 0.5rem"
+                        @click="dialogTab = `chapterSetting`"
+                      >
+                        <v-icon class="cog-icon">mdi-cog</v-icon>
+                      </div>
+                    </div>
+                    <v-text-field
+                      outlined
+                      style="margin-top: 0.5rem"
+                      v-model="newLesson.title"
+                      dense
+                      label="Title"
+                    ></v-text-field>
+                    <v-textarea
+                      v-model="newLesson.description"
+                      style="margin-top: 0.5rem;max-height: 10rem"
+                      label="Description"
+                      outlined
+                    ></v-textarea>
+                    <v-file-input
+                      id="videoInput"
+                      ref="videoInput"
+                      accept="video/*"
+                      @change="setVideo"
+                      chips
+                      show-size
+                      label="Video is require (Main video)"
+                    ></v-file-input>
+                  </div>
+                  <div class="col-6">
+                    <div style="text-align: right">
+                      <!-- <h3>Your Resourse</h3> -->
+                      <v-btn
+                        style="margin-right:0"
+                        color="primary"
+                        @click="addResourse()"
+                      >More resouses ?</v-btn>
+                      <input
+                        @change="setResourse"
+                        type="file"
+                        multiple
+                        id="resourseInput"
+                        style="display:none"
+                      />
+                    </div>
+
+                    <div class="my-control-container">
+                      <v-data-table
+                        class="elevation-1"
+                        style="margin-top: 0.5rem"
+                        dense
+                        height="13rem"
+                        :search="searchTempForRSUpdate"
+                        :headers="[{value:'file.name', text:'FileName', width: '80%'}, {value: 'action', text: ''}]"
+                        :items="resourseList"
+                        :custom-filter="myUpdateResourseFilter"
+                      >
+                        <template v-slot:no-results>
+                          <h3 class="text-center">Empty List</h3>
+                        </template>
+                        <template v-slot:item.action="data">
+                          <a href="#" @click="removeResourse(data.item)">Delete</a>
+                        </template>
+                        <template v-slot:item.file.name="data">
+                          <div>{{data.item.file.name}}</div>
+                        </template>
+                      </v-data-table>
+                    </div>
+                  </div>
+                </div>
+              </v-tab-item>
+              <v-tab-item value="chapterSetting">
+                <div class="row" style="margin:0;padding:0;margin-top: 1rem">
+                  <div class="col-6" style="margin:0;padding:0;padding-top: 12px">
+                    <v-text-field v-model="newChapter" outlined dense label="New Chapter"></v-text-field>
+                  </div>
+                  <div class="col-2">
+                    <v-btn
+                      style="height: 2.5rem"
+                      :disabled="newChapter === ''"
+                      @click="addChapter()"
+                      color="primary"
+                    >Add</v-btn>
+                  </div>
+                </div>
+                <v-data-table
+                  v-if="courseSelected != null"
+                  :headers="chapterHeader"
+                  :items="chapterList"
+                  height="17rem"
+                  fixed-header
+                  dense
+                >
+                  <template v-slot:no-results>
+                    <Empty></Empty>
+                  </template>
+                  <template v-slot:no-data>
+                    <Empty></Empty>
+                  </template>
+                  <template v-slot:item.action="data">
+                    <v-icon
+                      @click="updateChapter(data.item, 0)"
+                      style="cursor: pointer;margin-right: 0.5rem"
+                      title="Up"
+                    >mdi-arrow-up</v-icon>
+                    <v-icon
+                      @click="updateChapter(data.item, 1)"
+                      style="cursor: pointer;margin-right: 0.5rem"
+                      title="Down"
+                    >mdi-arrow-down</v-icon>
+                    <v-icon
+                      @click="updateChapter(data.item)"
+                      style="cursor: pointer;margin-right: 0.5rem"
+                      title="Edit"
+                    >mdi-pencil-box-multiple-outline</v-icon>
+                    <v-icon
+                      style="cursor: pointer;"
+                      @click="deleteChaper(data.item)"
+                      title="Delete"
+                    >mdi-delete-forever-outline</v-icon>
+                  </template>
+                </v-data-table>
+              </v-tab-item>
+            </v-tabs-items>
+          </v-tabs>
+          <div style="text-align: right;margin-top: 1rem">
+            <div v-if="dialogTab == 'lessonTab'">
+              <v-btn @click="addLesson" style="margin-right: 1rem" color="primary">Save</v-btn>
+              <v-btn @click="refresh()" style="margin-right: 1rem" color="yellow">Refresh</v-btn>
+              <v-btn @click="refresh();actionDialog = false" style="margin:0" color="red">Cancel</v-btn>
+            </div>
+            <div v-else>
+              <v-btn @click="refresh()" style="margin-right: 1rem" color="yellow">Refresh</v-btn>
+              <v-btn @click="refresh();actionDialog = false" style="margin:0" color="red">Cancel</v-btn>
             </div>
           </div>
-          <div style="text-align: right">
-            <v-btn @click="addLesson" style="margin-right: 1rem" color="primary">Save</v-btn>
-            <v-btn @click="refresh()" style="margin-right: 1rem" color="yellow">Refresh</v-btn>
-            <v-btn @click="refresh();actionDialog = false" color="red">Cancel</v-btn>
-          </div>
         </v-card>
+      </v-dialog>
+      <v-dialog v-model="chapterLoading" width="200">
+        <v-card style="padding: 1rem" width="200">In progressing...</v-card>
       </v-dialog>
     </div>
   </div>
@@ -222,12 +442,13 @@ import { mapGetters } from "vuex";
 import "../../../node_modules/vue-core-video-player/dist/vue-core-video-player.umd.js";
 import apiConfig from "../../API/api.json";
 // import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
+import Empty from "../../components/EmptyComponent/EmptyComponent";
 export default {
-  //components: { VideoPlayer },
+  components: { Empty },
   created() {
     this.$store.dispatch("userGetInsCourse").then(() => {
-      if (this.$route.course_id != "") {
-        this.courseSelected = this.$route.query.course_id;
+      if (parseInt(this.$route.query.course_id)) {
+        this.courseSelected = parseInt(this.$route.query.course_id);
         this.getLessons();
       }
       this.handleData();
@@ -235,6 +456,9 @@ export default {
   },
   data() {
     return {
+      chapterLoading: false,
+      dialogTab: `lessonTab`,
+      dialogTabUpdate: `infoTab`,
       courseSelected: "",
       items: [
         { value: "1", text: "Mới nhất" },
@@ -247,10 +471,14 @@ export default {
       lessonList: [],
       headers: [
         { value: "title", text: "Title", width: "20%" },
-        { value: "description", text: "Description", width: "25%" },
+        { value: "chapter.chapter_text", text: "Chapter", width: "25%" },
         { value: "duration", text: "Duration", width: "15%" },
-        { value: "updated_at", text: "Last update", width: "20%" },
+        { value: "updated_at", text: "Last updated", width: "20%" },
         { value: "control", text: "", width: "20%" }
+      ],
+      chapterHeader: [
+        { value: "text", text: "Chapter", width: "80%" },
+        { value: "action", text: "Control", width: "20%" }
       ],
       course: {
         lessons: []
@@ -265,6 +493,7 @@ export default {
       dialogLessonDetail: false,
       currentPage: 1,
       perPage: 5,
+      resourseURL: apiConfig.resourseURL,
       videoURL: apiConfig.videoURL,
       videoOptions: {
         autoplay: false,
@@ -279,7 +508,11 @@ export default {
       resourseList: [],
       chapterList: [{ text: "Intro", value: 1 }],
       indexForResourseList: 0,
-      chapterIdSelected: ""
+      chapterIdSelected: "",
+      newChapter: "",
+      action: 0,
+      resourseUpdateList: [],
+      searchTempForRSUpdate: ""
     };
   },
   methods: {
@@ -291,17 +524,22 @@ export default {
         vm.newLesson.videoInput = files[0];
       }
     },
-    setResourse(dom_id, rs_id, e) {
+    addResourse() {
+      document.getElementById("resourseInput").click();
+    },
+    setResourse(e) {
       let tgt = e.target || window.event.srcElement;
       let files = tgt.files;
       let vm = this;
       if (FileReader && files && files.length) {
-        for (let item of this.resourseList) {
-          if (item.id == rs_id) {
-            item.file = files[0];
-          }
+        for (let file of files) {
+          this.resourseList.push({ file: file });
         }
       }
+    },
+    removeResourse(resourse) {
+      let index = this.resourseList.indexOf(resourse);
+      this.resourseList.splice(index, 1);
     },
     setVideoUpdate(e) {
       let tgt = e.target || window.event.srcElement;
@@ -310,6 +548,7 @@ export default {
       if (FileReader && files && files.length) {
         vm.updateLesson.videoInput = files[0];
       }
+      this.disableSaveUpdateButton = false;
       //console.log(vm.updateLesson.videoInput);
     },
     refresh() {
@@ -317,16 +556,23 @@ export default {
         title: "",
         description: ""
       };
+      this.newChapter = "";
+      this.dialogTab = "lessonTab";
+      this.updateLesson = null;
+      this.selectedLesson = null;
+      this.chapterIdSelected = null;
+      this.disableSaveUpdateButton = true;
+      this.resourseList = []
+      this.resourseUpdateList = []
+      document.getElementById('')
       //document.getElementById("videoInput").value = "";
       //console.log(this.$refs.videoInput);
     },
     closeVideoModal() {
       this.dialogLessonDetail = false;
+      this.updateLesson = null;
+      this.dialogTabUpdate = "infoTab";
       //this.$refs.video.pause();
-      if (this.edit == true) {
-        document.getElementById("fix-button").click();
-        this.edit = false;
-      }
       this.selectedLesson = {};
     },
     addLesson() {
@@ -342,12 +588,13 @@ export default {
         this.newLesson.course_id = this.courseSelected;
         this.newLesson.chapter_id = this.chapterIdSelected;
         this.newLesson.resourseList = this.resourseList;
-        this.$swal.showLoading();
+        this.chapterLoading = true;
         let vm = this;
         this.$store
           .dispatch("userInsertLesson", this.newLesson)
           .then(response => {
             this.handleData();
+            this.chapterLoading = false;
             let icon = "";
             response.data.RequestSuccess === true
               ? (icon = "success")
@@ -356,8 +603,9 @@ export default {
               icon: icon,
               title: response.data.msg
             });
+            this.refresh();
+            this.actionDialog = false;
           });
-        this.refresh();
       } else {
         this.$swal({
           icon: "error",
@@ -367,18 +615,19 @@ export default {
     },
     fixLesson() {
       if (
+        this.updateLesson.chapter.chapter_id &&
         this.updateLesson.title != "" &&
-        this.updateLesson.description != "" &&
-        this.updateLesson.videoInput != null &&
-        this.updateLesson.videoInput != "" &&
-        this.updateLesson.videoInput != {}
+        this.updateLesson.description != ""
       ) {
         this.updateLesson.course_id = this.courseSelected;
-        this.$swal.showLoading();
+        this.chapterLoading = true;
+        this.updateLesson.resourseList = this.resourseUpdateList;
+        this.updateLesson.chapter_id = this.updateLesson.chapter.chapter_id;
         let vm = this;
         this.$store
           .dispatch("userUpdateLesson", this.updateLesson)
           .then(response => {
+            this.chapterLoading = false;
             this.handleData();
             let icon = "";
             response.data.RequestSuccess === true
@@ -390,13 +639,15 @@ export default {
             }).then(() => {
               if (response.data.RequestSuccess === true) {
                 vm.dialogLessonDetail = false;
-                document.getElementById("fix-button").click();
               }
+
+              this.refresh();
+              this.dialogLessonDetail = false;
+              this.dialogTabUpdate = "infoTab";
             });
           });
-        this.refresh();
       } else {
-        //console.log(this.updateLesson);
+        console.log(this.updateLesson);
         this.$swal({
           icon: "error",
           title: "There are missing something"
@@ -412,31 +663,58 @@ export default {
       }
     },
     getLessons() {
-      this.$store.dispatch("userGetInsLesson", this.courseSelected);
       this.currentPage = 1;
+      if (this.courseSelected != null) {
+        for (let course of this.userCourseList) {
+          if (course.course_id == this.courseSelected) {
+            this.$store.dispatch("userGetInsLesson", this.courseSelected);
+            this.chapterList = [];
+            for (let item of JSON.parse(course.json_info_chapter)) {
+              this.chapterList.push({
+                value: item.value,
+                text: item.text
+              });
+            }
+            break;
+          }
+        }
+      }
     },
     showDetail(lesson) {
       this.selectedLesson = lesson;
       this.updateLesson = {
         lesson_id: lesson.lesson_id,
         title: lesson.title,
-        description: lesson.description
+        description: lesson.description,
+        chapter: lesson.chapter,
+        course_id: lesson.course_id,
+        json_info_resourse: lesson.json_info_resourse
       };
-
-      this.videoOptions.sources = [
-        {
-          src:
-            this.videoURL +
-            "/" +
-            lesson.course_id +
-            "/" +
-            lesson.title +
-            ".mp4",
-          type: "video/mp4"
-        }
-      ];
-      //console.log(this.videoOptions)
+      this.resourseUpdateList = [];
+      for (let rs of lesson.json_info_resourse) {
+        this.resourseUpdateList.push({
+          file: { name: rs.name },
+          new: false,
+          delete: false,
+          name: rs.name
+        });
+      }
+      console.log(this.resourseUpdateList);
       this.dialogLessonDetail = true;
+      // this.videoOptions.sources = [
+      //   {
+      //     src:
+      //       this.videoURL +
+      //       "/" +
+      //       lesson.course_id +
+      //       "/" +
+      //       lesson.title +
+      //       ".mp4",
+      //     type: "video/mp4"
+      //   }
+      // ];
+      // //console.log(this.videoOptions)
+      // this.dialogLessonDetail = true;
     },
     formatHours(duration) {
       let hours = Math.floor(duration / 3600);
@@ -459,15 +737,172 @@ export default {
       else return string;
     },
     deleteLesson(lesson) {
-      console.log(lesson);
+      this.$swal({
+        icon: "question",
+        title: "Are you sure want to Delete?",
+        showCancelButton: true
+      }).then(result => {
+        if (result.value) {
+          this.$store.dispatch("userDeleteInsLesson", {
+            lesson_id: lesson.lesson_id,
+            course_id: this.courseSelected
+          }).then((response) => {
+            let icon = ''
+            response.data.RequestSuccess === true ? icon = 'success' : icon = 'error'
+            this.$swal({
+              icon: icon,
+              title: response.data.msg
+            })
+          });
+        }
+      });
     },
-    addResourse() {
-      this.resourseList.push({ id: this.indexForResourseList, file: null });
-      this.indexForResourseList++;
+    addChapter() {
+      if (this.newChapter != "") {
+        this.chapterLoading = true;
+        this.$store
+          .dispatch("userAddChapter", {
+            text: this.newChapter,
+            course_id: this.courseSelected
+          })
+          .then(response => {
+            this.chapterLoading = false;
+            if (response.data.RequestSuccess === true) {
+              this.newChapter = "";
+              this.handleForChapter(response.data.chapters, null);
+            }
+          });
+      } else {
+        this.$swal({
+          icon: "error",
+          title: "Chapter is not empty!"
+        });
+      }
     },
-    removeResourse(resourse) {
-      let index = this.resourseList.indexOf(resourse);
-      this.resourseList.splice(index, 1);
+    handleForChapter(chapters, flag) {
+      for (let course of this.userCourseList) {
+        if (course.course_id == this.courseSelected) {
+          course.json_info_chapter = JSON.stringify(chapters);
+          if (flag == null) {
+            let chapterList = [];
+            for (let chapter of chapters) {
+              chapterList.push({
+                value: chapter.value,
+                text: chapter.text
+              });
+            }
+            this.chapterList = chapterList;
+          }
+        }
+      }
+    },
+    updateChapter(chapter, type) {
+      if (type != null) {
+        for (let i = 0; i < this.chapterList.length; i++) {
+          if (
+            this.chapterList[i].value == chapter.value &&
+            chapter.value != null
+          ) {
+            let error =
+              (i == 0 && type == 0) ||
+              (i == this.chapterList.length - 1 && type == 1);
+            if (error === false) {
+              this.chapterLoading = true;
+              switch (type) {
+                case 0:
+                  let temp_up = this.chapterList[i - 1];
+                  this.chapterList[i - 1] = chapter;
+                  this.chapterList[i] = temp_up;
+                  break;
+                case 1:
+                  let temp_down = this.chapterList[i + 1];
+                  this.chapterList[i + 1] = chapter;
+                  this.chapterList[i] = temp_down;
+                  break;
+              }
+              this.handleForChapter(JSON.stringify(this.chapterList), 0);
+              this.$store
+                .dispatch("userUpdateChapter", {
+                  json_info_chapter: JSON.stringify(this.chapterList),
+                  course_id: this.courseSelected
+                })
+                .then(response => {
+                  this.chapterList.push({});
+                  this.chapterList.splice(this.chapterList.length - 1, 1);
+                  this.chapterLoading = false;
+                });
+              break;
+            }
+          }
+        }
+      }
+    },
+    deleteChaper(chapter) {
+      this.$swal({
+        icon: "question",
+        title: "Are you sure to delete?",
+        showCancelButton: true
+      }).then(result => {
+        if (result.value) {
+          this.chapterLoading = true;
+          let tempList = this.chapterList.slice();
+          let index = this.chapterList.indexOf(chapter);
+          tempList.splice(index, 1);
+          this.$store
+            .dispatch("userDeleteChapter", {
+              json_info_chapter: JSON.stringify(tempList),
+              course_id: this.courseSelected
+            })
+            .then(response => {
+              this.chapterList.push({});
+              this.chapterList = tempList.slice();
+              this.chapterLoading = false;
+            });
+        }
+      });
+    },
+    updateResourse() {
+      document.getElementById("updateResourseFile").click();
+    },
+    setUpdateResourse(e) {
+      let tgt = e.target || window.event.srcElement;
+      let files = tgt.files;
+      let vm = this;
+      if (FileReader && files && files.length) {
+        for (let file of files) {
+          this.disableSaveUpdateButton = false;
+          if (this.checkExistResouse(this.resourseUpdateList, file)) {
+            this.resourseUpdateList.push({ file: file, new: true });
+          } else {
+            this.$swal({
+              icon: "error",
+              title: "File " + file.name + " already exist!!!"
+            });
+          }
+        }
+      }
+    },
+    removeUpdateResourse(resourse) {
+      if (resourse.new === false) {
+        resourse.delete = true;
+        this.searchTempForRSUpdate += "1";
+      } else {
+        let index = this.resourseUpdateList.indexOf(resourse);
+        this.resourseUpdateList.splice(index, 1);
+      }
+      this.disableSaveUpdateButton = false;
+    },
+    myUpdateResourseFilter(value, search, item) {
+      return item.new === true || (item.new === false && item.delete === false);
+    },
+    checkExistResouse(list, resourse) {
+      for (let item of list) {
+        let rs =
+          (item.file != null && item.file.name == resourse.name) ||
+          item.name == resourse.name;
+        if (rs == true) return false;
+      }
+      return true;
     }
   },
   computed: {
@@ -516,5 +951,13 @@ input {
   max-height: 20rem !important;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.my-row-chapter {
+  display: grid;
+  grid-template-columns: 90% 10%;
+  .cog-icon {
+    cursor: pointer;
+  }
 }
 </style>

@@ -1,10 +1,17 @@
 <template>
   <div class="text-center">
-    <img style="margin-top:1rem" src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png" />
+    <img style="margin-top:1rem" :src="image" />
 
-    <h4 style="margin-top: 0.5rem">Danh sách rỗng!</h4>
+    <h4 style="margin-top: 0.5rem">Empty list!</h4>
   </div>
 </template>
 <script>
-export default {};
+import empty from "../../assets/empty.png"
+export default {
+  data() {
+    return {
+      image : empty
+    }
+  }
+};
 </script>

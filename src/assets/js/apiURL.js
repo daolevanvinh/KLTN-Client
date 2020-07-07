@@ -33,6 +33,7 @@ var apiURL = {
     StuAnnouceByCourse: apiAddress + '/stu/annouce/course',
     userChannel: apiAddress + '/user/channel',
     userChannelCourseList: apiAddress + "/user/channel/course",
+    userChapter: apiAddress + "/user/chapter",
     //guest
     guestGetCategory: apiAddress + "/guest/category",
     guestGetCategoryWithTopCourse: apiAddress + "/guest/category/topCourse",
