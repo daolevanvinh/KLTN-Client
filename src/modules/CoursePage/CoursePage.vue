@@ -4,7 +4,7 @@
       <div class="row" id="stickyInfo" style="background: #29303b;position: relative;">
         <div class="col-7" id="DetailSubject">
           <h3>{{guestCourseDetailObject.name}}</h3>
-          <p style="color:white">Được đăng bởi:&nbsp;{{guestCourseDetailObject.instructor.name}}</p>
+          <p style="color:white">Author:&nbsp;{{guestCourseDetailObject.instructor.name}}</p>
         </div>
         <div class="my-card-container">
           <img :src="courseURL" />
@@ -105,14 +105,14 @@
             </div>
             <div
               v-if="moreContentTable"
-              style="padding-top: 0.5rem;padding-left: 1rem;border: 1px solid #8F8E8D;border-top: none;"
+              style="padding: 1rem;border: 1px solid #8F8E8D;border-top: none;"
             >
               <div
                 style="margin-top: -0.5rem"
                 v-for="(chapter,index) in guestCourseDetailObject.chapterList"
                 :key="index"
               >
-                <div class="my-chapter-title" v-b-toggle="'chapter'+index">
+                <div v-if="chapter.lessonList.length > 0" class="my-chapter-title" v-b-toggle="'chapter'+index">
                   •&nbsp;
                   <span>{{chapter.text}}</span>
                   <span style="float:right">{{chapter.duration}}</span>
