@@ -27,19 +27,19 @@
                 :loading="userCourseListCartLoading"
                 style="background-color:#ec5252;color:white"
                 @click="addToCart()"
-              >Thêm vào giỏ hàng</v-btn>
+              >Add To Cart</v-btn>
               <v-btn
                 height="3rem"
                 v-else
                 style="background-color:#ec5252;color:white"
                 :loading="userCourseListCartLoading"
                 @click="addToCart()"
-              >Thêm vào kho</v-btn>
+              >Add To Your Courses</v-btn>
               <router-link
                 style="height: 3rem;border: 1px solid;padding-top: 0.7rem"
                 class="btn-outline-default btn"
                 :to="{name: 'cart-page'}"
-              >Đến giỏ hàng</router-link>
+              >Go To Cart</router-link>
             </v-app>
           </div>
         </div>
@@ -48,7 +48,7 @@
       <div class="row">
         <div class="col-7 offset-1" style="padding-left: 0">
           <div id="content-container">
-            <h2>Các kiến thức đạt được</h2>
+            <h3>What you'll learn</h3>
             <div class="row">
               <div
                 class="col-6"
@@ -64,7 +64,7 @@
           </div>
 
           <div id="description-container">
-            <h2>Mô tả</h2>
+            <h2>Description</h2>
             <div
               class="my-align"
               :class="{'miniContent' : !descriptionMore}"
@@ -80,6 +80,105 @@
               </a>
             </div>
             <hr />
+          </div>
+
+          <div>
+            <h3 style="margin-bottom: 1rem">Course Content</h3>
+            <span>{{guestCourseDetailObject.chapterList.length}} chapter • {{guestCourseDetailObject.totalDurations}} total length</span>
+            <div
+              @click="moreContentTable = !moreContentTable"
+              style="background: #fbfbf8;padding: 1rem;border: 1px solid #8F8E8D;cursor: pointer"
+            >
+              <span v-if="moreContentTable == true">
+                <v-icon>mdi-chevron-up</v-icon>
+              </span>
+              <span v-if="moreContentTable == false">
+                <v-icon>mdi-chevron-down</v-icon>
+              </span>
+              <span style="margin-left: 1rem;font-size: 18px">
+                <b>Fundamentals of coaching</b>
+              </span>
+              <span style="float:right">
+                <span>{{guestCourseDetailObject.chapterList.length}}&nbsp;chapter&nbsp;•&nbsp;</span>
+                <span>{{guestCourseDetailObject.totalDurations}}&nbsp;total length</span>
+              </span>
+            </div>
+            <div
+              v-if="moreContentTable"
+              style="padding-top: 0.5rem;padding-left: 1rem;border: 1px solid #8F8E8D;border-top: none;"
+            >
+              <div
+                style="margin-top: -0.5rem"
+                v-for="(chapter,index) in guestCourseDetailObject.chapterList"
+                :key="index"
+              >
+                <div class="my-chapter-title" v-b-toggle="'chapter'+index">
+                  •&nbsp;
+                  <span>{{chapter.text}}</span>
+                  <span style="float:right">{{chapter.duration}}</span>
+                </div>
+                <b-collapse
+                  style="margin-top: -1rem"
+                  class="content-lesson-item"
+                  :id="'chapter'+index"
+                >
+                  <div v-for="(lesson,index2) in chapter.lessonList" :key="index2">
+                    <div
+                      @click="watchPreview(lesson)"
+                      class="havePreview"
+                      v-if="lesson.havePreview==1"
+                    >
+                      <div>
+                        <v-icon size="20" style="margin-right: 0.5rem">mdi-play-circle</v-icon>
+                      </div>
+                      <div class="lesson-title">
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}{{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                      </div>
+                      <div style="position: absolute;right: 1.2rem;top: 0.2rem">
+                        <i>{{lesson.duration}}</i>
+                      </div>
+                    </div>
+                    <div v-else class="noPreview">
+                      <div>
+                        <v-icon size="20" style="margin-right: 0.5rem">mdi-play-circle</v-icon>
+                      </div>
+                      <div class="lesson-title">
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}{{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}{{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}{{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                        {{lesson.title}}
+                      </div>
+                      <div style="position: absolute;right: 1.2rem;top: 0.2rem">
+                        <i>{{lesson.duration}}</i>
+                      </div>
+                    </div>
+                  </div>
+                </b-collapse>
+              </div>
+            </div>
           </div>
 
           <div id="introduce-container">
@@ -142,7 +241,7 @@
             <hr style="margin-top: -0.5rem" />
           </div>
           <div class="recommend-container">
-            <h3>Gợi ý khóa học</h3>
+            <h3>Students also bought</h3>
             <div
               class="reccommend-item"
               v-for="(course, i) in guestCourseDetailObject.top5"
@@ -157,7 +256,7 @@
             <button v-b-modal.login-modal id="openLoginModal"></button>
           </div>
           <div class="review-container">
-            <h3>Đánh giá của học viên</h3>
+            <h3>Student feedback</h3>
             <div class="row">
               <div class="col-3">
                 <h1 class="text-center">{{avgStar}}</h1>
@@ -169,7 +268,7 @@
                   :rating="avgStar"
                   :read-only="true"
                 ></StarRating>
-                <p class="text-center">Trung Bình</p>
+                <p class="text-center">Average</p>
               </div>
               <div class="col-9">
                 <div
@@ -215,7 +314,7 @@
             </div>
             <div class="row">
               <div class="col-3" style="padding-top: 1.5rem">
-                <h5>Đánh giá</h5>
+                <h5>Reviews</h5>
               </div>
               <div class="col-5 offset-4">
                 <v-spacer></v-spacer>
@@ -232,7 +331,7 @@
             </div>
             <hr style="margin-top: -0.5rem;" />
             <div v-if="commentList==null || commentList.length == 0">
-              <h3 class="text-center">Hiện tại không có đánh giá nào!</h3>
+              <h3 class="text-center">There is no preview!</h3>
             </div>
             <div v-for="(comment, i) in commentList" :key="i">
               <div class="row" style="margin-top: -1rem">
@@ -272,7 +371,7 @@
         <div class="col-4">
           <div class="history-course-container">
             <div class="history-1">
-              <h3 class="text-center">Lịch sử đã xem</h3>
+              <h3 class="text-center">History</h3>
               <div class="history-2">
                 <HisoryCoursePage
                   @changeItem="changeItem"
@@ -289,6 +388,20 @@
     <div v-else class="text-center" style="width: 100%;padding: 4rem 0;">
       <v-progress-circular indeterminate size="100"></v-progress-circular>
     </div>
+    <v-dialog dark v-model="previewDialog" width="650">
+      <v-card style="padding: 1rem">
+        <v-icon style="float: right" @click="previewDialog=false;previewLink =null">mdi-close-thick</v-icon>
+        <div>Course Preview</div>
+        <h3>{{currentPreviewLesson.title}}</h3>
+        <b-embed
+          v-if="previewLink!=null"
+          type="iframe"
+          aspect="16by9"
+          :src="previewLink"
+          allowfullscreen
+        ></b-embed>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -302,6 +415,8 @@ export default {
   components: { StarRating, RecommendItem, HisoryCoursePage },
   data() {
     return {
+      previewVideoURL: apiConfig.videoURL,
+      moreContentTable: true,
       ImageURL: "",
       courseURL: "",
       avatarURL: apiConfig.avatarURL,
@@ -314,7 +429,10 @@ export default {
       totalStars: 0,
       avgStar: 0,
       instructorAVGStar: 0,
-      instructorReview: 0
+      instructorReview: 0,
+      previewLink: null,
+      previewDialog: false,
+      currentPreviewLesson: {}
     };
   },
   watch: {
@@ -329,6 +447,17 @@ export default {
     this.$store.commit("ShowFooterUser");
   },
   methods: {
+    watchPreview(lesson) {
+      this.previewLink =
+        this.previewVideoURL +
+        "/" +
+        this.guestCourseDetailObject.course_id +
+        "/" +
+        lesson.lesson_id +
+        ".mp4";
+      this.currentPreviewLesson = lesson;
+      this.previewDialog = true;
+    },
     openLoginModal() {
       document.getElementById("openLoginModal").click();
     },
@@ -492,7 +621,9 @@ export default {
             }
           });
           this.instructorReview = sumReview;
-          this.instructorAVGStar = Math.floor(sumStar / sumReview);
+          sumReview === 0
+            ? (this.instructorAVGStar = 0)
+            : (this.instructorAVGStar = Math.floor(sumStar / sumReview));
         }
       }
     },
@@ -528,7 +659,7 @@ export default {
 .history-course-container {
   position: relative;
   margin-top: 22rem;
-  height: 100%;
+  height: 85%;
   .history-1 {
     position: sticky;
     top: 0.5rem;
@@ -618,6 +749,58 @@ export default {
   }
 }
 
+.my-chapter-title {
+  margin: 1rem;
+  padding: 0.2rem;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  &:hover {
+    background-color: whitesmoke;
+  }
+}
+.content-lesson-item {
+  margin-left: -1rem;
+
+  .havePreview {
+    cursor: pointer;
+    position: relative;
+    font-size: 14px;
+    padding: 0.5rem 0.5rem;
+    padding-left: 3rem;
+    display: grid;
+    grid-template-columns: 5% 75% 15%;
+    &:hover {
+      background-color: whitesmoke;
+      cursor: pointer;
+    }
+    .lesson-title {
+      margin-top: -0.2rem;
+      color: #3084eb;
+      font-weight: 400;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .noPreview {
+    position: relative;
+    font-size: 14px;
+    padding: 0.5rem 0.5rem;
+    padding-left: 3rem;
+    display: grid;
+    grid-template-columns: 5% 85% 10%;
+    .lesson-title {
+      margin-top: -0.2rem;
+      word-break: keep-all;
+    }
+    &:hover {
+      background-color: whitesmoke;
+      cursor: pointer;
+    }
+  }
+}
+
 .my-card-container {
   position: absolute;
   z-index: 3;
@@ -626,8 +809,10 @@ export default {
   background-color: white;
   width: 20rem;
   border: solid 0.5px rgb(194, 187, 186);
+  border-radius: 5px;
   img {
     border: none;
+    border-radius: 3px;
     width: 100%;
     height: 12rem;
   }

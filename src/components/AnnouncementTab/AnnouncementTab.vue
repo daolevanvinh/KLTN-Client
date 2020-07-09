@@ -2,7 +2,7 @@
   <div>
     <div v-if="empty" class="text-center my-empty-container">
       <img src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png" />
-      <h3>Hiện không có thông báo nào!</h3>
+      <h3>There is no annouce!</h3>
     </div>
     <div v-else style="margin-top: 1rem">
       <div v-if="!stuAnnouceByCourseLoading">
@@ -23,7 +23,7 @@
               style="width: 8rem"
               @click="limit = stuAnnouceByCourseList.length"
               color="primary"
-            >Xem thêm</v-btn>
+            >more</v-btn>
           </div>
         </v-app>
       </div>

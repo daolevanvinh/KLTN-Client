@@ -10,7 +10,7 @@
         aria-expanded="false"
         @mouseover="displayCol2 = false; displayCol3 = false"
       >
-        <v-icon size="20">mdi-apps</v-icon>&nbsp;Thể loại
+        <v-icon size="20">mdi-apps</v-icon>&nbsp;Categories
       </button>
       <div
         class="dropdown-menu"

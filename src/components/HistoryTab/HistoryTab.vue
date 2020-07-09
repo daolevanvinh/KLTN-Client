@@ -24,12 +24,12 @@ export default {
   data() {
     return {
       header: [
-        { text: "Ngày", value: "updated_at", width: "17%" },
-        { text: "Tổng tiền", value: "vnp_Amount", width: "13%" },
-        { text: "Danh sách khóa học", value: "coursetList", width: "30%" },
-        { text: "Loại thẻ", value: "vnp_CardType", width: "10%" },
-        { text: "Mã giao dịch", value: "vnp_BankTranNo", width: "15%" },
-        { text: "Mã ngân hàng", value: "vnp_BankCode", width: "15%" }
+        { text: "Time", value: "updated_at", width: "17%" },
+        { text: "Total Price", value: "vnp_Amount", width: "13%" },
+        { text: "Course List", value: "coursetList", width: "30%" },
+        { text: "Card Type", value: "vnp_CardType", width: "10%" },
+        { text: "Transaction ID", value: "vnp_BankTranNo", width: "15%" },
+        { text: "Bank ID", value: "vnp_BankCode", width: "15%" }
       ]
     };
   },

@@ -41,16 +41,16 @@ export default {
       list: [
         {
           // course list
-          header: "Khóa học",
+          header: "Courses",
           icon: "far fa-play-circle fa-lg",
           items: [
             {
-              title: "Danh sách khóa học",
+              title: "Course List",
               icon: "fas fa-circle fa-sm",
               routeName: "ins-course-page"
             },
             {
-              title: "Danh sách bài học",
+              title: "Lesson List",
               icon: "fas fa-circle fa-sm",
               routeName: "ins-lesson-page"
             }
@@ -58,7 +58,7 @@ export default {
         },
         {
           // communication list
-          header: "Tương tác",
+          header: "Communication",
           icon: "far fa-comment-alt fa-lg",
 
           items: [
@@ -68,16 +68,16 @@ export default {
             //   routeName: "ins-message-page"
             // },
             {
-              title: "Thông báo",
+              title: "Annoucement",
               icon: "fas fa-circle fa-sm",
               routeName: "ins-annouce-page"
             }
           ]
         },
         {
-          header: "Thống kê",
+          header: "Statistics",
           icon: "far fa-chart-bar fa-lg",
-          items: [{ title: "Tổng quan", icon: "fas fa-circle fa-sm" }]
+          items: [{ title: "Overview", icon: "fas fa-circle fa-sm" }]
         }
       ]
     };

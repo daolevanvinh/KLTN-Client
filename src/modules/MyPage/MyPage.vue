@@ -10,7 +10,7 @@
             style="color: rgba(0,0,0,.54)"
           >
             <v-icon style="position: absolute;left: 1rem">mdi-account</v-icon>
-            <span>Thông tin</span>
+            <span>Account</span>
           </v-tab>
 
           <v-tab
@@ -19,7 +19,7 @@
             class="my-tab"
           >
             <v-icon style="position: absolute;left: 1rem">mdi-cog-counterclockwise</v-icon>
-            <span>Giới thiệu</span>
+            <span>Profile</span>
           </v-tab>
 
           <v-tab
@@ -28,7 +28,7 @@
             class="my-tab"
           >
             <v-icon style="position: absolute;left: 1rem">mdi-book</v-icon>
-            <span>Khóa học</span>
+            <span>Courses</span>
           </v-tab>
 
           <v-tab
@@ -37,7 +37,7 @@
             class="my-tab"
           >
             <v-icon style="position: absolute;left: 1rem">mdi-bell</v-icon>
-            <span style="font-size: 13px;">Thông báo</span>
+            <span style="font-size: 13px;">Annouce</span>
           </v-tab>
 
           <v-tab
@@ -46,7 +46,7 @@
             @click="goTab('msg-tab')"
           >
             <v-icon style="position: absolute;left: 1rem">mdi-swap-horizontal-bold</v-icon>
-            <span>Lịch sử</span>
+            <span>History</span>
           </v-tab>
         </div>
         <v-tabs-items :value="mypageTab" class="list-item">

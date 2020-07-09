@@ -5,11 +5,11 @@
         <div class="col-4 text-left" v-if="editAccount.social_id == null">
           <div>
             <label>
-              Tài khoản:
+              Your ID:
               <input class="form-control" v-model="editAccount.user_id" disabled />
             </label>
             <label>
-              Mật khẩu:
+              Password:
               <input
                 class="form-control"
                 :value="'thisispassword'"
@@ -21,17 +21,17 @@
               @click.stop="dialog = true"
               style="margin-top: 1rem"
               class="btn btn-warning"
-            >Đổi mật khẩu ?</button>
+            >Change ?</button>
           </div>
         </div>
         <div class="col-4 text-left">
           <div>
             <label>
-              Họ tên:
+              Full Name:
               <input @change="edit = false" v-model="editAccount.name" class="form-control" />
             </label>
             <label>
-              Điện Thoại:
+              Phone:
               <input
                 @change="edit = false"
                 v-model="editAccount.phone"
@@ -39,7 +39,7 @@
               />
             </label>
             <label style="height: 5rem">
-              Địa chỉ:
+              Address:
               <textarea
                 @change="edit = false"
                 v-model="editAccount.address"
@@ -53,7 +53,7 @@
               class="btn btn-danger"
               :style="edit ? 'cursor: not-allowed': ''"
               @click="editInfor"
-            >Lưu</button>
+            >Save</button>
           </div>
         </div>
         <div class="col-4 text-center">
@@ -75,14 +75,14 @@
       </div>
       <v-dialog v-model="dialog" width="40rem" persistent>
         <v-card>
-          <v-card-title class="headline lighten-2" primary-title>Đổi mật khẩu</v-card-title>
+          <v-card-title class="headline lighten-2" primary-title>Change Password</v-card-title>
           <hr style="margin: 0 0 0.5rem 0" />
           <div style="margin: 0 1rem">
             <b-alert
               :variant="RequestSuccess ? 'success' : 'danger'"
               :show="RequestSuccess!==null"
             >{{msg}}</b-alert>
-            <b-alert variant="danger" :show="newPassword != confirm">Mật khẩu mới không khớp</b-alert>
+            <b-alert variant="danger" :show="newPassword != confirm">New Password != Confirm</b-alert>
           </div>
           <div class="container">
             <div class="row" style="margin-top: -1rem;">
@@ -90,21 +90,21 @@
                 class="col-3 offset-1"
                 style="text-align: right;padding-top: 1.2rem"
                 type="password"
-              >Mật khẩu hiện tại</div>
+              >Current Password</div>
               <div class="col-7">
                 <input type="password" class="form-control" v-model="currentPassword" />
               </div>
             </div>
 
             <div class="row" style="margin-top: -1rem;">
-              <div class="col-3 offset-1" style="text-align: right;padding-top: 1.2rem">Mật khẩu mới</div>
+              <div class="col-3 offset-1" style="text-align: right;padding-top: 1.2rem">New Password</div>
               <div class="col-7">
                 <input type="password" v-model="newPassword" class="form-control" />
               </div>
             </div>
 
             <div class="row" style="margin-top: -1rem;">
-              <div class="col-3 offset-1" style="text-align: right;padding-top: 1.2rem">Xác nhận</div>
+              <div class="col-3 offset-1" style="text-align: right;padding-top: 1.2rem">Confirm Password</div>
               <div class="col-7">
                 <input type="password" v-model="confirm" class="form-control" />
               </div>
@@ -118,8 +118,8 @@
                 :disabled="newPassword!=confirm"
                 :loading="accountLoading"
                 color="primary"
-              >Đổi mật khẩu</v-btn>
-              <button @click="cancel()" class="btn btn-danger">Hủy</button>
+              >Save</v-btn>
+              <button @click="cancel()" class="btn btn-danger">Cancle</button>
             </div>
           </div>
         </v-card>
@@ -184,8 +184,7 @@ export default {
       let vm = this;
       this.$swal({
         icon: "question",
-        title: "Thông Báo",
-        text: "Bạn muốn lưu chỉnh sửa?",
+        title: "Are you want to save?",
         showCancelButton: true
       }).then(result => {
         if (result.value) {
@@ -198,11 +197,9 @@ export default {
                 : (icon = "error");
               vm.$swal({
                 icon: icon,
-                title: "Thông báo",
-                text: response.data.msg
+                title: response.data.msg
               });
               if (response.data.RequestSuccess === true) {
-                alert(1);
                 this.edit = false;
               }
             });

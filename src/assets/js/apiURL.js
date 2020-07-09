@@ -11,6 +11,7 @@ var apiURL = {
     adminQuestionBot: apiAddress + "/admin/bot/question",
     adminAnswerBot: apiAddress + "/admin/bot/answer",
     adminMessageBot: apiAddress + "/admin/bot/message",
+    adminStoragePackage: apiAddress + "/admin/storagePackage",
     //// user
     user: apiAddress + "/user",
     userCategory: apiAddress + "/user/category",

@@ -22,7 +22,7 @@
               </div>
               <div style="font-size: 9pt;">
                 <i>
-                  <b>Học tập Online</b>
+                  <b>Study Online</b>
                 </i>
               </div>
             </span>
@@ -69,7 +69,6 @@ import { mapGetters } from "vuex";
 import UserMenuButton from "../components/UserMenuButton/UserMenuButton";
 export default {
   created() {
-    
     this.adminLogin = this.$route.name == "admin-login-page";
   },
   beforeUpdate() {
@@ -105,6 +104,11 @@ export default {
           title: "Thống kê",
           icon: "far fa-chart-bar fa-lg",
           href: "statistical-page"
+        },
+        {
+          title: "Storage Business",
+          icon: "fas fa-euro-sign fa-lg",
+          href: "storage-business-page"
         }
       ]
     };

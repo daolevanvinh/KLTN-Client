@@ -2,7 +2,7 @@
   <div style="position: relative;">
     <Header v-if="!hideHeader" :show="showHeader"></Header>
     <router-view></router-view>
-    <AutoAnswer v-if="!guestHideAutoAnswer"></AutoAnswer>
+    <AutoAnswer v-if="!guestHideAutoAnswer && false"></AutoAnswer>
     <Footer v-if="!hideFooter"></Footer>
   </div>
 </template>

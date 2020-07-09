@@ -24,27 +24,27 @@
         </div>
         <div class="item-container">
           <a class="my-card-item" @click="goTab('info-tab')" type="button">
-            <i class="fas fa-user"></i> Thông tin cá nhân
+            <i class="fas fa-user"></i> Account Infomation
           </a>
         </div>
         <div class="item-container">
           <a class="my-card-item" @click="goTab('course-tab')" type="button">
-            <i class="fas fa-book"></i> Khóa học của tôi
+            <i class="fas fa-book"></i> My Courses
           </a>
         </div>
         <div class="item-container">
           <a class="my-card-item" @click="goTab('annouce-tab')" type="button">
-            <i class="fas fa-bell"></i> Thông báo
+            <i class="fas fa-bell"></i> Annouce
           </a>
         </div>
         <div class="item-container">
           <a class="my-card-item" @click="goTab('msg-tab')" type="button">
-            <i class="fas fa-comment"></i> Lịch sử
+            <i class="fas fa-comment"></i> History Payment
           </a>
         </div>
         <div class="item-container">
           <a class="my-card-item" @click="logOut" type="button">
-            <i class="fas fa-long-arrow-alt-right"></i> Đăng xuất
+            <i class="fas fa-long-arrow-alt-right"></i> Logout
           </a>
         </div>
       </v-card>

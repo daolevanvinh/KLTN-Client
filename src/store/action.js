@@ -358,6 +358,7 @@ export default {
             formData.append('title', lesson.title)
             formData.append('description', lesson.description)
             formData.append('video', lesson.videoInput)
+            formData.append('havePreview', lesson.havePreview)
             formData.append('token', localStorage.token)
             formData.append('chapter_id', lesson.chapter_id)
             for (let i = 0; i < lesson.resourseList.length; i++) {
@@ -390,6 +391,7 @@ export default {
             formData.append('title', lesson.title)
             formData.append('description', lesson.description)
             formData.append('video', lesson.videoInput)
+            formData.append('havePreview', lesson.havePreview)
             for (let i = 0; i < lesson.resourseList.length; i++) {
                 formData.append('resourse' + i, lesson.resourseList[i].file)
                 formData.append('resourseName' + i, lesson.resourseList[i].name)
@@ -1218,6 +1220,69 @@ export default {
                 })
                 .catch(function (err) {
                     commit('user_lesson_error')
+                    reject(err)
+                })
+        })
+    },
+    adminGetStoragePackage({ commit }) {
+        const apiURL = apiConfig.adminStoragePackage
+        commit('admin_storagePackage_request')
+        return new Promise((resolve, reject) => {
+            axios.get(apiURL, { params: {token: localStorage.adminToken} })
+                .then(function (response) {
+                    commit('admin_storagePackage_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('admin_storagePackage_error')
+                    reject(err)
+                })
+        })
+    },
+    adminInsertStoragePackage({ commit }, storagePackage) {
+        const apiURL = apiConfig.adminStoragePackage
+        commit('admin_storagePackage_request')
+        storagePackage.token = localStorage.adminToken
+        return new Promise((resolve, reject) => {
+            axios.post(apiURL, {},{ params: storagePackage })
+                .then(function (response) {
+                    commit('admin_storagePackage_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('admin_storagePackage_error')
+                    reject(err)
+                })
+        })
+    },
+    adminUpdateStoragePackage({ commit }, storagePackage) {
+        const apiURL = apiConfig.adminStoragePackage
+        commit('admin_storagePackage_request')
+        storagePackage.token = localStorage.adminToken
+        return new Promise((resolve, reject) => {
+            axios.patch(apiURL, {},{ params: storagePackage })
+                .then(function (response) {
+                    commit('admin_storagePackage_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('admin_storagePackage_error')
+                    reject(err)
+                })
+        })
+    },
+    adminDeleteStoragePackage({ commit }, storagePackage) {
+        const apiURL = apiConfig.adminStoragePackage
+        commit('admin_storagePackage_request')
+        storagePackage.token = localStorage.adminToken
+        return new Promise((resolve, reject) => {
+            axios.delete(apiURL,{ params: storagePackage })
+                .then(function (response) {
+                    commit('admin_storagePackage_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('admin_storagePackage_error')
                     reject(err)
                 })
         })

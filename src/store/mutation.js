@@ -525,5 +525,23 @@ export default {
     },
     channel_error(state) {
         state.userChannelListState.loading = false
+    },
+    admin_storagePackage_request(state) {
+        state.adminStoragePackageState.loading = true
+    },
+    admin_storagePackage_success(state, data) {
+        state.adminStoragePackageState.loading = false
+        if (data.list) {
+            state.adminStoragePackageState.list = data.list
+        }
+        if (data.object) {
+            state.adminStoragePackageState.object = data.object
+        }
+        if(data.courseList) {
+            state.adminStoragePackageState.courseList = data.courseList
+        }
+    },
+    admin_storagePackage_error(state) {
+        state.adminStoragePackageState.loading = false
     }
 }

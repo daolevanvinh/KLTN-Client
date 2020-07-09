@@ -14,7 +14,7 @@
         <template v-slot:item.action="data">
           <router-link
             :to="{name: 'lesson-page', params: {id: data.item.course_id}, query: {annouce: data.item.annouce_id}}"
-          >Chi tiết</router-link>
+          >Detail</router-link>
         </template>
       </v-data-table>
     </v-tab-item>
@@ -60,9 +60,9 @@ export default {
       },
       id: 0,
       header: [
-        { value: "name", text: "Khóa học", width: "15%" },
-        { value: "text", text: "Nội dung", width: "45%" },
-        { value: "updated_at", text: "Thời gian", width: "20%" },
+        { value: "name", text: "Course Name", width: "15%" },
+        { value: "text", text: "Content", width: "45%" },
+        { value: "updated_at", text: "At Time", width: "20%" },
         { value: "action", text: "", width: "20%" }
       ]
     };

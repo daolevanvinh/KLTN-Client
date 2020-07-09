@@ -12,7 +12,7 @@
           </div>
           <div style="font-size: 12px">
             <i>
-              Tác giả:
+              Author:
               <strong>{{course.author}}</strong>
             </i>
           </div>
@@ -33,12 +33,12 @@
         </v-card-text>
       </router-link>
       <div style="width:100%;text-align:center;margin-top: 1rem">
-        <v-btn small color="primary" style="margin-right: 1rem">Đánh giá</v-btn>
+        <v-btn small color="primary" style="margin-right: 1rem">Comment</v-btn>
         <v-btn small color="red">
           <router-link
             style="color: white"
             :to="{name: 'lesson-page', params: {id: course.course_id}}"
-          >Vào học</router-link>
+          >Study now</router-link>
         </v-btn>
       </div>
     </v-card>

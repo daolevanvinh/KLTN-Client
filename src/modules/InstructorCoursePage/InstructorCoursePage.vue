@@ -1,7 +1,7 @@
 <template>
   <div ref="top" class="my-container">
     <div>
-      <h1>Danh sách khóa học</h1>
+      <h1>Course List</h1>
       <div class="row">
         <div class="col-3">
           <input
@@ -25,7 +25,7 @@
         </div>
         <div class="col-3 offset-3">
           <button class="btn btn-danger btn-new" @click="dialog = true">
-            <i class="far fa-play-circle fa-lg"></i>&nbsp;Tạo khóa học
+            <i class="far fa-play-circle fa-lg"></i>&nbsp;New Course
           </button>
           <v-dialog v-model="dialog" persistent width="1300">
             <SteperCreateCourse

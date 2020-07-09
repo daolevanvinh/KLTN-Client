@@ -21,7 +21,7 @@
             </div>
             <div style="font-size: 9pt;">
               <i>
-                <b>Học tập Online</b>
+                <b>Study Online</b>
               </i>
             </div>
           </span>

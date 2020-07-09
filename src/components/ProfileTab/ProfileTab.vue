@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-tab-item class="profile-container" value="profile-tab">
-      <v-btn @click="save()" color="red darken-1" style="color:white;margin-bottom: 1rem">Lưu</v-btn>
+      <v-btn @click="save()" color="red darken-1" style="color:white;margin-bottom: 1rem">Save</v-btn>
       <VueEditor v-model="content"></VueEditor>
       <!-- <div class="ql-editor">
         <div v-html="content"></div>

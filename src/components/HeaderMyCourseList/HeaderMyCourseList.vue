@@ -2,7 +2,7 @@
   <div style="margin: 0 0.5rem;margin-left:0">
     <v-menu open-on-hover offset-y>
       <template v-slot:activator="{ on }">
-        <button class="btn hover-button" v-on="on">Khóa học</button>
+        <button class="btn hover-button" v-on="on">My Courses</button>
       </template>
       <v-card class="my-card" width="300">
         <div v-for="(course,index) in userCourseLikeList" :key="index">

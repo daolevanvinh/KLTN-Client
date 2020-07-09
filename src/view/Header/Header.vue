@@ -11,7 +11,7 @@
               </div>
               <div style="font-size: 9pt;">
                 <i>
-                  <b>Học tập Online</b>
+                  <b>Study Online</b>
                 </i>
               </div>
             </span>
@@ -32,7 +32,7 @@
                 hide-no-data
                 hide-details
                 flat
-                label="Tìm kiếm"
+                label="Search..."
                 dense
                 outlined
                 @keyup.enter="searchFunction()"
@@ -61,16 +61,16 @@
               <button v-if="false" @click="searchFunction()" class="btn btn-info btn-search">
                 <i class="fa fa-search"></i>
               </button>
-              <a
+              <!-- <a
                 v-if="!loadStateLogin && !userUserInfoLoading"
                 href="google"
                 class="btn normal-button"
-              >Miễn phí</a>
+              >Miễn phí</a> -->
               <router-link
                 v-if="loadStateLogin && !userUserInfoLoading"
                 :to="{name: 'instructor-page'}"
                 class="btn normal-button"
-              >Giảng Viên</router-link>
+              >Instructor</router-link>
               <div v-if="!userUserInfoLoading" style="border-left: 1px solid;margin-right: 1rem;"></div>
               <HeaderMyCourseList v-if="loadStateLogin && !userUserInfoLoading"></HeaderMyCourseList>
               <HeaderCartList v-if="loadStateLogin && !userUserInfoLoading"></HeaderCartList>
@@ -86,8 +86,8 @@
                   v-b-modal.login-modal
                   class="btn btn-outline-secondary"
                   style="margin-right: 1rem;"
-                >Đăng nhập</button>
-                <button v-b-modal.singup-modal class="btn btn-danger">Đăng ký</button>
+                >Sign in</button>
+                <button v-b-modal.singup-modal class="btn btn-danger">Sign up</button>
               </div>
               <v-skeleton-loader
                 v-if="userUserInfoLoading"

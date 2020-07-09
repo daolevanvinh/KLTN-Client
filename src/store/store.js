@@ -209,6 +209,12 @@ export const store = new Vuex.Store({
             object: {},
             courseList: []
         },
+        adminStoragePackageState: {
+            loading: false,
+            list: [],
+            object: {},
+            courseList: []
+        }
     },
     mutations,
     actions,

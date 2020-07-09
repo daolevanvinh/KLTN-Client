@@ -13,6 +13,8 @@ export default {
     adminQuestionBotLoading: state => state.adminQuestionBotState.loading,
     adminMessageBotList: state => state.adminMessageBotState.list,
     adminMessageBotLoading: state => state.adminMessageBotState.loading,
+    adminStoragePackageList: state => state.adminStoragePackageState.list,
+    adminStoragePackageLoading: state => state.adminStoragePackageState.loading,
     // user
     mypageTab: state => state.mypageTabState.hash,
     userUserInfo: state => state.userState.user,

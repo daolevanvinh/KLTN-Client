@@ -59,12 +59,12 @@
         persistent
         ref="dialog"
         v-model="dialogLessonDetail"
-        max-width="1000"
+        max-width="1300"
       >
         <v-card>
           <h3 style="border-bottom: 1px solid silver;padding: 1rem">{{loadSelectedLesson.title}}</h3>
           <v-tabs v-model="dialogTabUpdate">
-            <v-tab :href="`#infoTab`">Preview</v-tab>
+            <v-tab :href="`#infoTab`">Infomation</v-tab>
             <v-tab :href="`#editTab`">Lesson</v-tab>
             <v-tab :href="`#chapterSettingUpdateTab`">Chapter Setting</v-tab>
           </v-tabs>
@@ -79,7 +79,6 @@
                       aspect="16by9"
                       allowfullscreen
                     ></b-embed>
-                    <!-- <VideoPlayer ref="video" :lesson="loadSelectedLesson" :options="videoOptions"></VideoPlayer> -->
                   </div>
                 </div>
                 <div class="col-6" style="padding: 0;padding-left: 2rem">
@@ -120,7 +119,7 @@
               </div>
             </v-tab-item>
             <v-tab-item value="editTab">
-              <div class="row" v-if="updateLesson!=null">
+              <div class="row" style="margin-top: -1rem" v-if="updateLesson!=null">
                 <div class="col-6">
                   <div class="my-row-chapter">
                     <v-select
@@ -155,14 +154,23 @@
                     @keyup="disableSaveUpdateButton = false"
                   ></v-textarea>
                   <v-file-input
-                    id="videoInput"
-                    ref="videoInput"
+                  style="margin-top: -0.2rem"
                     accept="video/*"
                     @change="setVideoUpdate"
+                    v-model="mainVideo"
                     chips
                     show-size
                     label="Video is require (Main video)"
                   ></v-file-input>
+                  <v-checkbox
+                    @change="disableSaveUpdateButton = false;"
+                    v-model="updateLesson.havePreview"
+                    style="margin-top: 0"
+                  >
+                    <template v-slot:label>
+                      <div style="padding-top: 0.5rem">Is preview video?</div>
+                    </template>
+                  </v-checkbox>
                 </div>
                 <div class="col-6">
                   <div style="text-align: right">
@@ -186,7 +194,7 @@
                       class="elevation-1"
                       style="margin-top: 0.5rem"
                       dense
-                      height="13rem"
+                      height="16rem"
                       fixed-header
                       :search="searchTempForRSUpdate"
                       :headers="[{value:'file.name', text:'FileName', width: '80%'}, {value: 'action', text: ''}]"
@@ -252,6 +260,7 @@
                     title="Edit"
                   >mdi-pencil-box-multiple-outline</v-icon>
                   <v-icon
+                    color="red"
                     style="cursor: pointer;"
                     @click="deleteChaper(data.item)"
                     title="Delete"
@@ -274,8 +283,8 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-dialog v-if="newLesson != null" v-model="actionDialog" width="1000">
-        <v-card width="1000" style="padding: 1rem">
+      <v-dialog persistent v-if="newLesson != null" v-model="actionDialog" width="1300">
+        <v-card width="1300" style="padding: 1rem">
           <v-tabs v-model="dialogTab">
             <v-tab :href="`#lessonTab`">Lesson</v-tab>
             <v-tab :href="`#chapterSetting`">Chapter Setting</v-tab>
@@ -318,8 +327,17 @@
                       @change="setVideo"
                       chips
                       show-size
+                      v-model="mainVideo"
                       label="Video is require (Main video)"
                     ></v-file-input>
+                    <v-checkbox
+                      v-model="newLesson.havePreview"
+                      style="margin-top: 0"
+                    >
+                      <template v-slot:label>
+                        <div style="padding-top: 0.5rem">Is preview video?</div>
+                      </template>
+                    </v-checkbox>
                   </div>
                   <div class="col-6">
                     <div style="text-align: right">
@@ -338,12 +356,11 @@
                       />
                     </div>
 
-                    <div class="my-control-container">
+                    <div style="margin-top: 1rem">
                       <v-data-table
                         class="elevation-1"
-                        style="margin-top: 0.5rem"
                         dense
-                        height="13rem"
+                        height="16rem"
                         :search="searchTempForRSUpdate"
                         :headers="[{value:'file.name', text:'FileName', width: '80%'}, {value: 'action', text: ''}]"
                         :items="resourseList"
@@ -411,6 +428,7 @@
                       style="cursor: pointer;"
                       @click="deleteChaper(data.item)"
                       title="Delete"
+                      color="red"
                     >mdi-delete-forever-outline</v-icon>
                   </template>
                 </v-data-table>
@@ -430,7 +448,7 @@
           </div>
         </v-card>
       </v-dialog>
-      <v-dialog v-model="chapterLoading" width="200">
+      <v-dialog persistent v-model="chapterLoading" width="200">
         <v-card style="padding: 1rem" width="200">In progressing...</v-card>
       </v-dialog>
     </div>
@@ -453,9 +471,13 @@ export default {
       }
       this.handleData();
     });
+    if (!this.$route.query.course_id) {
+      this.$store.commit("user_lesson_success", { list: [] });
+    }
   },
   data() {
     return {
+      mainVideo: null,
       chapterLoading: false,
       dialogTab: `lessonTab`,
       dialogTabUpdate: `infoTab`,
@@ -486,7 +508,8 @@ export default {
       newLesson: {
         title: "",
         description: "",
-        videoInput: null
+        videoInput: null,
+        havePreview: 0
       },
       courseList: [],
       selectedLesson: {},
@@ -501,7 +524,9 @@ export default {
         sources: []
       },
       disableSaveUpdateButton: true,
-      updateLesson: {},
+      updateLesson: {
+        havePreview: false
+      },
       edit: false,
       actionDialog: false,
       search: "",
@@ -562,9 +587,11 @@ export default {
       this.selectedLesson = null;
       this.chapterIdSelected = null;
       this.disableSaveUpdateButton = true;
-      this.resourseList = []
-      this.resourseUpdateList = []
-      document.getElementById('')
+      this.resourseList = [];
+      this.resourseUpdateList = [];
+      document.getElementById("");
+      this.mainVideo = null;
+      this.previewVideo = null;
       //document.getElementById("videoInput").value = "";
       //console.log(this.$refs.videoInput);
     },
@@ -574,6 +601,9 @@ export default {
       this.dialogTabUpdate = "infoTab";
       //this.$refs.video.pause();
       this.selectedLesson = {};
+      this.updateLesson = { havePreview: false };
+      this.mainVideo = null;
+      this.previewVideo = null;
     },
     addLesson() {
       if (
@@ -640,7 +670,6 @@ export default {
               if (response.data.RequestSuccess === true) {
                 vm.dialogLessonDetail = false;
               }
-
               this.refresh();
               this.dialogLessonDetail = false;
               this.dialogTabUpdate = "infoTab";
@@ -688,7 +717,8 @@ export default {
         description: lesson.description,
         chapter: lesson.chapter,
         course_id: lesson.course_id,
-        json_info_resourse: lesson.json_info_resourse
+        json_info_resourse: lesson.json_info_resourse,
+        havePreview: lesson.havePreview
       };
       this.resourseUpdateList = [];
       for (let rs of lesson.json_info_resourse) {
@@ -743,17 +773,21 @@ export default {
         showCancelButton: true
       }).then(result => {
         if (result.value) {
-          this.$store.dispatch("userDeleteInsLesson", {
-            lesson_id: lesson.lesson_id,
-            course_id: this.courseSelected
-          }).then((response) => {
-            let icon = ''
-            response.data.RequestSuccess === true ? icon = 'success' : icon = 'error'
-            this.$swal({
-              icon: icon,
-              title: response.data.msg
+          this.$store
+            .dispatch("userDeleteInsLesson", {
+              lesson_id: lesson.lesson_id,
+              course_id: this.courseSelected
             })
-          });
+            .then(response => {
+              let icon = "";
+              response.data.RequestSuccess === true
+                ? (icon = "success")
+                : (icon = "error");
+              this.$swal({
+                icon: icon,
+                title: response.data.msg
+              });
+            });
         }
       });
     },
@@ -945,12 +979,6 @@ input {
   margin: 0;
   margin-top: -0.4rem;
   width: 80%;
-}
-
-.my-control-container {
-  max-height: 20rem !important;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 .my-row-chapter {

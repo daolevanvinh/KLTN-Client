@@ -42,58 +42,37 @@
               ></v-skeleton-loader>
             </v-responsive>
           </div>
-
-          <div
-            class="row"
-            id="body"
-            v-if="userCourseListCartList==null || (!userCourseListCartLoading && userCourseListCartList != null && userCourseListCartList.length == 0)"
-          >
-            <div class="container">
-              <div class="row">
-                <div class="col align-end offset-4" style="margin-left:30%">
-                  <div class="col-12">
-                    <i class="fas fa-shopping-cart" style="font-size: 10rem"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col align-end offset">
-                  <div class="col-12">
-                    <h4>Hiện tại giỏ hàng đang trống. Hãy tiếp tục mua sắm thêm khóa học bạn nhé</h4>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col align-end offset-4">
-                  <div class="col-12">
-                    <router-link
-                      type="button"
-                      id="btnKeepShopping"
-                      :to="{name: 'search-page'}"
-                      class="btn btn-danger btn-lg"
-                    >Tiếp tục mua sắm</router-link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
+      </div>
+    </div>
+    <div
+      v-if="!userCourseListCartLoading && userCourseListCartList.length == 0"
+      class="text-center"
+    >
+      <div style="margin-left: -2rem">
+        <i class="fas fa-shopping-cart" style="font-size: 10rem"></i>
+      </div>
+      <div style="margin-top: 3rem">
+        <router-link
+          type="button"
+          :to="{name: 'search-page'}"
+          class="btn btn-danger btn-lg"
+          style="color: white;"
+        >Go to shopping</router-link>
       </div>
     </div>
     <div
       class="my-container"
       v-if="!userCourseListCartLoading && userCourseListCartList.length > 0"
     >
-      <div style="font-size: 18px">{{userCourseListCartList.length}}&nbsp;Khóa học trong giỏ hàng</div>
+      <div style="font-size: 18px"><b style="font-size: 20px">{{userCourseListCartList.length}}</b>&nbsp;in Cart List</div>
       <div class="row">
         <div class="col-9">
           <div class="course-item" v-for="(course,index) in userCourseListCartList" :key="index">
             <div class="row">
               <div class="col-2">
                 <router-link :to="{name: 'course-detail-page', params: {id: course.course_id}}">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQK60mFUNV8eXgrHZYzJwIKiYTPPhPW_jqFKlUcEcQGvxrF6F21&usqp=CAU"
-                  />
+                  <img :src="imageURL+'/'+course.course_id+'/'+course.course_id+'.png'" />
                 </router-link>
               </div>
               <div class="col-6">
@@ -110,13 +89,13 @@
                 >{{course.price_tier.priceTier.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}}</b>
               </div>
             </div>
-            <a @click="deleteCart(course.course_id)" class="my-link" href="#">Xóa</a>
+            <a @click="deleteCart(course.course_id)" class="my-link" href="#">delete</a>
           </div>
         </div>
         <div class="col-3" style="padding-left: 1.5rem;">
-          <div style="font-size: 18px">Tổng tiền:</div>
+          <div style="font-size: 18px">Total:</div>
           <div style="margin: 1rem 0">
-            <h2>{{totalPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}}</h2>
+            <h2 style="color:red;">{{totalPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}}</h2>
           </div>
           <div>
             <v-btn
@@ -125,7 +104,7 @@
               style="background-color:#ec5252;color:white"
               :href="apiURL + '/user/payment?token='+token"
               target="_blank"
-            >Thanh toán</v-btn>
+            >Payment</v-btn>
           </div>
         </div>
       </div>
@@ -140,6 +119,7 @@ import apiConfig from "../../API/api.json";
 export default {
   data() {
     return {
+      imageURL: apiConfig.imageURL,
       tempCourseList: [],
       boilerplate: false,
       tile: false,
@@ -212,7 +192,7 @@ a {
       border-bottom: none;
     }
     :last-child {
-      border-bottom:  none;
+      border-bottom: none;
     }
     .col-2 {
       img {

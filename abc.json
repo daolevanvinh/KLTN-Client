@@ -1,16 +1,85 @@
 {
     "list": [
         {
-            "lesson_id": 140,
-            "title": "Intro 1",
-            "description": "Intro 1",
+            "lesson_id": 145,
+            "title": "1",
+            "description": "1",
             "course_id": 73,
-            "updated_at": "2020-07-07 03:39:21",
+            "updated_at": "2020-07-07 08:48:14",
             "commentCount": 0,
-            "duration": 45,
+            "duration": 278,
             "json_info_resourse": [
                 {
+                    "name": "avatar.png"
+                },
+                {
                     "name": "goodlearning_22_5_2020.sql"
+                }
+            ],
+            "chapter_id": "2020-07-07 03:36:58",
+            "chapter": {
+                "chapter_id": "2020-07-07 03:36:58",
+                "chapter_text": "Intro"
+            },
+            "havePreview": false
+        },
+        {
+            "lesson_id": 146,
+            "title": "123",
+            "description": "213",
+            "course_id": 73,
+            "updated_at": "2020-07-07 08:50:12",
+            "commentCount": 0,
+            "duration": 368,
+            "json_info_resourse": [
+                {
+                    "name": "db.png"
+                },
+                {
+                    "name": "New Text Document.txt"
+                }
+            ],
+            "chapter_id": "2020-07-07 03:36:58",
+            "chapter": {
+                "chapter_id": "2020-07-07 03:36:58",
+                "chapter_text": "Intro"
+            },
+            "havePreview": false
+        },
+        {
+            "lesson_id": 147,
+            "title": "intro 1",
+            "description": "intro 1",
+            "course_id": 73,
+            "updated_at": "2020-07-08 09:11:14",
+            "commentCount": 0,
+            "duration": 278,
+            "json_info_resourse": [
+                {
+                    "name": "xampp-control.exe"
+                },
+                {
+                    "name": "goodlearning_22_5_2020 - Copy.sql"
+                }
+            ],
+            "chapter_id": "2020-07-07 03:36:58",
+            "chapter": {
+                "chapter_id": "2020-07-07 03:36:58",
+                "chapter_text": "Intro"
+            },
+            "havePreview": false
+        },
+        {
+            "lesson_id": 148,
+            "title": "intro test",
+            "description": "intro test",
+            "course_id": 73,
+            "updated_at": "2020-07-08 10:00:01",
+            "commentCount": 0,
+            "duration": 442,
+            "json_info_resourse": [
+                {
+                    "name": "avatar - Copy.png"
                 },
                 {
                     "name": "db.png"
@@ -20,7 +89,88 @@
             "chapter": {
                 "chapter_id": "2020-07-07 03:36:58",
                 "chapter_text": "Intro"
-            }
+            },
+            "havePreview": false
+        },
+        {
+            "lesson_id": 149,
+            "title": "test2",
+            "description": "test2",
+            "course_id": 73,
+            "updated_at": "2020-07-08 10:01:19",
+            "commentCount": 0,
+            "duration": 368,
+            "json_info_resourse": [],
+            "chapter_id": "2020-07-07 03:36:58",
+            "chapter": {
+                "chapter_id": "2020-07-07 03:36:58",
+                "chapter_text": "Intro"
+            },
+            "havePreview": false
+        },
+        {
+            "lesson_id": 150,
+            "title": "est3",
+            "description": "test3",
+            "course_id": 73,
+            "updated_at": "2020-07-08 10:02:08",
+            "commentCount": 0,
+            "duration": 45,
+            "json_info_resourse": [],
+            "chapter_id": "2020-07-07 03:36:58",
+            "chapter": {
+                "chapter_id": "2020-07-07 03:36:58",
+                "chapter_text": "Intro"
+            },
+            "havePreview": false
+        },
+        {
+            "lesson_id": 151,
+            "title": "121212",
+            "description": "12121212",
+            "course_id": 73,
+            "updated_at": "2020-07-08 10:03:25",
+            "commentCount": 0,
+            "duration": 45,
+            "json_info_resourse": [],
+            "chapter_id": "2020-07-07 03:36:58",
+            "chapter": {
+                "chapter_id": "2020-07-07 03:36:58",
+                "chapter_text": "Intro"
+            },
+            "havePreview": false
+        },
+        {
+            "lesson_id": 153,
+            "title": "23123",
+            "description": "123",
+            "course_id": 73,
+            "updated_at": "2020-07-08 10:05:54",
+            "commentCount": 0,
+            "duration": 45,
+            "json_info_resourse": [],
+            "chapter_id": "2020-07-07 07:48:57",
+            "chapter": {
+                "chapter_id": "2020-07-07 07:48:57",
+                "chapter_text": "165456"
+            },
+            "havePreview": false
+        },
+        {
+            "lesson_id": 154,
+            "title": "fsdfdsfsd",
+            "description": "fsdfdsf",
+            "course_id": 73,
+            "updated_at": "2020-07-08 10:06:38",
+            "commentCount": 0,
+            "duration": 278,
+            "json_info_resourse": [],
+            "chapter_id": "2020-07-07 03:37:08",
+            "chapter": {
+                "chapter_id": "2020-07-07 03:37:08",
+                "chapter_text": "Beginer 1"
+            },
+            "havePreview": true
         }
     ]
 }

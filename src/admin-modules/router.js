@@ -1,10 +1,11 @@
 import EmployeePage from "./EmployeePage/EmployeePage"
 import ITPage from "./ITPage/ITPage"
-import CategoryPage from "./CategoryPage.vue/CategoryPage"
+import CategoryPage from "./CategoryPage/CategoryPage"
 import CoursePage from "./CoursePage/CoursePage"
 import ChatBotPage from "./ChatBotPage/ChatBotPage"
 import TopicPage from "./TopicPage/TopicPage"
 import StatisticalPage from "./StatisticalPage/StatisticalPage"
+import StorageBusiness from "./StorageBusinessPage/StorageBusinessPage"
 import AccountPage from "./AccountPage/AccountPage"
 import AdminLoginPage from "./LoginPage/LoginPage"
 export default [
@@ -65,6 +66,14 @@ export default [
         path: 'statistical',
         name: 'statistical-page',
         component: StatisticalPage,
+        meta: {
+            emp: true
+        }
+    },
+    {
+        path: 'storageBusiness',
+        name: 'storage-business-page',
+        component: StorageBusiness,
         meta: {
             emp: true
         }

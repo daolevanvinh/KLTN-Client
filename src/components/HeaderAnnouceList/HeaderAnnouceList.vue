@@ -32,11 +32,11 @@
             class="btn btn-info"
             @click="moreAnnouce()"
             v-if="stuAnnouceList != null && stuAnnouceList.length > 3"
-          >Xem thêm</button>
+          >more</button>
           <h5
             v-if="(stuAnnouceList == null || stuAnnouceList.length==0)"
             class="text-center"
-          >Danh sách rỗng!</h5>
+          >Empty!</h5>
         </div>
       </v-card>
     </v-menu>

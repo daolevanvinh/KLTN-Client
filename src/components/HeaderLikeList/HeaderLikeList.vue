@@ -24,11 +24,11 @@
             style="width:100%;"
             class="btn btn-info"
             v-if="userCourseLikeList != null && userCourseLikeList.length > 3"
-          >Xem thêm</button>
+          >more</button>
           <h5
             v-if="(userCourseLikeList == null || userCourseLikeList.length==0)"
             class="text-center"
-          >Danh sách rỗng!</h5>
+          >Empty!</h5>
         </div>
       </v-card>
     </v-menu>
