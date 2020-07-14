@@ -22,6 +22,7 @@ var apiURL = {
     userLesson: apiAddress + "/user/lesson",
     userEditLesson: apiAddress + "/user/lesson/edit",
     userCourseLike: apiAddress + "/user/courseLike",
+    userCourseComment: apiAddress + "/user/courseComment",
     userCoursePriceTier: apiAddress + "/user/course/priceTier",
     userForgotPassword: apiAddress + "/user/forgotPassword",
     userCart: apiAddress + "/user/cart",
@@ -35,6 +36,8 @@ var apiURL = {
     userChannel: apiAddress + '/user/channel',
     userChannelCourseList: apiAddress + "/user/channel/course",
     userChapter: apiAddress + "/user/chapter",
+    userStoragePackage: apiAddress + "/user/storagePack",
+    userStoragePackagePayment: apiAddress + "/user/storagePackage/payment",
     //guest
     guestGetCategory: apiAddress + "/guest/category",
     guestGetCategoryWithTopCourse: apiAddress + "/guest/category/topCourse",
@@ -54,7 +57,29 @@ var apiURL = {
     userGetCart: apiAddress + '/user/getcart',
     userDeleteCarts: apiAddress + '/deleteCarts',
     getCourse: apiAddress + '/getCourse',
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    // hung
+    adminGetSatistical: apiAddress + "/admin/detailstatistical",
+    adminGetInfoSatistical: apiAddress + "/admin/statistical",
+    adminGetInfoCourseStatistical: apiAddress + "/admin/coursestatistical",
+    adminGetListCourse: apiAddress + "/admin/getlistcourse",
+    adminUnactiveCourse: apiAddress + "/admin/unactivecourse",
+    adminActiveCourse: apiAddress + "/admin/activecourse",
 
+    adminGetListPricetier: apiAddress + "/admin/getlistpricetier",
+    adminGetListCoursebyPrice: apiAddress + "/admin/getlistcoursebyprice",
+    adminDeletePricetier: apiAddress + "/admin/deletepricetier",
+    adminInsertPricetier: apiAddress + "/admin/insertpricetier",
+
+    adminGetListMoneytype: apiAddress + '/admin/getlistmoneytype',
+    adminGetListCoursebyMoneytype: apiAddress + '/admin/getlistcoursebymoneytype',
+    adminDeleteMoneytype: apiAddress + '/admin/deletemoneytype',
+    adminInsertMoneytype: apiAddress + '/admin/insertmoneytype',
+    adminManageUsers: apiAddress + "/admin/users",
+
+    adminGetInfo: apiAddress + "/admin",
+    adminEditInfo: apiAddress + "/admin/edit/info",
+    adminChangePassword: apiAddress + "/admin/changepassword",
 }
 
 exports.apiURL = apiURL

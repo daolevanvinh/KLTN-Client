@@ -190,7 +190,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('user_getCategory_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -220,7 +220,7 @@ export default {
             let formData = new FormData()
             formData.append('category_id', course.category_id)
             formData.append('topic_id_list', JSON.stringify(course.topics))
-            console.log(course)
+            //console.logle.log(course)
             formData.append('name', course.name)
             formData.append('description', course.description)
             formData.append('image', course.imageInput)
@@ -250,7 +250,7 @@ export default {
         })
     },
     userEditInfor({ commit }, user) {
-        //console.log(user)
+        ////console.logle.log(user)
         const apiURL = apiConfig.userEditInfor
         commit('user_request')
         const config = {
@@ -299,7 +299,7 @@ export default {
         user.token = localStorage.token
         commit('user_request')
         return new Promise((resolve, reject) => {
-            console.log(apiURL, user)
+            //console.logle.log(apiURL, user)
             axios.patch(apiURL, {}, { params: user })
                 .then(function (response) {
                     commit('user_success', response.data)
@@ -322,7 +322,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('guest_category_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -423,7 +423,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('admin_question_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -440,7 +440,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('admin_question_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -457,7 +457,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('admin_question_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -474,7 +474,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('admin_question_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -491,7 +491,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('admin_question_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -508,7 +508,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('admin_question_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -525,7 +525,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('admin_question_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -541,7 +541,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('admin_message_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -550,7 +550,7 @@ export default {
         return new Promise((resolve, reject) => {
             let apiURL = apiConfig.adminMessageBot
             message.token = localStorage.adminToken
-            console.log(message)
+            //console.logle.log(message)
             commit('admin_message_bot_request')
             axios.post(apiURL, {}, { params: message })
                 .then(function (response) {
@@ -559,7 +559,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('admin_message_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -576,7 +576,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('admin_message_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -593,7 +593,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('admin_message_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -609,7 +609,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('guest_message_bot_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -625,7 +625,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('guest_category_topCourse_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -809,7 +809,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('user_course_like_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -830,7 +830,7 @@ export default {
         })
     },
     userPublicOrUnPublicCourse({ commit }, course_id) {
-        console.log('vinh')
+        //console.logle.log('vinh')
         return new Promise((resolve, reject) => {
             commit('user_public_course_request')
             let apiURL = apiConfig.userCourse
@@ -1054,7 +1054,7 @@ export default {
             let apiURL = apiConfig.Annouce
             commit('user_annouce_request')
             data.token = localStorage.token
-            console.log(data)
+            //console.logle.log(data)
             axios.post(apiURL, {}, { params: data })
                 .then(function (response) {
                     commit('user_annouce_success', response.data)
@@ -1169,7 +1169,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('user_course_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -1186,7 +1186,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('user_course_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -1203,7 +1203,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('user_course_error')
-                    // console.log(error)
+                    // //console.logle.log(error)
                     reject(error)
                 })
         })
@@ -1228,7 +1228,7 @@ export default {
         const apiURL = apiConfig.adminStoragePackage
         commit('admin_storagePackage_request')
         return new Promise((resolve, reject) => {
-            axios.get(apiURL, { params: {token: localStorage.adminToken} })
+            axios.get(apiURL, { params: { token: localStorage.adminToken } })
                 .then(function (response) {
                     commit('admin_storagePackage_success', response.data)
                     resolve(response);
@@ -1244,7 +1244,7 @@ export default {
         commit('admin_storagePackage_request')
         storagePackage.token = localStorage.adminToken
         return new Promise((resolve, reject) => {
-            axios.post(apiURL, {},{ params: storagePackage })
+            axios.post(apiURL, {}, { params: storagePackage })
                 .then(function (response) {
                     commit('admin_storagePackage_success', response.data)
                     resolve(response);
@@ -1260,7 +1260,7 @@ export default {
         commit('admin_storagePackage_request')
         storagePackage.token = localStorage.adminToken
         return new Promise((resolve, reject) => {
-            axios.patch(apiURL, {},{ params: storagePackage })
+            axios.patch(apiURL, {}, { params: storagePackage })
                 .then(function (response) {
                     commit('admin_storagePackage_success', response.data)
                     resolve(response);
@@ -1276,7 +1276,7 @@ export default {
         commit('admin_storagePackage_request')
         storagePackage.token = localStorage.adminToken
         return new Promise((resolve, reject) => {
-            axios.delete(apiURL,{ params: storagePackage })
+            axios.delete(apiURL, { params: storagePackage })
                 .then(function (response) {
                     commit('admin_storagePackage_success', response.data)
                     resolve(response);
@@ -1286,5 +1286,424 @@ export default {
                     reject(err)
                 })
         })
-    }
+    },
+    userCourseComment({ commit }, comment) {
+        const apiURL = apiConfig.userCourseComment
+        commit('user_CourseComment_request')
+        comment.token = localStorage.token
+        return new Promise((resolve, reject) => {
+            axios.post(apiURL, {}, { params: comment })
+                .then(function (response) {
+                    commit('user_CourseComment_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('user_CourseComment_error')
+                    reject(err)
+                })
+        })
+    },
+    userGetStoragePackge({ commit }) {
+        const apiURL = apiConfig.userStoragePackage
+        commit('user_StoragePackage_request')
+        return new Promise((resolve, reject) => {
+            axios.get(apiURL, { params: { token: localStorage.token } })
+                .then(function (response) {
+                    commit('user_StoragePackage_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('user_StoragePackage_error')
+                    reject(err)
+                })
+        })
+    },
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //hung
+    adminGetStatistical({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminGetSatistical
+            commit('admin_getStatistical_request')
+            axios.get(apiURL, { params: { token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit('admin_getStatistical_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_getStatistical_error')
+                    reject(error)
+                })
+        })
+    },
+    adminGetInfoStatistical({ commit }, object) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminGetInfoSatistical
+            object.token = localStorage.adminToken
+            //console.logle.log("object nè", object)
+            let data = object
+            commit('admin_getStatistical_request')
+            axios.get(apiURL, { params: data })
+                .then(function (response) {
+                    commit('admin_getStatistical_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_getStatistical_error')
+                    reject(error)
+                })
+        })
+    },
+    adminGetInfoCourseStatistical({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminGetInfoCourseStatistical
+            commit('admin_getStatistical_request')
+            axios.get(apiURL, { params: { token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit('admin_getStatistical_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_getStatistical_error')
+                    reject(error)
+                })
+        })
+    },
+
+    adminGetListCourse({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminGetListCourse
+            commit('admin_getListCourse_request')
+            axios.get(apiURL, { params: { token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit('admin_getListCourse_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_getListCourse_error')
+                    reject(error)
+                })
+        })
+    },
+
+    adminUnactiveCourse({ commit }, course_id) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminUnactiveCourse
+            commit("admin_getListCourse_request")
+            axios.delete(apiURL, { params: { course_id: course_id, token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit("admin_getListCourse_success", response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit("admin_getListCourse_error")
+                    reject(error)
+                })
+        })
+    },
+    adminActiveCourse({ commit }, course_id) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminActiveCourse
+            commit("admin_getListCourse_request")
+            axios.get(apiURL, { params: { course_id: course_id, token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit("admin_getListCourse_success", response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit("admin_getListCourse_error")
+                    reject(error)
+                })
+        })
+    },
+
+    adminGetListPricetier({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminGetListPricetier
+            commit("admin_getListPricetier_request")
+            axios.get(apiURL, { params: { token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit("admin_getListPricetier_success", response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit("admin_getListPricetier_error")
+                    reject(error)
+                })
+        })
+    },
+
+    adminGetListCoursebyPrice({ commit }, price) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminGetListCoursebyPrice
+            commit('admin_getListCoursebyPrice_request')
+            axios.get(apiURL, { params: { price: price, token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit("admin_getListCoursebyPrice_success", response.data)
+                    //console.logle.log("vcc", response)
+                    resolve(response);
+
+                })
+                .catch(function (error) {
+                    commit("admin_getListCoursebyPrice_error")
+                    reject(error)
+                })
+        })
+    },
+
+    adminDeletePricetier({ commit }, object) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminDeletePricetier
+            commit("admin_getListCoursebyPrice_request")
+            axios.delete(apiURL, { params: { pricetier_id: object.pricetier_id, disable: object.disable, token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit("admin_getListCoursebyPrice_success")
+                    //console.logle.log("disable ?", object.disable)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit("admin_getListCoursebyPrice_error")
+                    reject(error)
+                })
+        })
+    },
+
+    adminInsertPrice({ commit }, pricetierNewValue) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminInsertPricetier
+            commit("admin_getListCoursebyPrice_request")
+            axios.get(apiURL, { params: { pricetierNewValue: pricetierNewValue, token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit("admin_getListCoursebyPrice_success")
+                    //console.logle.log("pricetierNewValueeee", pricetierNewValue)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit("admin_getListCoursebyPrice_error")
+                    reject(error)
+                })
+        })
+    },
+
+    adminGetListMoneytype({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminGetListMoneytype
+            commit("admin_getListCoursebyPrice_request")
+            axios.get(apiURL, { params: { token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit("admin_getListCoursebyPrice_success", response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit("admin_getListCoursebyPrice_error")
+                    reject(error)
+                })
+        })
+    },
+    adminGetListCoursebyMoneytype({ commit }, moneytype) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminGetListCoursebyMoneytype
+            commit("admin_getListCoursebyPrice_request")
+            axios.get(apiURL, { params: { moneytype: moneytype, token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit("admin_getListCoursebyPrice_success")
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit("admin_getListCoursebyPrice_error")
+                    reject(error)
+                })
+        })
+    },
+    adminInsertPrice({ commit }, pricetierNewValue) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminInsertPricetier
+            commit("admin_getListCoursebyPrice_request")
+            axios.get(apiURL, { params: { pricetierNewValue: pricetierNewValue, token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit("admin_getListCoursebyPrice_success")
+                    //console.logle.log("pricetierNewValueeee", pricetierNewValue)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit("admin_getListCoursebyPrice_error")
+                    reject(error)
+                })
+        })
+    },
+    adminDeleteMoneytype({ commit }, object) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminDeleteMoneytype
+            commit("admin_getListCoursebyPrice_request")
+            axios.delete(apiURL, { params: { moneyType_id: object.moneyType_id, disable: object.disable, token: localStorage.admiToken } })
+                .then(function (response) {
+                    commit("admin_getListCoursebyPrice_success", response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit("admin_getListCoursebyPrice_error")
+                    reject(error)
+                })
+        })
+    },
+    adminInsertMoneytype({ commit }, moneytypeNewValue) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminInsertMoneytype
+            commit("admin_getListCoursebyPrice_request")
+            axios.get(apiURL, { params: { moneytypeNewValue: moneytypeNewValue, token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit("admin_getListCoursebyPrice_success", response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit("admin_getListCoursebyPrice_error")
+                    reject(error)
+                })
+        })
+    },
+    //
+
+    adminEditInfor({ commit }, adminObj) {
+        const apiURL = apiConfig.adminEditInfo
+        commit('admin_request')
+        const data = {
+            token: localStorage.adminToken,
+            name: adminObj.name,
+            phone: adminObj.phone,
+            address: adminObj.address,
+        }
+        return new Promise((resolve, reject) => {
+            axios.post(apiURL, {}, { params: data, adminObj })
+                .then(function (response) {
+                    commit('admin_success', response.data)
+                    //console.logle.log("respone data", response.data)
+                    //console.logle.log("objecsadasdt", adminObj)
+                    resolve(response)
+                })
+                .catch(function (err) {
+                    commit('admin_error')
+
+                    //console.logle.log("object", adminObj)
+                    reject(err)
+                })
+        })
+
+    },
+    adminGetListUser({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminManageUsers
+            commit("admin_managelistusers_request")
+            axios.get(apiURL, { params: { token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit('admin_managelistusers_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_managelistusers_error')
+                    reject(error)
+                })
+        })
+    },
+    adminDeleteUser({ commit }, admin_id) {
+        let data = {
+            admin_id: admin_id,
+            token: localStorage.adminToken,
+        }
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminManageUsers
+            commit("admin_managelistusers_request")
+            axios.delete(apiURL, { params: data })
+                .then(function (response) {
+                    commit("admin_managelistusers_success", response.data);
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit("admin_managelistusers_error");
+                    reject(response)
+                })
+        })
+    },
+    adminInsertUser({ commit }, objInsert) {
+        let data = {
+            admin_id: objInsert.admin_id,
+            name: objInsert.name,
+            phone: objInsert.phone,
+            address: objInsert.address,
+            admintype_id: objInsert.admintype_id,
+            token: localStorage.adminToken,
+        }
+
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminManageUsers
+            commit("admin_managelistusers_request")
+            axios.post(apiURL, {}, { params: data, objInsert })
+                .then(function (response) {
+                    commit("admin_managelistusers_success", response.data);
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit("admin_managelistusers_error");
+                    reject(err)
+                })
+        })
+    },
+    adminActiveUser({ commit }, admin_id) {
+        let data = {
+            token: localStorage.adminToken,
+            admin_id: admin_id,
+            token: localStorage.adminToken,
+        }
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminManageUsers;
+            commit("admin_managelistusers_request")
+            axios.patch(apiURL, {}, { params: data })
+                .then(function (response) {
+                    commit("admin_managelistusers_success", response.data);
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit("admin_managelistusers_error");
+                    reject(err)
+                })
+        })
+    },
+    adminEditUser({ commit }, objUpdate) {
+        let data = {
+            token: localStorage.adminToken,
+            admin_id: objUpdate.admin_id,
+            name: objUpdate.name,
+            phone: objUpdate.phone,
+            address: objUpdate.address,
+            admintype_id: objUpdate.admintype_id,
+        }
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminManageUsers;
+            commit("admin_managelistusers_request")
+            axios.put(apiURL, {}, { params: data, objUpdate })
+                .then(function (response) {
+                    commit("admin_managelistusers_success", response.data)
+                    resolve(response)
+                })
+                .catch(function (err) {
+                    commit("admin_managelistusers_error")
+                    reject(err)
+                })
+        })
+    },
+    adminInfo({ commit }) {
+        const apiURL = apiConfig.adminGetInfo
+        commit('admin_request')
+        return new Promise((resolve, reject) => {
+            axios.get(apiURL, { params: { token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit('admin_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('admin_error')
+                    reject(err)
+                })
+        })
+    },
+    //
 }

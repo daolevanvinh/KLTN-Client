@@ -133,20 +133,6 @@
                       </div>
                       <div class="lesson-title">
                         {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}{{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
                       </div>
                       <div style="position: absolute;right: 1.2rem;top: 0.2rem">
                         <i>{{lesson.duration}}</i>
@@ -157,18 +143,6 @@
                         <v-icon size="20" style="margin-right: 0.5rem">mdi-play-circle</v-icon>
                       </div>
                       <div class="lesson-title">
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}{{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}{{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}{{lesson.title}}
-                        {{lesson.title}}
-                        {{lesson.title}}
                         {{lesson.title}}
                       </div>
                       <div style="position: absolute;right: 1.2rem;top: 0.2rem">

@@ -1,7 +1,7 @@
 <template>
   <div class="my-container">
     <LeftMenu :list="list"></LeftMenu>
-    <v-app style="background: rgb(244, 243, 239)">
+    <v-app style="background: #f4f3ef;min-height:100%;padding-bottom: 3rem"> 
       <div class="instructor-control">
         <span style="position: absolute; right: 8rem;top: 0.5rem;z-index: 2">
           Your Coin:
@@ -78,6 +78,22 @@ export default {
           header: "Statistics",
           icon: "far fa-chart-bar fa-lg",
           items: [{ title: "Overview", icon: "fas fa-circle fa-sm" }]
+        },
+        {
+          header: "Premium Account",
+          icon: "far fa-credit-card fa-lg",
+          items: [
+            {
+              title: "Store Package",
+              icon: "fas fa-circle fa-sm",
+              routeName: "ins-package-page"
+            },
+            {
+              title: "My Packages",
+              icon: "fas fa-circle fa-sm",
+              routeName: "ins-my-package-page"
+            }
+          ]
         }
       ]
     };

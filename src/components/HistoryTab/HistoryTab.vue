@@ -12,7 +12,9 @@
             style="margin: 0.5rem 0"
             v-for="(course, index) in JSON.parse(data.item.currentInfo)"
             :key="index"
-          >{{course.name}}</li>
+          >
+          <span v-if="course.storagePackage_id==null">{{course.name}}</span>
+          <span v-else style="color: red;font-weight: bold">{{course.name}}&nbsp;(Storage Package)</span></li>
         </ul>
       </template>
     </v-data-table>
@@ -26,7 +28,7 @@ export default {
       header: [
         { text: "Time", value: "updated_at", width: "17%" },
         { text: "Total Price", value: "vnp_Amount", width: "13%" },
-        { text: "Course List", value: "coursetList", width: "30%" },
+        { text: "Item List", value: "coursetList", width: "30%" },
         { text: "Card Type", value: "vnp_CardType", width: "10%" },
         { text: "Transaction ID", value: "vnp_BankTranNo", width: "15%" },
         { text: "Bank ID", value: "vnp_BankCode", width: "15%" }

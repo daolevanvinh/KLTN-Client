@@ -12,14 +12,24 @@
         </div>
         <div class="lesson-container">
           <v-tabs v-model="tab" class="tab-bars" active-class="tab-active">
-            <v-tab @click="overview = true; comment = false; announce = false">Tổng quan</v-tab>
-            <v-tab @click="overview = false; comment = true; announce = false">Nhận xét</v-tab>
-            <v-tab @click="overview = false; comment = false; announce = true">Thông báo</v-tab>
+            <v-tab
+              @click="overview = true; comment = false; announce = false; resourse = false"
+            >Overview</v-tab>
+            <v-tab
+              @click="overview = false; comment = true; announce = false; resourse = false"
+            >Comment</v-tab>
+            <v-tab
+              @click="overview = false; comment = false; announce = true; resourse = false"
+            >Annouce</v-tab>
+            <v-tab
+              @click="overview = false; comment = false; announce = false; resourse = true"
+            >Resourse</v-tab>
           </v-tabs>
           <div class="tab-content-container">
             <OverviewTab :avatarURL="avatarURL" v-if="overview"></OverviewTab>
             <CommentTab v-if="comment"></CommentTab>
             <AnnounceTab v-if="announce"></AnnounceTab>
+            <ResourseTab v-if="resourse"></ResourseTab>
           </div>
         </div>
       </div>
@@ -49,15 +59,16 @@
 import OverviewTab from "../../components/OverviewTab/OverviewTab";
 import CommentTab from "../../components/CommentTab/CommentTab";
 import AnnounceTab from "../../components/AnnouncementTab/AnnouncementTab";
+import ResourseTab from "../../components/ResourseTab/ResourseTab";
 import VideoItem from "../../components/VideoItem/VideoItem";
 import apiConfig from "../../API/api.json";
 import { mapGetters } from "vuex";
 export default {
-  components: { OverviewTab, CommentTab, AnnounceTab, VideoItem },
+  components: { OverviewTab, CommentTab, AnnounceTab, VideoItem, ResourseTab },
   created() {
     this.$store.commit("ShowHeaderUser");
     this.$store.commit("ShowFooterUser");
-    
+
     this.$store
       .dispatch("userGetStudentLesson", this.$route.params.id)
       .then(response => {
@@ -87,6 +98,7 @@ export default {
       this.announce = true;
       this.comment = false;
       this.overview = false;
+      this.resourse = false;
       this.tab = 2;
     }
   },
@@ -95,6 +107,7 @@ export default {
       overview: true,
       comment: false,
       announce: false,
+      resourse: false,
       fakeLength: 5,
       avatarURL: "",
       videoURL: apiConfig.videoURL,

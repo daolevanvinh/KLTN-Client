@@ -80,8 +80,12 @@ export default {
     userChannelList: state => state.userChannelListState.list,
     userChannelLoading: state => state.userChannelListState.loading,
     userChannelCourseList: state => state.userChannelListState.courseList,
-
-
+    userCourseCommentList: state => state.userStudentCourseState.list,
+    userCourseCommentObject: state => state.userStudentCourseState.object,
+    userCourseCommentLoading: state => state.userStudentCourseState.loading,
+    userStorageList: state => state.userStoragePackageState.list,
+    userStorageLoading: state => state.userStoragePackageState.loading,
+    
 
 
 
@@ -112,4 +116,28 @@ export default {
     guestGetDetailCourseLoading: state => state.guestDetailCourseState.loading,
 
     loadCourse: state => state.courseState.list,
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+     // hung
+     adminStatisticalStateList: state => state.adminStatisticalState.list,
+     adminStatisticalStateLoading: state => state.adminStatisticalState.loading,
+     adminStatisticalStateObject: state => state.adminStatisticalState.object,  
+ 
+     adminGetListCourseList: state => state.adminGetListCourseState.list,
+     adminGetListCourseLoading: state => state.adminGetListCourseState.loading,
+     adminGetListCourseObject: state => state.adminGetListCourseState.object,
+ 
+     adminGetListPricetierList: state => state.adminGetListPricetierState.list,
+     adminGetListPricetierObject: state => state.adminGetListPricetierState.object,
+     adminGetListPricetierLoading: state => state.adminGetListPricetierState.loading,
+ 
+     adminGetListCoursebyPriceLoading: state => state.adminGetListCoursebyPriceState.loading,
+     adminGetListCoursebyPriceList: state => state.adminGetListCoursebyPriceState.list,
+     adminGetListCoursebyPriceObject: state => state.adminGetListCoursebyPriceState.object,
+     
+     adminGetListUsersLoading: state => state.adminGetListUsersState.loading,
+     adminGetListUsersList: state => state.adminGetListUsersState.list,
+     adminGetListUsersType: state => state.adminGetListUsersState.type,
+     
+     adminAdminInfo: state => state.adminState.admin,
+     adminAdminInfoLoading: state => state.adminState.loading,
 }

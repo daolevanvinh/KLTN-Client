@@ -8,6 +8,9 @@ import StatisticalPage from "./StatisticalPage/StatisticalPage"
 import StorageBusiness from "./StorageBusinessPage/StorageBusinessPage"
 import AccountPage from "./AccountPage/AccountPage"
 import AdminLoginPage from "./LoginPage/LoginPage"
+import PricePage from "./PricePage/PricePage"
+import MyAdminPage from '../admin-modules/AccountPage/AccountPage.vue'
+import UserManagePage from "../admin-modules/UserManagePage/UserManagePage.vue"
 export default [
     {
         path: '',
@@ -82,6 +85,27 @@ export default [
         path: ':id',
         name: 'account-page',
         component: AccountPage,
+        meta: {
+            emp: true
+        }
+    },
+    {
+        path: 'pricepage',
+        name: 'price-page',
+        component: PricePage,
+        meta: {
+            emp: true
+        }
+    },
+    {
+        path: 'myadminpage',
+        name: 'myadmin-page',
+        component: MyAdminPage
+    },
+    {
+        path: 'users',
+        name: 'users-page',
+        component: UserManagePage,
         meta: {
             emp: true
         }

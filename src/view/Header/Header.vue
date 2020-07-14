@@ -65,13 +65,16 @@
                 v-if="!loadStateLogin && !userUserInfoLoading"
                 href="google"
                 class="btn normal-button"
-              >Miễn phí</a> -->
+              >Miễn phí</a>-->
               <router-link
                 v-if="loadStateLogin && !userUserInfoLoading"
                 :to="{name: 'instructor-page'}"
                 class="btn normal-button"
               >Instructor</router-link>
-              <div v-if="!userUserInfoLoading" style="border-left: 1px solid;margin-right: 1rem;"></div>
+              <div
+                v-if="!userUserInfoLoading && loadStateLogin"
+                style="border-left: 1px solid;margin-right: 1rem;"
+              ></div>
               <HeaderMyCourseList v-if="loadStateLogin && !userUserInfoLoading"></HeaderMyCourseList>
               <HeaderCartList v-if="loadStateLogin && !userUserInfoLoading"></HeaderCartList>
               <HeaderLikeList v-if="loadStateLogin && !userUserInfoLoading"></HeaderLikeList>

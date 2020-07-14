@@ -22,32 +22,33 @@
           <br />
           <span class="email">daolevanvinh@gmail.com</span>
         </i>
-        <router-link class="dropdown-item" :to="{name: 'account-page', params: {id: account.id}}">
-          <i class="fas fa-user"></i> Thông tin cá nhân
-        </router-link>
-        <router-link
-          class="dropdown-item"
-          :to="{name: 'account-page', params: {id: account.id}, hash: '#annouce'}"
-        >
-          <i class="fas fa-bell"></i> Thông báo
-        </router-link>
-        <router-link
-          class="dropdown-item"
-          :to="{name: 'account-page', params: {id: account.id}, hash: '#message'}"
-        >
-          <i class="fas fa-comment"></i> Tin nhắn
-        </router-link>
-        <router-link class="dropdown-item" to="google.com" type="button">
-          <i class="fas fa-long-arrow-alt-right"></i> Đăng xuất
-        </router-link>
+          <a class="dropdown-item" href="#" @click="goTab('info-tab')">
+            <i class="fas fa-user"></i> Thông tin cá nhân
+          </a>
+          <a class="dropdown-item" @click="logOut" type="button">
+            <i class="fas fa-long-arrow-alt-right"></i> Đăng xuất
+          </a>
+    
       </div>
     </div>
-  </div>
+  </div>  
 </template>
 <script>
+import apiConfig from "../../API/api.json";
 export default {
-  props: ["account"]
-};
+  props: ["account"],
+  methods: {
+    goTab(flag) {
+      if (this.$route.name != "myadmin-page") {
+        this.$router.push({ name: "myadmin-page" });
+      }
+    },
+    logOut() {
+      localStorage.removeItem("token");
+      window.location.href = apiConfig.baseURL +'/admin';
+    }
+  }
+  };
 </script>
 <style lang="scss" scoped>
 .ow1-dropdown-menu {

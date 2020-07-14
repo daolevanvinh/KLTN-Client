@@ -14,6 +14,8 @@ import SearchPage from "./SearchPage/SearchPage.vue"
 import Cart from "./Cart/Cart.vue";
 import ProfileViewPage from "./ProfileViewPage/ProfileViewPage.vue"
 import InstructorNewAnnouce from "./InstructorNewAnnouce/InstructorNewAnnouce.vue"
+import InstructorPremiumPage from "./InstructorPremiumPage/InstructorPremiumPage.vue"
+import InstructorMyPackage from "./InstructorMyPackagePage/InstructorMyPackagePage"
 export default [
     // Guest
     {
@@ -105,6 +107,22 @@ export default [
                 path: 'annouce',
                 name: 'ins-annouce-page',
                 component: InstructorAnnoucementPage,
+                meta: {
+                    instructor: true
+                }
+            },
+            {
+                path: 'package',
+                name: 'ins-package-page',
+                component: InstructorPremiumPage,
+                meta: {
+                    instructor: true
+                }
+            },
+            {
+                path: 'myPackage',
+                name: 'ins-my-package-page',
+                component: InstructorMyPackage,
                 meta: {
                     instructor: true
                 }

@@ -40,7 +40,7 @@
           >
             <v-list-item-icon>
               <v-icon
-                :style="'fas fa-robot' == item.icon ? 'margin-left: -0.18rem' : ''"
+                :style="'fas fa-robot' == item.icon ? 'font-size: 21px' : ''"
                 style="color: white;margin-right: 1rem"
               >{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -48,12 +48,13 @@
             <v-list-item-content>
               <v-list-item-title style="color: white;font-size: 14px">{{ item.title }}</v-list-item-title>
             </v-list-item-content>
+            
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
       <br />
       <div style="position: absolute; right: 2rem;top: 0.5rem">
-        <UserMenuButton :account="{ id: 'vinhdlv', name: 'vinh đào lê văn' }"></UserMenuButton>
+        <AdminMenuButton :account="{ id: 'vinhdlv', name: 'vinh đào lê văn' }"></AdminMenuButton>
       </div>
       <div style="margin: 1.5rem 2rem 1rem 6rem">
         <router-view></router-view>
@@ -66,7 +67,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import UserMenuButton from "../components/UserMenuButton/UserMenuButton";
+import AdminMenuButton from "../components/AdminMenuButton/AdminMenuButton";
 export default {
   created() {
     this.adminLogin = this.$route.name == "admin-login-page";
@@ -74,7 +75,7 @@ export default {
   beforeUpdate() {
     this.adminLogin = this.$route.name == "admin-login-page";
   },
-  components: { UserMenuButton },
+  components: { AdminMenuButton },
   data() {
     return {
       adminLogin: false,
@@ -106,6 +107,16 @@ export default {
           href: "statistical-page"
         },
         {
+          title: "Quản lý tài khoản",
+          icon: "fas fa-users",
+          href: "users-page"
+        },
+        {
+          title: "Quản lý giá",
+          icon: "fas fa-dollar-sign fa-lg",
+          href: "price-page"
+        },
+        {
           title: "Storage Business",
           icon: "fas fa-euro-sign fa-lg",
           href: "storage-business-page"
@@ -127,7 +138,7 @@ export default {
 .left-menu {
   position: fixed;
   background-color: #52143e;
-  z-index: 1;
+  z-index: 5;
 }
 .my-list-item-container {
   font-size: 13px;

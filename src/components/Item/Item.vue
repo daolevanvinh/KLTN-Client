@@ -13,7 +13,7 @@
             class="item-link"
             :to="{name: 'course-detail-page', params: {id: course.course_id}}"
           >
-            <v-img :style="setBackground" class="my-image"></v-img>
+            <img :src="imageURL" class="my-image"/>
             <v-card-text style="color: black;height: 100%;">
               <div>
                 <b>{{summaryName}}</b>
@@ -132,6 +132,18 @@ export default {
       setBackground: "",
       checkLogin: "login-modal"
     };
+  },
+  watch: {
+    course(newVal) {
+      this.course = newVal
+      this.imageURL =
+      apiConfig.imageURL +
+      "/" +
+      this.course.course_id +
+      "/" +
+      this.course.course_id +
+      ".png";
+    }
   },
   mounted() {
     if (localStorage.token) this.checkLogin = "";

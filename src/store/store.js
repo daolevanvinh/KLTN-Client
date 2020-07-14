@@ -213,8 +213,46 @@ export const store = new Vuex.Store({
             loading: false,
             list: [],
             object: {},
-            courseList: []
-        }
+        },
+        userCourseCommentState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        userStoragePackageState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+        //hung
+        adminStatisticalState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        adminGetListCourseState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        adminGetListPricetierState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        adminGetListCoursebyPriceState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        adminGetListUsersState: {
+            loading: false,
+            list: [],
+            type: [],
+            object: {},
+        },
+        ///
     },
     mutations,
     actions,

@@ -318,6 +318,7 @@ export default {
     },
     insertTopic() {
       let vm = this;
+      vm.newTopic.category_id = this.categoryIDSeleted
       if (this.newTopic.name == "" || this.newTopic.icon_class == "") {
         this.$swal({
           icon: "error",

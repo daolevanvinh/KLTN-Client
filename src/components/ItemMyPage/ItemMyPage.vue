@@ -33,7 +33,13 @@
         </v-card-text>
       </router-link>
       <div style="width:100%;text-align:center;margin-top: 1rem">
-        <v-btn small color="primary" style="margin-right: 1rem">Comment</v-btn>
+        <v-btn
+          small
+          color="primary"
+          style="margin-right: 1rem"
+          @click="courseComment(course)"
+          :disabled="course.commented != null"
+        >Comment</v-btn>
         <v-btn small color="red">
           <router-link
             style="color: white"
@@ -96,6 +102,9 @@ export default {
             title: response.data.msg
           });
         });
+    },
+    courseComment(course) {
+      this.$emit("courseComment", course);
     }
   },
   computed: {

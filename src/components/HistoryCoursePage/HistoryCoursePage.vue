@@ -14,7 +14,7 @@
           </div>
           <div class="col-8">
             <div style="padding-left:0.2rem">
-              <strong>{{course.name}}</strong>
+              <strong style="font-size: 13px">{{format(course.name)}}</strong>
             </div>
             <div>
               <span style="margin-right: 1rem">
@@ -67,6 +67,10 @@ export default {
     },
     addLink(e) {
       this.$refs[this.course.course_id].href = this.course.course_id;
+    },
+    format(string) {
+      if(string.length > 20) return string.slice(0,20)+'...'
+       else return string
     }
   }
 };

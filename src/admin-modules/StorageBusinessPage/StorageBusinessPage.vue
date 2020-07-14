@@ -24,7 +24,7 @@
           <template v-slot:item.action="data">
             <a
               style="margin-right: 1rem"
-              @click="dialog=true;insert=false;Package= { storagePackage_id: data.item.storagePackage_id, name: data.item.name, storage_size: data.item.storage_size, price: data.item.price }"
+              @click="dialog=true;insert=false;Package= { storagePackage_id: data.item.storagePackage_id, name: data.item.name, storage_size: data.item.storage_size, price: data.item.price, note: data.item.note }"
             >Edit</a>
             <a @click="deletePackage(data.item)">Delete</a>
           </template>
@@ -41,12 +41,13 @@
           <div style="padding: 1rem">
             <v-text-field v-model="Package.name" label="Package Name"></v-text-field>
             <v-text-field
-              suffix="mb"
+              suffix="GB"
               type="number"
               v-model="Package.storage_size"
               label="Package Size"
             ></v-text-field>
             <v-text-field suffix="$" type="number" v-model="Package.price" label="Package Price"></v-text-field>
+            <v-textarea label="Note" style="margin-top: 0.5rem" outlined v-model="Package.note"></v-textarea>
           </div>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -70,7 +71,7 @@ export default {
       header: [
         { value: "storagePackage_id", text: "Package ID", width: "10%" },
         { value: "name", text: "Package Name", width: "25%" },
-        { value: "storage_size", text: "Storage Size (mb)", width: "15%" },
+        { value: "storage_size", text: "Storage Size (Gb)", width: "15%" },
         { value: "price", text: "Price ($)", width: "15%" },
         { value: "updated_at", text: "Last Update", width: "20%" },
         { value: "action", text: "" }
@@ -123,9 +124,10 @@ export default {
     },
     updatePackage() {
       if (
-        this.Package.name != "" ||
-        this.Package.price != null ||
-        this.Package.storage_size != ""
+        this.Package.name != "" &&
+        this.Package.price != null &&
+        this.Package.storage_size != "" &&
+        this.Package.note != ""
       ) {
         this.$swal.showLoading();
         this.$store

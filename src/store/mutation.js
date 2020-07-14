@@ -192,7 +192,7 @@ export default {
         if (data.list) {
             state.userCourseListCartState.list = data.list
         }
-        if(data.object) {
+        if (data.object) {
             state.userCourseListCartState.object = data.object
         }
         state.userCourseListCartState.loading = false
@@ -335,8 +335,8 @@ export default {
         state.guestCourseDetail.loading = false
     },
     updateHistoryCourseList(state) {
-        if(localStorage.historyCourseList)
-        state.historyCourseState.list = JSON.parse(localStorage.historyCourseList)
+        if (localStorage.historyCourseList)
+            state.historyCourseState.list = JSON.parse(localStorage.historyCourseList)
         else {
             state.historyCourseState.list = []
             localStorage.historyCourseList = JSON.stringify([])
@@ -473,7 +473,7 @@ export default {
         if (data.object) {
             state.userAnnouceState.object = data.object
         }
-        
+
     },
     user_annouce_error(state) {
         state.userAnnouceState.loading = false
@@ -519,7 +519,7 @@ export default {
         if (data.object) {
             state.userChannelListState.object = data.object
         }
-        if(data.courseList) {
+        if (data.courseList) {
             state.userChannelListState.courseList = data.courseList
         }
     },
@@ -537,11 +537,132 @@ export default {
         if (data.object) {
             state.adminStoragePackageState.object = data.object
         }
-        if(data.courseList) {
+        if (data.courseList) {
             state.adminStoragePackageState.courseList = data.courseList
         }
     },
     admin_storagePackage_error(state) {
         state.adminStoragePackageState.loading = false
-    }
+    },
+    user_CourseComment_request(state) {
+        state.userStudentCourseState.loading = true
+    },
+    user_CourseComment_success(state, data) {
+        state.userStudentCourseState.loading = false
+        if (data.list) {
+            state.userStudentCourseState.list = data.list
+        }
+        if (data.object) {
+            state.userStudentCourseState.object = data.object
+        }
+    },
+    user_CourseComment_error(state) {
+        state.userStudentCourseState.loading = false
+    },
+    user_StoragePackage_request(state) {
+        state.userStoragePackageState.loading = true
+    },
+    user_StoragePackage_success(state, data) {
+        state.userStoragePackageState.loading = false
+        if (data.list) {
+            state.userStoragePackageState.list = data.list
+        }
+        if (data.object) {
+            state.userStoragePackageState.object = data.object
+        }
+    },
+    user_StoragePackage_error(state) {
+        state.userStoragePackageState.loading = false
+    },
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //hung
+    admin_getStatistical_request(state) {
+        state.adminStatisticalState.loading = true
+    },
+    admin_getStatistical_success(state, data) {
+        state.adminStatisticalState.loading = false
+        if (data.list) {
+            state.adminStatisticalState.list = data.list
+        }
+        if (data.object) {
+            state.adminStatisticalState.object = data.object
+        }
+    },
+    admin_getStatistical_error(state) {
+        state.adminStatisticalState.loading = false
+    },
+
+
+    admin_getListCourse_request(state) {
+        state.adminGetListCourseState.loading = true
+    },
+    admin_getListCourse_success(state, data) {
+        state.adminGetListCourseState.loading = false
+        if (data.list) {
+            state.adminGetListCourseState.list = data.list
+        }
+        if (data.object) {
+            state.adminGetListCourseState.object = data.object
+        }
+    },
+    admin_getListCourse_error(state) {
+        state.adminGetListCourseState.loading = false
+    },
+
+
+    admin_getListPricetier_request(state) {
+        state.adminGetListPricetierState.loading = true
+    },
+    admin_getListPricetier_success(state, data) {
+        state.adminGetListPricetierState.loading = false
+        if (data.list) {
+            state.adminGetListPricetierState.list = data.list
+        }
+        if (data.object) {
+            state.adminGetListPricetierState.object = data.object
+        }
+    },
+    admin_getListPricetier_error(state) {
+        state.adminGetListPricetierState.loading = false
+    },
+
+    admin_getListCoursebyPrice_request(state) {
+        state.adminGetListCoursebyPriceState.loading = true
+    },
+    admin_getListCoursebyPrice_success(state, data) {
+        state.adminGetListCoursebyPriceState.loading = false
+        if (data.list) {
+            state.adminGetListCoursebyPriceState.list = data.list
+        }
+        if (data.object) {
+            state.adminGetListCoursebyPriceState.object = data.object
+        }
+    },
+    admin_getListCoursebyPrice_error(state) {
+        state.adminGetListCoursebyPriceState.loading = false
+    },
+
+    admin_request(state) {
+        state.adminState.loading = true
+    },
+    admin_success(state, data) {
+        if (data.admin) {
+            state.adminState.admin = data.admin
+        }
+        state.adminState.loading = false
+    },
+    admin_error(state) {
+        state.adminState.loading = false
+    },
+    admin_managelistusers_request(state) {
+        state.adminGetListUsersState.loading = true
+    },
+    admin_managelistusers_success(state, data) {
+        state.adminGetListUsersState.loading = false
+    },
+    admin_managelistusers_error(state) {
+        state.adminGetListUsersState.loading = false
+    },
+
+    //
 }
