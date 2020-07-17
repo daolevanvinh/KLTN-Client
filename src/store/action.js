@@ -1318,6 +1318,21 @@ export default {
                 })
         })
     },
+    userGetStorageUser({ commit }) {
+        const apiURL = apiConfig.userStorageUser
+        commit('user_StorageUser_request')
+        return new Promise((resolve, reject) => {
+            axios.get(apiURL, { params: { token: localStorage.token } })
+                .then(function (response) {
+                    commit('user_StorageUser_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('user_StorageUser_error')
+                    reject(err)
+                })
+        })
+    },
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //hung

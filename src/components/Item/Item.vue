@@ -15,10 +15,10 @@
           >
             <img :src="imageURL" class="my-image"/>
             <v-card-text style="color: black;height: 100%;">
-              <div>
+              <div style="height: 2rem">
                 <b>{{summaryName}}</b>
               </div>
-              <div style="font-size: 12px">
+              <div style="font-size: 12px;margin-top: 1rem">
                 <i>
                   Tác giả:
                   <strong>{{course.author}}</strong>

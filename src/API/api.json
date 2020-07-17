@@ -9,5 +9,6 @@
     "videoURL" : "https://localhost/KLTN-Server/public/uploads/videos",
     "previewVideoURL": "https://localhost/KLTN-Server/public/uploads/previews",
     "resourseURL": "https://localhost/KLTN-Server/public/uploads/resourses",
-    "avatarURL" : "https://localhost/KLTN-Server/public/uploads/users"
+    "avatarURL" : "https://localhost/KLTN-Server/public/uploads/users",
+    "uploadsURL": "http://goodlearning.com/uploads/lives"
 }

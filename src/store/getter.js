@@ -85,8 +85,10 @@ export default {
     userCourseCommentLoading: state => state.userStudentCourseState.loading,
     userStorageList: state => state.userStoragePackageState.list,
     userStorageLoading: state => state.userStoragePackageState.loading,
-    
-
+    userStorageUserList: state => state.userStorageUser.list,
+    userStorageUserLoading: state => state.userStorageUser.loading,
+    userStorageUserCourseList: state => state.userStorageUser.course_list,
+    userStorageUserBillList: state => state.userStorageUser.bill_list,
 
 
 

@@ -3,12 +3,11 @@
     <div v-if="!userStudentCourseLessonLoading" class="row">
       <div class="col-8">
         <div class="video-container">
-          <b-embed
-            :src="videoURL + '/'+userStudentCourseLessonList.course_id +'/' +userCurrentVideoLesson.lesson_id+'.mp4'"
-            type="iframe"
-            aspect="16by9"
-            allowfullscreen
-          ></b-embed>
+          <videoPlayer
+            v-if="userCurrentVideoLesson!=null"
+            :options="videoOptions"
+            :configs="{ hls: true }"
+          ></videoPlayer>
         </div>
         <div class="lesson-container">
           <v-tabs v-model="tab" class="tab-bars" active-class="tab-active">
@@ -37,7 +36,7 @@
         <div class="video-list-container">
           <div>
             <span style="font-size: 18px">
-              <b>Nội dung khóa học:</b>
+              <b>Course Content:</b>
             </span>
           </div>
           <div
@@ -63,8 +62,9 @@ import ResourseTab from "../../components/ResourseTab/ResourseTab";
 import VideoItem from "../../components/VideoItem/VideoItem";
 import apiConfig from "../../API/api.json";
 import { mapGetters } from "vuex";
+import { videoPlayer } from "vue-vjs-hls";
 export default {
-  components: { OverviewTab, CommentTab, AnnounceTab, VideoItem, ResourseTab },
+  components: { OverviewTab, CommentTab, AnnounceTab, VideoItem, ResourseTab, videoPlayer },
   created() {
     this.$store.commit("ShowHeaderUser");
     this.$store.commit("ShowFooterUser");
@@ -93,6 +93,17 @@ export default {
         }
       });
   },
+  watch: {
+    userCurrentVideoLesson(newVal) {
+      this.videoOptions.source.src =
+        this.videoURL +
+        "/" +
+        newVal.lesson_id +
+        "/" +
+        newVal.lesson_id +
+        ".m3u8";
+    }
+  },
   mounted() {
     if (this.$route.query.annouce) {
       this.announce = true;
@@ -110,8 +121,16 @@ export default {
       resourse: false,
       fakeLength: 5,
       avatarURL: "",
-      videoURL: apiConfig.videoURL,
-      tab: 0
+      videoURL: apiConfig.uploadsURL,
+      tab: 0,
+      videoOptions: {
+        source: {
+          type: "application/x-mpegURL",
+          src: "",
+          withCredentials: false
+        },
+        live: true
+      }
     };
   },
   computed: {

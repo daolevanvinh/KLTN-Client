@@ -1,11 +1,11 @@
 <template>
   <div>
     <v-card>
-      <v-card-title class="headline">Tạo thông báo mới</v-card-title>
+      <v-card-title class="headline">Create new annouce</v-card-title>
       <div class="my-container">
         <div class="row">
           <div class="col-2">
-            <label>Khóa học:&nbsp;</label>
+            <label>Course:&nbsp;</label>
           </div>
           <div class="col-5">
             <v-select
@@ -17,7 +17,7 @@
           </div>
           <div class="col-1 offset-4">
             <v-app>
-              <v-btn color="red" @click="send()" outlined>Gửi</v-btn>
+              <v-btn color="red" @click="send()" outlined>Send</v-btn>
             </v-app>
           </div>
         </div>

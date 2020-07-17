@@ -4,7 +4,7 @@
     <div class="button-container">
       <div>
         <v-btn @click="miniContent = !miniContent" height="3.5rem" outlined>
-          <v-icon>mdi-filter</v-icon>Bộ lọc
+          <v-icon>mdi-filter</v-icon>Filter
         </v-btn>
       </div>
       <div>
@@ -25,10 +25,10 @@
           @click="searchFunction()"
           outlined
           id="search-button-for-vuex"
-        >Tìm kiếm</v-btn>
+        >Search</v-btn>
       </div>
       <div>
-        <v-btn style="margin-left: 0.9rem" height="3.5rem" @click="resetOption()" outlined>Đặt lại</v-btn>
+        <v-btn style="margin-left: 0.9rem" height="3.5rem" @click="resetOption()" outlined>Refresh</v-btn>
       </div>
       <div>
         <i>
@@ -45,7 +45,7 @@
                 <v-list-item-content>
                   <v-list-item-title>
                     <h5>
-                      <v-icon>mdi-apps</v-icon>&nbsp;Danh mục
+                      <v-icon>mdi-apps</v-icon>&nbsp;Category
                     </h5>
                   </v-list-item-title>
                 </v-list-item-content>
@@ -58,7 +58,7 @@
                   link
                 >
                   <v-app>
-                    <v-radio :label="'Tất cả'" :value="-1"></v-radio>
+                    <v-radio :label="'All'" :value="-1"></v-radio>
                     <v-radio
                       v-for="(category,index) in guestCategoryList"
                       :label="category.name"
@@ -77,7 +77,7 @@
                 <v-list-item-content>
                   <v-list-item-title>
                     <h5>
-                      <v-icon>mdi-cogs</v-icon>&nbsp;Chủ đề
+                      <v-icon>mdi-cogs</v-icon>&nbsp;Topic
                     </h5>
                   </v-list-item-title>
                 </v-list-item-content>
@@ -85,7 +85,7 @@
               <v-list-item style="margin-top: -1rem">
                 <v-radio-group :mandatory="false" link v-model="topicSelected">
                   <v-app>
-                    <v-radio :label="'Tất cả'" :value="-1"></v-radio>
+                    <v-radio :label="'All'" :value="-1"></v-radio>
                     <v-radio
                       v-for="(topic, i) in topicListSeleted"
                       :label="topic.name"
@@ -108,11 +108,12 @@
                     </h5>
                   </v-list-item-title>
                 </v-list-item-content>
+                
               </template>
               <v-list-item style="margin-top: -1rem">
                 <v-radio-group :mandatory="false" link v-model="Free">
                   <v-app>
-                    <v-radio :label="'Tất cả'" :value="-1"></v-radio>
+                    <v-radio :label="'All'" :value="-1"></v-radio>
                     <v-radio :value="false" label="Trả tiền"></v-radio>
                     <v-radio :value="true" label="Miễn phí"></v-radio>
                   </v-app>
@@ -127,7 +128,7 @@
                 <v-list-item-content>
                   <v-list-item-title>
                     <h5>
-                      <v-icon>mdi-star</v-icon>&nbsp;Sao
+                      <v-icon>mdi-star</v-icon>&nbsp;Star
                     </h5>
                   </v-list-item-title>
                 </v-list-item-content>
@@ -135,7 +136,7 @@
               <v-list-item style="margin-top: -1rem">
                 <v-radio-group :mandatory="false" link v-model="star">
                   <v-app>
-                    <v-radio :label="'Tất cả'" :value="-1"></v-radio>
+                    <v-radio :label="'All'" :value="-1"></v-radio>
                     <v-radio v-for="i in 5" :label="i +'sao'" :value="i" :key="i"></v-radio>
                   </v-app>
                 </v-radio-group>

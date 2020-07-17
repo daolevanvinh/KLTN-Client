@@ -123,6 +123,9 @@ export default {
     user_lesson_error(state) {
         state.userLessonState.loading = false
     },
+    user_lesson_empty_list(state) {
+        state.userLessonState.list = []
+    },
     admin_question_bot_request(state) {
         state.adminQuestionBotState.loading = true
     },
@@ -571,8 +574,29 @@ export default {
             state.userStoragePackageState.object = data.object
         }
     },
-    user_StoragePackage_error(state) {
+    user_StorageUser_error(state) {
         state.userStoragePackageState.loading = false
+    },
+    user_StorageUser_request(state) {
+        state.userStorageUser.loading = true
+    },
+    user_StorageUser_success(state, data) {
+        state.userStorageUser.loading = false
+        if (data.list) {
+            state.userStorageUser.list = data.list
+        }
+        if (data.object) {
+            state.userStorageUser.object = data.object
+        }
+        if(data.course_list) {
+            state.userStorageUser.course_list = data.course_list
+        }
+        if(data.bill_list) {
+            state.userStorageUser.bill_list = data.bill_list
+        }
+    },
+    user_StorageUser_error(state) {
+        state.userStorageUser.loading = false
     },
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //hung

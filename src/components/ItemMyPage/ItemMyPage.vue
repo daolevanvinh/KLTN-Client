@@ -6,7 +6,7 @@
         :to="{name: 'course-detail-page', params: {id: course.course_id}}"
       >
         <v-img :style="setBackground" class="my-image"></v-img>
-        <v-card-text style="color: black;height: 100%;">
+        <v-card-text style="color: black;height: 42%">
           <div>
             <b>{{summaryName}}</b>
           </div>
@@ -67,6 +67,12 @@ export default {
       setBackground: "",
       checkLogin: "login-modal"
     };
+  },
+  watch: {
+    course(newVal) {
+      this.course = newVal;
+      alert(1)
+    }
   },
   mounted() {
     if (localStorage.token) this.checkLogin = "";

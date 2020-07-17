@@ -1,14 +1,14 @@
 <template>
   <div class="my-container">
     <LeftMenu :list="list"></LeftMenu>
-    <v-app style="background: #f4f3ef;min-height:100%;padding-bottom: 3rem"> 
+    <v-app style="background: #f4f3ef;min-height:100%;padding-bottom: 3rem">
       <div class="instructor-control">
         <span style="position: absolute; right: 8rem;top: 0.5rem;z-index: 2">
           Your Coin:
           <span
             style="color:red"
             v-if="userUserInfo != null && userUserInfo.ewallet!=null"
-          >{{userUserInfo.ewallet.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}}</span>
+          >{{formatMoney(userUserInfo.ewallet)}}</span>
         </span>
         <AnnouceButton style="position: absolute; right: 4rem;top: 0;z-index: 2"></AnnouceButton>
         <UserButton
@@ -77,7 +77,13 @@ export default {
         {
           header: "Statistics",
           icon: "far fa-chart-bar fa-lg",
-          items: [{ title: "Overview", icon: "fas fa-circle fa-sm" }]
+          items: [
+            {
+              title: "Overview",
+              icon: "fas fa-circle fa-sm",
+              routeName: "ins-my-package-page"
+            }
+          ]
         },
         {
           header: "Premium Account",
@@ -87,11 +93,6 @@ export default {
               title: "Store Package",
               icon: "fas fa-circle fa-sm",
               routeName: "ins-package-page"
-            },
-            {
-              title: "My Packages",
-              icon: "fas fa-circle fa-sm",
-              routeName: "ins-my-package-page"
             }
           ]
         }
@@ -117,6 +118,9 @@ export default {
   methods: {
     redirect(name) {
       this.$router.push({ name: name });
+    },
+    formatMoney(price) {
+      return price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
     }
   },
   computed: {

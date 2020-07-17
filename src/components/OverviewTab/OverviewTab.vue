@@ -33,7 +33,7 @@
             class="more-description"
             @click="descriptionMore = true"
             v-if="!descriptionMore"
-          >Xem thêm</a>
+          >More</a>
         </div>
         <hr />
       </div>
@@ -41,19 +41,19 @@
         <div class="course-overview-container">
           <div>
             <h3>
-              <b>Về toàn khóa học</b>
+              <b>About Course</b>
             </h3>
             <div class="row">
               <div class="col-3">
                 <div>
                   <span>
-                    Số bài giảng:
+                      Total Lessons:
                     <b>{{userStudentCourseLessonList.lessons.length}}</b>
                   </span>
                 </div>
                 <div>
                   <span>
-                    Tổng học viên:
+                    Total Student:
                     <b>{{userStudentCourseLessonList.totalStudent}}</b>
                   </span>
                 </div>
@@ -61,13 +61,13 @@
               <div class="col-3">
                 <div>
                   <span>
-                    Tổng thời gian:
+                    Total Duration:
                     <b>{{userStudentCourseLessonList.totalTime}}</b>
                   </span>
                 </div>
                 <div>
                   <span>
-                    Tổng lượt thích:
+                    Total Liked:
                     <b>{{userStudentCourseLessonList.totalLike}}</b>
                   </span>
                 </div>
@@ -78,9 +78,9 @@
         </div>
 
         <div class="instructor-overview-container">
-          <h3>Tóm tắt về tác giả</h3>
+          <h3>About Author</h3>
           <div class="row">
-            <div class="col-3">Tác giả</div>
+            <div class="col-3">Author</div>
             <div class="col-9">
               <div class="row">
                 <div class="col-2">

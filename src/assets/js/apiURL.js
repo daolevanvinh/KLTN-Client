@@ -38,6 +38,7 @@ var apiURL = {
     userChapter: apiAddress + "/user/chapter",
     userStoragePackage: apiAddress + "/user/storagePack",
     userStoragePackagePayment: apiAddress + "/user/storagePackage/payment",
+    userStorageUser: apiAddress + "/user/storageUser",
     //guest
     guestGetCategory: apiAddress + "/guest/category",
     guestGetCategoryWithTopCourse: apiAddress + "/guest/category/topCourse",

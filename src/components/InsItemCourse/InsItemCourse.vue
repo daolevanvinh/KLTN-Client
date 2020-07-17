@@ -32,13 +32,13 @@
               </div>
               <div class="col-4" style="padding-top: 0">
                 <a style="cursor:pointer" @click="itemDialog = true">
-                  <b>Chi tiết</b>
+                  <b>Detail</b>
                 </a>
               </div>
               <div class="col-4" style="padding-top: 0">
                 <v-switch
                   style="margin-top:-0.3rem;width: 5rem;float:right"
-                  v-model="publicCourse"
+                  v-model="course.public"
                   label="public"
                   @change="userPublicOrUnPublicCourse"
                   :loading="userPublicCourseLoading"
@@ -59,7 +59,7 @@
           <div class="col-9">
             <div>
               <h5>
-                <strong>Kiến thức đạt được qua khóa học:</strong>
+                <strong>Learn about</strong>
               </h5>
               <ul style="margin-top: 0.5rem" class="row">
                 <li
@@ -73,7 +73,7 @@
 
             <div>
               <h5>
-                <strong>Thuộc các lĩnh vực:&nbsp;</strong>
+                <strong>Topic:&nbsp;</strong>
                 <span
                   style="font-size: 16px"
                   v-for="(topic,index) in course.topics_enable"
@@ -86,7 +86,7 @@
             </div>
             <div>
               <h5 style="margin: 1rem 0">
-                <strong>Giá tiền:</strong>
+                <strong>Price:</strong>
                 <span style="color:red;" v-if="course.price_tier.priceTier_id != 0">
                   {{course.price_tier.priceTier.toLocaleString("it-IT", {
                   style: "currency",
@@ -98,9 +98,9 @@
             </div>
             <div>
               <h5 style="margin-bottom: 0.5rem">
-                <strong>Trạng thái:&nbsp;</strong>
-                <span v-if="course.public==1">Đang kích hoạt (public)</span>
-                <span v-else>Chưa kích hoạt (unpublic)</span>
+                <strong>Status:&nbsp;</strong>
+                <span v-if="course.public==1">Public</span>
+                <span v-else>Unpublic</span>
               </h5>
             </div>
           </div>
@@ -115,7 +115,7 @@
         <hr />
         <v-card-actions style="padding-right: 3rem">
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="itemDialog = false">Trở về</v-btn>
+          <v-btn color="primary" @click="itemDialog = false">Cancel</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -140,23 +140,28 @@ export default {
       publicCourse: false
     };
   },
+  watch: {
+    course(newVal) {
+      this.course = newVal;
+    }
+  },
   methods: {
     selectCourse() {
       this.$emit("selectCourse", this.course);
     },
     userPublicOrUnPublicCourse() {
-      this.$swal.showLoading()
+      this.$swal.showLoading();
       this.$store
         .dispatch("userPublicOrUnPublicCourse", this.course.course_id)
         .then(response => {
           if (response.data.errorToken === true) {
             commonService.checkErrorToken(this, response.data.msg);
           } else {
-            if(response.data.RequestSuccess === true) {
+            if (response.data.RequestSuccess === true) {
               this.$swal({
-                icon: 'success',
+                icon: "success",
                 title: response.data.msg
-              })
+              });
             }
           }
         });

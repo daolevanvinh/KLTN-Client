@@ -19,7 +19,7 @@
         <div v-for="(annouce,index) in stuAnnouceList" :key="index">
           <div @click="goTab(annouce)" v-if="index < 4" class="annouce-item">
             <div class="course-name">
-              <strong>Khóa học: {{formatString(annouce.name)}}</strong>
+              <strong>Course: {{formatString(annouce.name)}}</strong>
             </div>
             <div class="my-annouce">
               <div v-html="annouce.text"></div>
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     formatString(string) {
-      if (string.length > 30) return string.slice(0, 30) + "...";
+      if (string.length > 15) return string.slice(0, 15) + "...";
       else return string;
     },
     goTab(annouce) {

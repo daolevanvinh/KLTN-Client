@@ -12,7 +12,8 @@
         <div class="col-6">
           <v-text-field v-model="search" label="Search..."></v-text-field>
         </div>
-        <div class="col-2 offset-4" style="padding-top: 1.5rem;text-align: right;padding-right:0">
+        <div class="col-4 offset-2" style="padding-top: 1.5rem;text-align: right;padding-right:0">
+          <v-btn @click="getLessons()" color="primary">Refresh</v-btn>
           <v-btn
             color="primary"
             :disabled="courseSelected=='' || courseSelected == null"
@@ -32,8 +33,17 @@
           :search="search"
         >
           <template v-slot:item.control="data">
-            <a href="#" style="margin-right: 1.5rem" @click="showDetail(data.item)">Detail</a>
-            <a href="#" @click="deleteLesson(data.item)">Delete</a>
+            <a
+              :style=" data.item.video_processing==0 ? 'cursor: not-allowed;' : '' "
+              href="#"
+              style="margin-right: 1.5rem"
+              @click="showDetail(data.item)"
+            >Detail</a>
+            <a :style=" data.item.video_processing==0 ? 'cursor: not-allowed;' : '' " href="#" @click="deleteLesson(data.item)">Delete</a>
+          </template>
+          <template v-slot:item.video_processing="data">
+            <div v-if="data.item.video_processing == 1" style="color:green">Finished</div>
+            <div v-else style="color: red">Video Processing</div>
           </template>
           <template v-slot:no-results>
             <Empty></Empty>
@@ -45,6 +55,7 @@
             v-slot:item.chapter.chapter_text="data"
           >{{formatShort(data.item.chapter.chapter_text)}}</template>
           <template v-slot:item.duration="data">{{formatHours(data.item.duration)}}</template>
+          <template v-slot:loading>Loading...</template>
         </v-data-table>
         <v-pagination
           circle
@@ -73,12 +84,18 @@
               <div class="row" style="margin: 0;margin-left: 0.5rem">
                 <div class="col-6" style="padding: 0;">
                   <div class="player-container">
-                    <b-embed
+                    <!-- <b-embed
+                      v-if="loadSelectedLesson!=null"
                       :src="videoURL + '/'+loadSelectedLesson.course_id +'/' +loadSelectedLesson.lesson_id+'.mp4'"
                       type="iframe"
                       aspect="16by9"
                       allowfullscreen
-                    ></b-embed>
+                    ></b-embed>-->
+                    <videoPlayer
+                      v-if="loadSelectedLesson!=null"
+                      :options="videoOptions"
+                      :configs="{ hls: true }"
+                    ></videoPlayer>
                   </div>
                 </div>
                 <div class="col-6" style="padding: 0;padding-left: 2rem">
@@ -154,7 +171,7 @@
                     @keyup="disableSaveUpdateButton = false"
                   ></v-textarea>
                   <v-file-input
-                  style="margin-top: -0.2rem"
+                    style="margin-top: -0.2rem"
                     accept="video/*"
                     @change="setVideoUpdate"
                     v-model="mainVideo"
@@ -330,10 +347,7 @@
                       v-model="mainVideo"
                       label="Video is require (Main video)"
                     ></v-file-input>
-                    <v-checkbox
-                      v-model="newLesson.havePreview"
-                      style="margin-top: 0"
-                    >
+                    <v-checkbox v-model="newLesson.havePreview" style="margin-top: 0">
                       <template v-slot:label>
                         <div style="padding-top: 0.5rem">Is preview video?</div>
                       </template>
@@ -460,10 +474,12 @@ import { mapGetters } from "vuex";
 import "../../../node_modules/vue-core-video-player/dist/vue-core-video-player.umd.js";
 import apiConfig from "../../API/api.json";
 // import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
+import { videoPlayer } from "vue-vjs-hls";
 import Empty from "../../components/EmptyComponent/EmptyComponent";
 export default {
-  components: { Empty },
+  components: { Empty, videoPlayer },
   created() {
+    this.$store.commit("user_lesson_empty_list");
     this.$store.dispatch("userGetInsCourse").then(() => {
       if (parseInt(this.$route.query.course_id)) {
         this.courseSelected = parseInt(this.$route.query.course_id);
@@ -490,13 +506,22 @@ export default {
         { value: "5", text: "Miễn phí" },
         { value: "6", text: "Có phí" }
       ],
+      videoOptions: {
+        source: {
+          type: "application/x-mpegURL",
+          src: "",
+          withCredentials: false
+        },
+        live: true
+      },
       lessonList: [],
       headers: [
         { value: "title", text: "Title", width: "20%" },
         { value: "chapter.chapter_text", text: "Chapter", width: "25%" },
-        { value: "duration", text: "Duration", width: "15%" },
+        { value: "duration", text: "Duration", width: "10%" },
+        { value: "video_processing", text: "status", width: "10%" },
         { value: "updated_at", text: "Last updated", width: "20%" },
-        { value: "control", text: "", width: "20%" }
+        { value: "control", text: "", width: "15%" }
       ],
       chapterHeader: [
         { value: "text", text: "Chapter", width: "80%" },
@@ -518,11 +543,6 @@ export default {
       perPage: 5,
       resourseURL: apiConfig.resourseURL,
       videoURL: apiConfig.videoURL,
-      videoOptions: {
-        autoplay: false,
-        controls: true,
-        sources: []
-      },
       disableSaveUpdateButton: true,
       updateLesson: {
         havePreview: false
@@ -537,7 +557,8 @@ export default {
       newChapter: "",
       action: 0,
       resourseUpdateList: [],
-      searchTempForRSUpdate: ""
+      searchTempForRSUpdate: "",
+      uploadsURL: apiConfig.uploadsURL
     };
   },
   methods: {
@@ -676,7 +697,6 @@ export default {
             });
           });
       } else {
-        console.log(this.updateLesson);
         this.$swal({
           icon: "error",
           title: "There are missing something"
@@ -710,41 +730,50 @@ export default {
       }
     },
     showDetail(lesson) {
-      this.selectedLesson = lesson;
-      this.updateLesson = {
-        lesson_id: lesson.lesson_id,
-        title: lesson.title,
-        description: lesson.description,
-        chapter: lesson.chapter,
-        course_id: lesson.course_id,
-        json_info_resourse: lesson.json_info_resourse,
-        havePreview: lesson.havePreview
-      };
-      this.resourseUpdateList = [];
-      for (let rs of lesson.json_info_resourse) {
-        this.resourseUpdateList.push({
-          file: { name: rs.name },
-          new: false,
-          delete: false,
-          name: rs.name
-        });
+      if (lesson.video_processing == 1) {
+        this.selectedLesson = lesson;
+        this.updateLesson = {
+          lesson_id: lesson.lesson_id,
+          title: lesson.title,
+          description: lesson.description,
+          chapter: lesson.chapter,
+          course_id: lesson.course_id,
+          json_info_resourse: lesson.json_info_resourse,
+          havePreview: lesson.havePreview
+        };
+        this.resourseUpdateList = [];
+        this.videoOptions.source.src =
+          this.uploadsURL +
+          "/" +
+          lesson.lesson_id +
+          "/" +
+          lesson.lesson_id +
+          ".m3u8";
+        for (let rs of lesson.json_info_resourse) {
+          this.resourseUpdateList.push({
+            file: { name: rs.name },
+            new: false,
+            delete: false,
+            name: rs.name
+          });
+        }
+        console.log(this.resourseUpdateList);
+        this.dialogLessonDetail = true;
+        // this.videoOptions.sources = [
+        //   {
+        //     src:
+        //       this.videoURL +
+        //       "/" +
+        //       lesson.course_id +
+        //       "/" +
+        //       lesson.title +
+        //       ".mp4",
+        //     type: "video/mp4"
+        //   }
+        // ];
+        // //console.log(this.videoOptions)
+        // this.dialogLessonDetail = true;
       }
-      console.log(this.resourseUpdateList);
-      this.dialogLessonDetail = true;
-      // this.videoOptions.sources = [
-      //   {
-      //     src:
-      //       this.videoURL +
-      //       "/" +
-      //       lesson.course_id +
-      //       "/" +
-      //       lesson.title +
-      //       ".mp4",
-      //     type: "video/mp4"
-      //   }
-      // ];
-      // //console.log(this.videoOptions)
-      // this.dialogLessonDetail = true;
     },
     formatHours(duration) {
       let hours = Math.floor(duration / 3600);
@@ -767,18 +796,21 @@ export default {
       else return string;
     },
     deleteLesson(lesson) {
-      this.$swal({
+      if(lesson.video_processing == 1) {
+        this.$swal({
         icon: "question",
         title: "Are you sure want to Delete?",
         showCancelButton: true
       }).then(result => {
         if (result.value) {
+          this.chapterLoading = true;
           this.$store
             .dispatch("userDeleteInsLesson", {
               lesson_id: lesson.lesson_id,
               course_id: this.courseSelected
             })
             .then(response => {
+              this.chapterLoading = false;
               let icon = "";
               response.data.RequestSuccess === true
                 ? (icon = "success")
@@ -790,6 +822,7 @@ export default {
             });
         }
       });
+      }
     },
     addChapter() {
       if (this.newChapter != "") {

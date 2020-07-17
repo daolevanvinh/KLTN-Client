@@ -79,7 +79,7 @@ export default {
   data() {
     return {
       status: [
-        { code: "00", msg: "Giao dịch thành công" },
+        { code: "00", msg: "Transaction Success" },
         { code: "07", msg: "Giao dịch bị nghi ngờ là giao dịch gian lận" },
         {
           code: "09",

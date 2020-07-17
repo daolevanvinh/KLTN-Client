@@ -224,6 +224,13 @@ export const store = new Vuex.Store({
             list: [],
             object: {}
         },
+        userStorageUser: {
+            loading: false,
+            list: [],
+            object: {},
+            bill_list: [],
+            course_list: []
+        },
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
         //hung
         adminStatisticalState: {

@@ -112,7 +112,11 @@
                 v-for="(chapter,index) in guestCourseDetailObject.chapterList"
                 :key="index"
               >
-                <div v-if="chapter.lessonList.length > 0" class="my-chapter-title" v-b-toggle="'chapter'+index">
+                <div
+                  v-if="chapter.lessonList.length > 0"
+                  class="my-chapter-title"
+                  v-b-toggle="'chapter'+index"
+                >
                   •&nbsp;
                   <span>{{chapter.text}}</span>
                   <span style="float:right">{{chapter.duration}}</span>
@@ -131,9 +135,7 @@
                       <div>
                         <v-icon size="20" style="margin-right: 0.5rem">mdi-play-circle</v-icon>
                       </div>
-                      <div class="lesson-title">
-                        {{lesson.title}}
-                      </div>
+                      <div class="lesson-title">{{lesson.title}}</div>
                       <div style="position: absolute;right: 1.2rem;top: 0.2rem">
                         <i>{{lesson.duration}}</i>
                       </div>
@@ -142,9 +144,7 @@
                       <div>
                         <v-icon size="20" style="margin-right: 0.5rem">mdi-play-circle</v-icon>
                       </div>
-                      <div class="lesson-title">
-                        {{lesson.title}}
-                      </div>
+                      <div class="lesson-title">{{lesson.title}}</div>
                       <div style="position: absolute;right: 1.2rem;top: 0.2rem">
                         <i>{{lesson.duration}}</i>
                       </div>
@@ -201,7 +201,7 @@
                     v-html="guestCourseDetailObject.instructor.profile"
                   ></div>
                 </div>
-                <div class="text-center" style="margin-top: 1rem;">
+                <div class="text-center">
                   <a
                     style="color: black;cursor:pointer"
                     v-if="!authorMore"
@@ -215,7 +215,7 @@
             <hr style="margin-top: -0.5rem" />
           </div>
           <div class="recommend-container">
-            <h3>Students also bought</h3>
+            <h3 v-if="guestCourseDetailObject.top5.length > 0">Students also bought</h3>
             <div
               class="reccommend-item"
               v-for="(course, i) in guestCourseDetailObject.top5"
@@ -367,13 +367,17 @@
         <v-icon style="float: right" @click="previewDialog=false;previewLink =null">mdi-close-thick</v-icon>
         <div>Course Preview</div>
         <h3>{{currentPreviewLesson.title}}</h3>
-        <b-embed
+        <!-- <b-embed
           v-if="previewLink!=null"
           type="iframe"
           aspect="16by9"
           :src="previewLink"
           allowfullscreen
-        ></b-embed>
+        ></b-embed>-->
+        <videoPlayer
+          :options="videoOptions"
+          :configs="{ hls: true }"
+        ></videoPlayer>
       </v-card>
     </v-dialog>
   </div>
@@ -385,11 +389,12 @@ import apiConfig from "../../API/api.json";
 import StarRating from "../../../node_modules/vue-star-rating/src/star-rating";
 import RecommendItem from "../../components/RecommendItem/RecommendItem";
 import HisoryCoursePage from "../../components/HistoryCoursePage/HistoryCoursePage";
+import { videoPlayer } from "vue-vjs-hls";
 export default {
-  components: { StarRating, RecommendItem, HisoryCoursePage },
+  components: { StarRating, RecommendItem, HisoryCoursePage, videoPlayer },
   data() {
     return {
-      previewVideoURL: apiConfig.videoURL,
+      previewVideoURL: apiConfig.uploadsURL,
       moreContentTable: true,
       ImageURL: "",
       courseURL: "",
@@ -406,7 +411,15 @@ export default {
       instructorReview: 0,
       previewLink: null,
       previewDialog: false,
-      currentPreviewLesson: {}
+      currentPreviewLesson: {},
+      videoOptions: {
+        source: {
+          type: "application/x-mpegURL",
+          src: "",
+          withCredentials: false
+        },
+        live: true
+      }
     };
   },
   watch: {
@@ -422,13 +435,13 @@ export default {
   },
   methods: {
     watchPreview(lesson) {
-      this.previewLink =
+      this.videoOptions.source.src =
         this.previewVideoURL +
         "/" +
-        this.guestCourseDetailObject.course_id +
+        lesson.lesson_id +
         "/" +
         lesson.lesson_id +
-        ".mp4";
+        ".m3u8";
       this.currentPreviewLesson = lesson;
       this.previewDialog = true;
     },

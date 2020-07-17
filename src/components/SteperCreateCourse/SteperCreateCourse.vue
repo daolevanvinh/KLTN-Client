@@ -2,17 +2,17 @@
   <div>
     <v-stepper v-model="e1">
       <v-stepper-header>
-        <v-stepper-step step="1" :complete="e1 > 0">Đề tài và lĩnh vực</v-stepper-step>
+        <v-stepper-step step="1" :complete="e1 > 0">Category & Topic</v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="2" :complete="e1 > 1">Ảnh đại diện</v-stepper-step>
+        <v-stepper-step step="2" :complete="e1 > 1">Image</v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="3" :complete="e1 > 2">Mô tả khóa học</v-stepper-step>
+        <v-stepper-step step="3" :complete="e1 > 2">Description</v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="4" :complete="e1 > 3">Kiến thức đạt được</v-stepper-step>
+        <v-stepper-step step="4" :complete="e1 > 3">What is Learning</v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="5" :complete="e1 > 4">Giá tiền</v-stepper-step>
+        <v-stepper-step step="5" :complete="e1 > 4">Price</v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="6">Hoàn thành</v-stepper-step>
+        <v-stepper-step step="6">Finish</v-stepper-step>
       </v-stepper-header>
       <v-stepper-items>
         <v-stepper-content step="1">
@@ -20,7 +20,7 @@
             <div class="container">
               <div class="row" style="margin-top: 2rem">
                 <div class="col-3 offset-1" style="text-align: right;">
-                  <b>Chọn thể loại khóa học</b>
+                  <b>Category</b>
                 </div>
                 <div class="col-7">
                   <v-select
@@ -34,7 +34,7 @@
               </div>
               <div class="row" style="margin-top: 1rem">
                 <div class="col-3 offset-1" style="text-align: right;">
-                  <b>Chọn lĩnh vực</b>
+                  <b>Topics</b>
                 </div>
                 <div class="col-7">
                   <v-select
@@ -51,7 +51,7 @@
               </div>
               <div class="row" style="margin-top: 1rem">
                 <div class="col-3 offset-1" style="text-align: right;">
-                  <b>Tên khóa học</b>
+                  <b>Course Name</b>
                 </div>
                 <div class="col-7">
                   <v-text-field v-model="course.name" style="margin-top: -1.5rem;"></v-text-field>
@@ -73,27 +73,27 @@
                 @change="setImage"
                 style="width: 20%;margin: 0 40%;"
                 accept="image/*"
-                label="Chọn ảnh đại diện"
+                label="Choose an image"
               ></v-file-input>
             </div>
           </v-card>
         </v-stepper-content>
         <v-stepper-content step="3">
           <v-card class="mb-12" color="white" height="22rem">
-            <h3>Miêu tả khóa học của bạn</h3>
+            <h3>Description</h3>
             <VueEditor v-model="course.description" style="height: 70%"></VueEditor>
           </v-card>
         </v-stepper-content>
         <v-stepper-content step="4">
           <v-card class="mb-12" color="white">
-            <h3>Những kiến thức sau khi học</h3>
+            <h3>What is learning</h3>
 
             <v-btn
               rounded
               style="position:absolute;right:0;top:0"
               color="warning"
               @click="addWhatYouLearn"
-            >Thêm</v-btn>
+            >Add</v-btn>
             <div id="whatYouLearn-content" ref="whatYouLearnContent">
               <div class="row learn-item" v-for="(learn,index) in course.whatYouLearn" :key="index">
                 <div class="col-11">
@@ -102,7 +102,7 @@
                     dense
                     v-model="learn.text"
                     outlined
-                    :label="'Kiến thức: #'+(index+1)"
+                    :label="'Number: #'+(index+1)"
                   ></v-text-field>
                 </div>
                 <div class="col-1">
@@ -127,7 +127,7 @@
                       v-model="selectedMoneyType"
                       dense
                       :items="monneyType"
-                      label="Tiền tệ"
+                      label="Money Type"
                       outlined
                     ></v-select>
                   </div>
@@ -137,17 +137,17 @@
                       v-model="selectedTierPrice"
                       dense
                       :items="priceTier"
-                      label="Giá"
+                      label="Price"
                       outlined
                     ></v-select>
                   </div>
                   <div></div>
-                  <div>
+                  <div v-if="false">
                     <button class="btn btn-info" disabled>Lưu</button>
                   </div>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-6" v-if="false">
                 <v-icon style="color: red;">mdi-weather-cloudy-alert</v-icon>&nbsp;Please complete the premium instructor application here in order to set a price for your course. You can set your course price as soon as your linked payment method is approved.
               </div>
             </div>
@@ -159,7 +159,7 @@
               v-if="!userCourseLoading"
               @click="insertCourse"
               class="btn btn-primary btn-lg"
-            >Hoàn thành tạo khóa học ?</button>
+            >Finish to create course?</button>
             <v-progress-circular v-if="userCourseLoading" size="80" indeterminate color="primary"></v-progress-circular>
           </v-card>
         </v-stepper-content>
@@ -214,7 +214,7 @@ export default {
     return {
       selectedMoneyType: "",
       selectedTierPrice: "",
-      monneyType: [{ value: 1, text: "VND" }],
+      monneyType: [{ value: 1, text: "$_dolar" }],
       e1: 1,
       maxStep: 6,
       selectedTopic: [],
@@ -270,8 +270,7 @@ export default {
       if (this.selectedTopic.length > 4) {
         this.$swal({
           icon: "error",
-          title: "Thông báo",
-          text: "Số lượng chủ đề không được vượt quá 4"
+          title: "Max is 4"
         });
         this.selectedTopic.pop();
       }
@@ -295,7 +294,6 @@ export default {
         fr.onload = function() {
           vm.$refs.imgCourse.src = fr.result;
           vm.course.imageInput = files[0];
-          console.log(vm.course.imageInput);
         };
         fr.readAsDataURL(files[0]);
       }
@@ -322,8 +320,7 @@ export default {
           if (response.data.RequestSuccess == false) icon = "error";
           this.$swal({
             icon: icon,
-            title: "Thông Báo",
-            text: response.data.msg
+            title: response.data.msg
           }).then(() => {
             vm.closeModal(true);
           });
@@ -331,8 +328,7 @@ export default {
       } else {
         this.$swal({
           icon: "error",
-          title: "Thông Báo",
-          text: "Nhập thiếu thông tin"
+          title: "Missing something"
         });
       }
     },
@@ -373,7 +369,7 @@ export default {
 <style lang="scss" scoped>
 .my-grid {
   display: grid;
-  grid-template-columns: 15% 5% 60% 5% 10%;
+  grid-template-columns: 20% 5% 60% ;
 }
 .learn-item {
   margin-top: -1.5rem !important;
